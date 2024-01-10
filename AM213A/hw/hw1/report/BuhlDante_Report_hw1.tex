@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+
+%\usepackage{xcolor} 
+\usepackage{amssymb,amsfonts,amsmath,mathrsfs,mathtools}
+\usepackage{graphicx, epsfig, epstopdf}
+\usepackage{bm}
+\usepackage[margin=1in,papersize={8.5in,11in}]{geometry}
+\usepackage{times}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage[pdftex, plainpages=false, colorlinks=true, linkcolor=blue, citecolor=blue, bookmarks=false]{hyperref}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\vs}{\vspace{0.2cm}}
+\newcommand{\noter}[1]{\textcolor{red}{{#1}}}
+\newcommand{\noteb}[1]{\textcolor{blue}{{#1}}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+
+\makeatother
+
+\def\hs{\hspace{1cm}}
+
+\renewcommand{\baselinestretch}{1.4}
+
+\title{Homework 1}
+\author{Ddongwook - Math 19B}
+\date{Due: Jan 18th, 2024}
+
+\begin{document}
+
+\maketitle
+
+\noindent 
+\normalsize
+
+\begin{enumerate}
+\item 
+My choice of programming language for this class will be fortran. 
+
+\item 
+Exercises 12-16 from Fortran Tutorial by P. Garaud:
+\begin{enumerate}
+    \item Exercise 12: The code returns a line to the terminal which reads the matrix by going down each column first and then moving to the column to the right. There is also a value returned which is not supposed to be in the printed matrix. It reads -7.822 * $10^{33}$. NOTE: the values which are incorrect are random, on a different run there were two incorrect values and they did not have the same value as the first. 
+
+    \item Exercise 13: The code now returns the matrix in a grid pattern corresponding to the indicies of the array. Hence the (i,j) element of the array prints in the (i,j) cell of the printed grid. There are still incorrect values in the output. Often occuring in the first column of the matrix.  
+
+    \item Exercise 14: I chose to zero all three matrices before any values were entered into a and b. From three different runs of the code, this seems to have corrected the bug which returned incorrect values in the matrix. 
+
+    \item Exercise 15: After running both codes, I can see the difference between the intrinsic operators and the manual ones. Comparing the run times, I can see that performing the matrix addition manually more than triples the runtime for the code. The intrinsic operation completes in 0.71 seconds while the manual operation completes in 2.3 seconds. 
+
+    \item Exercise 16: The code seems to be running properly at first glance. The output is 1.571... which is very close to pi/2. The way the problem is stated implies that there should be an error in the code somewhere. I am going to try an adjacent period of cos to see if an issue appears.Then I will try to include multiple periods (this should break the code since there would be multiple roots). Then I will try a simple cubic function and maybe an exponential decay problem. Looking at the adjacent root, this algorithm computed it correctly, getting the first 4 digits accurately. I will now try multiple roots. With multiple roots, the code returns that there are either none or multiple roots in the interval, and computes only one of the roots. I could modify it to compute both roots. After attempting this with a different function, $f(x) = x^3 - 1$, no discrepancies can be foundd other than the code caan only approximate the value. The output was .9995 which is very very close to 1. After widening the interval so that the code would have a harder time finding it, it still obtained a correct answer to 2 decimal places. Maybe if the root is in the midpoint of the interval it is easier, I will make it a third of the way through the interval. Even then it gave an answer only very slightly differnt from the last and only exhibits a 3\% error. It is unclear where this code should be faulty. I will try one more function, tan(x). Testing tan(x) and intentionally placing the discontinuity in the interval, I was able to have the code find the discontinuity rather than a root without an error message. Extending the interval to include the discontinuity and a root, the code returned the root rather than the discontinuity. This might be by chance or an artifact of the algorithm design. Either way, the method of bisection would not be able to differentiate between an infinite discontuity which changes sign and a root of a function. I cannot find an error in the code, so I will not change it. 
+
+\end{enumerate}
+
+\item 
+Exercise 8:
+Let $f(x) = x^2 + x - 2$.
+\begin{itemize}
+\item Calculate $R_3$ and $L_3$ over [2, 5]. NOTE: $R_3$ and $L_3$ denote the right and left endpoint approximations of the Area under $f(x)$, each made of three rectangles/intervals. 
+\item Sketch the graph of f and the rectangles that make up each approximation. Is the area under the graph larger or smaller than $R_3$?
+Than $L_3$ ?
+\end{itemize}
+\item 
+Exercise 18: Calculate the approximation for the given function and interval 
+\begin{center}
+    $L_6$, $f(x) = 2x^2 - x + 2$, [1, 4]
+\end{center}
+\item 
+Exercise 22: Calculate the approximation for the given function and interval
+
+\begin{center}
+    $R_6$, $f(x) = e^x$, [0, 2]
+\end{center}
+
+\item 
+Compute the sums using the equations for power sums covered in the textbook (pg. 304)
+
+\bmp{.45}
+    \[
+        \sum_{i=1}^{10} i^2 - i + 1
+    \]
+\emp
+\bmp{.45}
+    \[
+        \sum_{i=1}^{4} i^3 + 4
+    \]
+\emp
+\item 
+Using the power sum equations, compute the sum listed below. HINT: Think about using a composition of sums.
+\[
+    \sum_{i=3}^{8} i^2 + i
+\]
+
+\item 
+Derive the Midpoint Approximation Formula, $M_n$, for a function, $f(x)$, on the interval [$a, b$] through the process of this problem. 
+\begin{itemize}
+    \item Find the base width for each rectangle, $\Delta x$, in terms of $n$.
+
+    \item Find the height of the i-th rectangle, $h_i$, in terms of $f$ and $x_i$, where $x_i$ denotes the midpoint of each interval.
+
+    \item Find the midpoint of the i-th subinterval, $x_i$, in terms of $i, \Delta x$. 
+
+    \item Find the area of the i-th rectangle, $A_i$, in terms of $i, f,$ and $\Delta x$ using the equation for the area of a rectangle.
+
+    \item Express the midpoint approximation, $M_n$, as the sum of the areas of all rectangles in the partition in terms of $i, \Delta x$, and $f$.
+\end{itemize}
+
+
+
+\end{enumerate}
+%
+
+%
+\end{document}

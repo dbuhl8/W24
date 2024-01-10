@@ -1,0 +1,81 @@
+
+Exercise 12 example outputs: 
+
+   2.80259693E-45   1.00000000      -3.96124834E+14   2.00000000       0.00000000       1.00000000       0.00000000       2.00000000       0.00000000    
+   2.80259693E-45   1.00000000      -2.42139341E+25   2.00000000       0.00000000       1.00000000       0.00000000       2.00000000       0.00000000    
+   0.00000000       1.00000000      -4.15889868E-20   2.00000000       0.00000000       1.00000000       0.00000000       2.00000000       0.00000000    
+
+Exercise 13 example outputs:
+   0.00000000       2.00000000       0.00000000    
+   1.00000000       0.00000000       2.00000000    
+   9.21649933E-02   1.00000000       0.00000000    
+
+   2.80259693E-45   2.00000000       0.00000000    
+   1.00000000       0.00000000       2.00000000    
+  -1.15377005E+24   1.00000000       0.00000000    
+
+   0.00000000       2.00000000       0.00000000    
+   1.00000000       0.00000000       2.00000000    
+  -2.54196133E+22   1.00000000       0.00000000    
+
+Exercise 14 example outputs:
+
+   0.00000000       2.00000000       0.00000000    
+   1.00000000       0.00000000       2.00000000    
+   0.00000000       1.00000000       0.00000000    
+
+   0.00000000       2.00000000       0.00000000    
+   1.00000000       0.00000000       2.00000000    
+   0.00000000       1.00000000       0.00000000    
+
+   0.00000000       2.00000000       0.00000000    
+   1.00000000       0.00000000       2.00000000    
+   0.00000000       1.00000000       0.00000000    
+
+Exercise 15 example outputs:
+Dimmats = 3
+   0.00000000       2.00000000       0.00000000    
+   1.00000000       0.00000000       2.00000000    
+   0.00000000       1.00000000       0.00000000    
+
+Dimmat = 10000
+
+Output for betteraaddmats: 
+0.23user 0.47system 0:00.71elapsed 99%CPU (0avgtext+0avgdata 1174272maxresident)k 
+0inputs+0outputs (0major+293079minor)pagefaults 0swaps
+
+Output for addmats: 
+1.86user 0.44system 0:02.30elapsed 99%CPU (0avgtext+0avgdata 1174144maxresident)k 
+0inputs+0outputs (0major+293079minor)pagefaults 0swaps
+
+Exercise 16 example output:
+Interval: 0, 2, f(x) = cos(x)
+   1.57128906       9.76562500E-04
+
+Interval: 2, 6, f(x) = cos(x)
+   4.71289062       1.95312500E-03A
+
+Interval: 1, 2, f(x) = cos(x)
+ There is either no solution or more than one solution in this interval.
+ Try again with a different interval.
+   4.71337891       2.44140625E-03
+
+Interval: -1, 2, f(x) = x^3 -1
+  0.999511719       1.46484375E-03
+
+Interval: -6, 6, f(x) = x^3 -1
+   1.00195312       5.85937500E-03
+
+Interval: -50, 50, f(x) = x^3 -1
+   1.02539062       4.88281250E-02
+
+Interval: -33, 67, f(x) = x^3 -1
+   1.03320312       4.88281250E-02
+
+Interval: 1, 3, f(x) = tan(x)
+   1.57128906       9.76562500E-04
+
+Interval: 1, 4, f(x) = tan(x)
+ There is either no solution or more than one solution in this interval.
+ Try again with a different interval.
+   3.14013672       1.46484375E-03

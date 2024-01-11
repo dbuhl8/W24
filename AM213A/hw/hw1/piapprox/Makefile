@@ -17,13 +17,7 @@ FFLAGS = -fdefault-real-8 -fdefault-double-8
 
 .PHONY : clean
 
-addmats: addmats.e
-		time ./$< >> exerciselog.txt
-
-betteraddmats: betteraddmats.e
-		time ./$< >> exerciselog.txt
-
-piapprox: computepi.e
+computepi: computepi.e
 		./$< >> exerciselog.txt
 
 %.e : %.o

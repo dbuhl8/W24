@@ -7,8 +7,6 @@ program computepi
     integer :: numiter
     real :: threshold, difference
 
-!    600 format"('For the threshold ', F6.2, ' the sum contained ', I5, ' iterations, and returned an absolute difference of ', F10.5)"
-
     threshold = 10.d0**(-4)
     call piapprox(threshold, numiter, difference)
     print "(A, e8.2, A, I5, A, e10.5)", 'For the threshold ', threshold, &
@@ -43,7 +41,9 @@ program computepi
             implicit none
 
             integer :: n
-            real :: thres, diff, pisum, pitrue = acos(-1.d0)
+            real :: thres
+            real :: diff
+            real :: pisum, pitrue = acos(-1.d0)
 
             n = 0
             diff = thres + 1.
@@ -54,7 +54,7 @@ program computepi
                 n = n + 1
 
                 diff = abs(pisum - pitrue)
-                print *, diff, "diff", pisum, n
+                !print *, diff, "diff", pisum, n
             end do 
 
         end subroutine piapprox
@@ -66,11 +66,10 @@ program computepi
             integer :: i
             real :: term
     
-            term = 4./(8.*i + 1) - 2./(8.*i + 4.) - 1./(8.*i + 5.) - 1./(8.*i + 6.)
-            term = term * 16.d0**(-i)
-           print *, term           
-!            term = (16**(-i)) * ((4.d0/(8.d0*i + 1.d0)) - (2.d0/(8.d0*i + 4.d0)) &
-!                                - (1.d0/(8.d0*i + 5.d0)) - (1.d0/(8.d0*i + 6.d0)))
+            !term = 4./(8.*i + 1) - 2./(8.*i + 4.) - 1./(8.*i + 5.) - 1./(8.*i + 6.)
+            !term = term * 16.d0**(-i)
+           !print *, term           
+            term = (16.d0**(-i)) * ((4.d0/(8.d0*i + 1.d0)) - (2.d0/(8.d0*i + 4.d0)) - (1.d0/(8.d0*i + 5.d0)) - (1.d0/(8.d0*i + 6.d0)))
 
         end function sumterm
 

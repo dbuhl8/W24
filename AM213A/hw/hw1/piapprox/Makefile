@@ -8,7 +8,7 @@
 
 
 FC = gfortran
-FFLAGS = -fdefault-real-8 -fdefault-double-8
+FFLAGS = -fdefault-real-8 -fdefault-double-8 -ffree-line-length-0
 #LFLAGS = -L/usr/local/lib -L/usr/lib
 
 #Module File

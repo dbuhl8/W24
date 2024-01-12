@@ -19,7 +19,7 @@ FMOD = bisect.f90 fcosx.f90
 .PHONY : clean
 
 solbybisection: solbybisection.e 
-		./$< >> ../exerciselog.txt
+		./$< 
 
 %.e : %.o
 		$(FC) -o $@ $(OMOD) $< 

@@ -54,7 +54,6 @@ program computepi
                 n = n + 1
 
                 diff = abs(pisum - pitrue)
-                !print *, diff, "diff", pisum, n
             end do 
 
         end subroutine piapprox
@@ -66,9 +65,6 @@ program computepi
             integer :: i
             real :: term
     
-            !term = 4./(8.*i + 1) - 2./(8.*i + 4.) - 1./(8.*i + 5.) - 1./(8.*i + 6.)
-            !term = term * 16.d0**(-i)
-           !print *, term           
             term = (16.d0**(-i)) * ((4.d0/(8.d0*i + 1.d0)) - (2.d0/(8.d0*i + 4.d0)) - (1.d0/(8.d0*i + 5.d0)) - (1.d0/(8.d0*i + 6.d0)))
 
         end function sumterm

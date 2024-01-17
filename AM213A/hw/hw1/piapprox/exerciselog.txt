@@ -2,3 +2,7 @@ For the threshold 0.10E-03 the sum contained     3 iterations, and returned an a
 For the threshold 0.10E-07 the sum contained     5 iterations, and returned an absolute difference of .81295E-08
 For the threshold 0.10E-11 the sum contained     8 iterations, and returned an absolute difference of .82023E-12
 For the threshold 0.10E-15 the sum contained    11 iterations, and returned an absolute difference of .00000E+00
+For the threshold 0.10E-03 the sum contained     3 iterations, and returned an absolute difference of .52632E-05
+For the threshold 0.10E-07 the sum contained     5 iterations, and returned an absolute difference of .81295E-08
+For the threshold 0.10E-11 the sum contained     8 iterations, and returned an absolute difference of .82023E-12
+For the threshold 0.10E-15 the sum contained    11 iterations, and returned an absolute difference of .00000E+00

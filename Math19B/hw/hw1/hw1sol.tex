@@ -1,0 +1,160 @@
+\documentclass[11pt]{article}
+
+%\usepackage{xcolor} 
+\usepackage{amssymb,amsfonts,amsmath,mathrsfs,mathtools}
+\usepackage{graphicx, epsfig, epstopdf}
+\usepackage{bm}
+\usepackage[margin=1in,papersize={8.5in,11in}]{geometry}
+\usepackage{times}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage[pdftex, plainpages=false, colorlinks=true, linkcolor=blue, citecolor=blue, bookmarks=false]{hyperref}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\vs}{\vspace{0.2cm}}
+\newcommand{\noter}[1]{\textcolor{red}{{#1}}}
+\newcommand{\noteb}[1]{\textcolor{blue}{{#1}}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\hleq}[1]{\colorbox{yellow}{\[#1\]}}
+
+\makeatother
+
+\def\hs{\hspace{1cm}}
+
+\renewcommand{\baselinestretch}{1.4}
+
+\title{Homework 1}
+\author{Gomez - Math 19B}
+\date{Due: Jan 19th, 2024}
+
+\begin{document}
+
+\maketitle
+
+\noindent 
+\normalsize
+All exercises are taken from Section 5.1 in the textbook
+
+\begin{enumerate}
+\item 
+Exercise 8:
+Let $f(x) = x^2 + x - 2$.
+\begin{itemize}
+\item Calculate $R_3$ and $L_3$ over [2, 5]. NOTE: $R_3$ and $L_3$ denote the right and left endpoint approximations of the Area under $f(x)$, each made of three rectangles/intervals. 
+
+\bmp{.45}
+\begin{align*}
+    R_3 &= \Delta x (h_1 + h_2 + h_3) \\
+    R_3 &= (1)(f(3) + f(4) + f(5)) \\
+    R_3 &= 10 + 18 + 28 = 56
+\end{align*}
+\emp
+\bmp{.45}
+\begin{align*}
+    L_3 &= \Delta x (h_1 + h_2 + h_3) \\ 
+    L_3 &= (1)(f(2) + f(3) + f(4)) \\ 
+    L_3 &= 4 + 10 + 18 = 32
+\end{align*}
+\emp
+
+\colorbox{yellow}{$R_3 = 56$, $L_3 = 32$}
+\item Sketch the graph of f and the rectangles that make up each approximation. Is the area under the graph larger or smaller than $R_3$? \colorbox{yellow}{The area under f(x) is smaller than $R_3$}
+
+Than $L_3$ ? \colorbox{yellow}{The area under f(x) is larger than $L_3$}
+\end{itemize}
+
+\item 
+Derive the Midpoint Approximation Formula, $M_n$, for a function, $f(x)$, on the interval [$a, b$] through the process of this problem. 
+\begin{itemize}
+    \item Find the base width for each rectangle, $\Delta x$, in terms of $n$.
+
+    \[
+    \Delta x = \frac{\text{length of interval}}{\text{number of rectangles}} = \frac{b - a}{n}
+    \]
+    \colorbox{yellow}{$\Delta x = \frac{b-a}{n}$}
+
+    \item Find the height of the i-th rectangle, $h_i$, in terms of $f$ and $x_i$, where $x_i$ denotes the midpoint of each interval.
+
+    \[
+        h_i = \text{height of function at midpoint} = f(x_i)
+    \]
+    \colorbox{yellow}{$h_i = f(x_i)$}
+
+    \item Find the midpoint of the i-th subinterval, $x_i$, in terms of $i, \Delta x$. 
+
+    \[
+    x_i = \text{midpoint of i-th rectangle} = a + \Delta x \cdot \frac{i}{2}
+    \]
+
+    \colorbox{yellow}{$x_i = a + \Delta x \cdot \frac{i}{2}$}
+    \item Find the area of the i-th rectangle, $A_i$, in terms of $i, f,$ and $\Delta x$ using the equation for the area of a rectangle.
+
+    \[
+    A_i = b \cdot h_i = \Delta x \cdot f(x_i) = \Delta x \cdot f(a + \Delta x \cdot \frac{i}{2})
+    \]
+
+    \colorbox{yellow}{$A_i = \Delta x \cdot f(a + \Delta x \cdot \frac{i}{2})$}
+
+    \item Express the midpoint approximation, $M_n$, as the sum of the areas of all rectangles in the partition in terms of $i, \Delta x$, and $f$.
+
+    \[
+    M_n = \sum_{i = 1}^{n} \Delta x \cdot f(a + \Delta x \cdot \frac{i}{2}) = \Delta x \sum_{i=1}^n f(a + \Delta x \cdot \frac{i}{2})
+    \]
+
+    \colorbox{yellow}{$M_n = \Delta x \sum_{i = 1}^n f(a + \Delta x \cdot \frac{i}{2}) = \frac{b-a}{n} \sum_{i=1}^n f(a + \frac{i(b-a)}{2n})$}
+    Either answer is fine, since I forgot to specify to write the answer in terms of n, f, and i. 
+\end{itemize}
+
+
+\setcounter{equation}{2}
+\textbf{Formulas (3)-(5)}
+\begin{equation}
+    \sum_{i=1}^Ni = 1 + 2 + \cdots + N = \frac{N(N+1)}{2} = \frac{N^2}{2} + \frac{N}{2}
+\end{equation}
+\begin{equation}
+    \sum_{i=1}^Ni^2 = 1 + 4 + \cdots + N^2 = \frac{N(N+1)(2N+1)}{6} = \frac{N^3}{3} + \frac{N^2}{2} + \frac{N}{6}
+\end{equation}
+\begin{equation}
+    \sum_{i=1}^Ni^3 = 1 + 8 + \cdots + N^3 = \frac{N^2(N+1)^2}{4} = \frac{N^4}{4} + \frac{N^3}{2} + \frac{N^2}{4}
+\end{equation}
+
+\item 
+Exercise 44: Compute the sum using linearity and the formulas (3)-(5) for power sums covered in the textbook (pg. 304)
+
+\[
+    \sum_{i=1}^{10} (i^3 - 2i^2)
+\]
+\[\sum_{i=1}^{10} (i^3 - 2i^2) = \sum_{i=1}^{10} i^3 - 2\sum_{i=1}^{10} i^2\]
+
+\[=  \frac{10^4}{4} + \frac{10^3}{2} + \frac{10^2}{4} - 2\left[\frac{10^3}{3} + \frac{10^2}{2} + \frac{10}{6}\right]\]
+
+\[= 3025 - 770 = 2255\]
+
+\colorbox{yellow}{$\sum_{i=1}^{10} (i^3 - 2i^2) = 2255$}
+\item
+Exercise 52: use linearity and formulas (3)–(5) to evaluate the limit.
+
+\[
+    \lim_{N\to\infty} \sum_{i=1}^N \frac{i}{N^2}
+\]
+
+\[\lim_{N\to\infty} \sum_{i=1}^N \frac{i}{N^2} = \lim_{N\to\infty} \frac{1}{N^2} \sum_{i=1}^N i\]
+
+\[= \lim_{N \to \infty} \frac{1}{N^2} (\frac{N^3}{3} + \frac{N^2}{2} + \frac{N}{6})\]
+
+\[= \lim_{N \to \infty} \frac{N}{3} + \frac{1}{2} + \frac{1}{6N}  = \infty + \frac{1}{2} + 0 = \text{DNE}\]
+
+\colorbox{yellow}{$\lim_{N\to\infty} \sum_{i=1}^N \frac{i}{N^2} : \text{DNE}$}
+
+
+
+
+
+\end{enumerate}
+%
+
+%
+\end{document}
+%
+%

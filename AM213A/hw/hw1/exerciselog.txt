@@ -92,6 +92,9 @@ Interval: 1, 4, f(x) = tan(x)
  There is either no solution or more than one solution in this interval.
  Try again with a different interval.
    3.14013672       1.46484375E-03
+
+Interval: -4, 4, f(x) = x^3 + 1
+ -0.99609375000000000        3.9062500000000000E-003
  ----------------------------------------
 Piapprox output (question 3) 
 

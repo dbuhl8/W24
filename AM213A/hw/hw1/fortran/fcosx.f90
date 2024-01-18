@@ -4,6 +4,6 @@ function fcosx(x) result(y)
 
     real :: x, y
 
-    y = tan(x)
+    y = x**3 + 1
 
 end function fcosx

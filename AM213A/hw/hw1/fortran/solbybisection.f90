@@ -1,7 +1,7 @@
 program solbybisection
 
     implicit none
-    real, parameter :: xmin=1.0, xmax=4.0
+    real, parameter :: xmin=-4.0, xmax=4.0
     integer, parameter :: iter = 10
     real :: sol,err,fcosx
     external fcosx

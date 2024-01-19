@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1705473725 "sect1.tex" "sect1.pdf" "sect1" 1705473725
+["pdflatex"] 1705692500 "sect1.tex" "sect1.pdf" "sect1" 1705692501
   "/etc/texmf/web2c/texmf.cnf" 1698280066 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -200,10 +200,10 @@
   "activity.png" 1705473624 14379 05096fc8811c303373767af0f650205e ""
   "animalscale.jpeg" 1705470928 338834 dd0c0a9d8478dba2f3f1838da964c792 ""
   "duncan.jpg" 1705470476 1338517 1ee0624a95c2069ef4b287c40772da8f ""
-  "sect1.aux" 1705473725 2424 d0ebbd74a2551be9ec63a67876ed74ee "pdflatex"
-  "sect1.nav" 1705473725 1153 f1a52af676143dfb28ff60d495f78448 "pdflatex"
-  "sect1.out" 1705473725 227 167252e416cfa2d10ad87653b6beff68 "pdflatex"
-  "sect1.tex" 1705473724 2462 048f312084af5f279cb5f5ffd694ebf5 ""
+  "sect1.aux" 1705692501 2424 d0ebbd74a2551be9ec63a67876ed74ee "pdflatex"
+  "sect1.nav" 1705692501 1153 f1a52af676143dfb28ff60d495f78448 "pdflatex"
+  "sect1.out" 1705692501 227 167252e416cfa2d10ad87653b6beff68 "pdflatex"
+  "sect1.tex" 1705692498 2495 9483efcf3a1e5c3a1e6f65034d984ef6 ""
   (generated)
   "sect1.aux"
   "sect1.log"

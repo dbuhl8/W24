@@ -1,0 +1,203 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{verbatim}
+\usepackage{xcolor}
+
+\title{Homework 2: Report}
+\author{Dante Buhl}
+\date{Jan $20^{th}$ 2024}
+
+\begin{document}
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\K}{\bs{\mathrm{K}}}
+\newcommand{\m}{\bs{\mu}_*}
+\newcommand{\s}{\bs{\Sigma}_*}
+\newcommand{\dt}{\Delta t}
+
+\maketitle
+
+
+\begin{enumerate}
+
+\item
+Let $A \in C^{m\times m}$ be both upper-triangular and unitary. Show that A is a
+diagonal matrix. Does the same hold if $A \in C^{m\times m}$ is both lower-triangular
+and unitary?
+
+\begin{proof}
+
+\textbf{ (Upper Triangular, by Induction)}
+
+Assume matrix $A \in \C^{m \times m}$ is unitary and is upper triangular such that,
+
+\[ 
+    A^*A = \mathrm{I}_m = AA^*
+\]
+
+\[
+    A = \left[\begin{array}{c c c c}
+        a_{11} & a_{12} & \cdots & a_{1m} \\
+        0 & a_{22} & \cdots & a_{2m} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots  & a_{mm}
+        \end{array}\right]
+\] 
+
+Where $A^*$ is the complex transpose matrix of $A$. We have then that $A^*$ is of the form, 
+
+\[
+    A^* = \left[\begin{array}{c c c c}
+        \overline{a_{11}} & 0 & \cdots & 0 \\
+        \overline{a_{12}} & \overline{a_{22}} & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \overline{a_{1m}} & \overline{a_{2m}} & \cdots  & \overline{a_{mm}}
+        \end{array}\right]
+\] 
+
+Then the product of matrix multiplication of $A^*$ and $A$ is then defined as $B$, (i.e. $B = A^*A$), and because A is a Unitary matrix, is equal to $\mathrm{I}$. 
+
+\textbf{(Base Case)}: 
+
+Now assume that the elements above the diagonal in $A$ are non-zerp. Next examine the $(1, 1)$ and $(2, 1)$ cells of the matrix product, $B$. By the operation of Matrix multiplication we should have, 
+\[
+    B(2, 1) = a_{11} \cdot \overline{a_{12}} = \mathrm{I}_m(2, 1) = 0
+\]
+\[
+    B(1, 1) = a_{11} \cdot \overline{a_{11}} = \mathrm{I}_m(1, 1) = 1
+\]
+From this, we know that $a_{11} \neq 0$ and $\overline{a_{11}} \neq 0$. But we have that the product of $a_{11} \cdot \overline{a_{12}} = 0$. Since we have that  $a_{11} \neq 0$, we must therefore have that $\overline{a_{12}} = 0$ and by the definition of a complex conjugate, $a_{12} = 0$. 
+
+\textbf{(Inductive Step)}
+
+We need to show that for a integer $k \le m-1$ all of the columns of matrix $A$, $\vec{C}_i$, up to $\vec{C}_k$ is of the form, 
+\[
+    \vec{C}_i = \left[\begin{array}{c}
+                0 \\
+                \vdots \\
+                a_{ii} \\
+                \vdots \\
+                0
+                \end{array}\right]
+\]
+then $\vec{C}_{k+1}$ is also of the same form. We have that in the matrix product between $A^*$ and $A$, $B$, then the i-th row of $B$ is defined as the inner produt between the i-th row of $A^*$, $\vec{r}_i^*$ and the j-th column of $A$, $\vec{c}_j$.  
+\[
+    B(i, :) = [(\vec{r}_i^*, \vec{c}_1), (\vec{r}_2^*, \vec{c}_2), \cdots, (\vec{r}_i^*, \vec{c}_j)] = \mathrm{I}_m(i, :) = [0, \cdots, 1, \cdots, 0]
+\]
+
+Look at the $(k+1)$-th row of B. We have from the given form of the columns, $\{\vec{c}_1, \cdots, \vec{c}_k\}$, 
+\[
+    (\vec{r}_{k+1}^*, \vec{c}_j) = \overline{a_{j(k+1)}}\cdot a_{jj} = \left\{\begin{array}{c c c}
+                                                                0 & \text{if, } & i \neq j\\
+                                                                1 & \text{if, } & i = j
+                                                            \end{array}\right\}, i, j < k+1
+\]
+We also have that each $a_{ii} \neq 0$. Thereby, for all $j < k+1$, 
+\[\overline{a_{j(k+1)}} = 0 \implies a_{j(k+1)} = 0\]We now write the column, $\vec{c}_{k+1}$. 
+\[  
+    \vec{c}_{k+1} = \left[\begin{array}{c}
+                    0 \\
+                    \vdots \\
+                    a_{(k+1)(k+1)} \\
+                    \vdots \\
+                    0
+                    \end{array}\right]
+\]
+Therefore, we have that $\vec{c}_{k+1}$ is of the same form as $\vec{c}_{i}, i \le k$. By induction, each column of $A$ is of this form. Therefore, $A$ is a diagonal matrix!
+
+
+\end{proof}
+
+\begin{proof}
+
+\textbf{(Lower Triangular, by case of Upper Triangular)}
+
+Assume as before,  $A \in \C^{m \times m}$ is unitary and is lower triangular such that,
+
+\[ 
+    A^*A = \mathrm{I}_m = AA^*
+\]
+
+\[
+    A = \left[\begin{array}{c c c c}
+        a_{11} & 0 & \cdots & 0 \\
+        a_{21} & a_{22} & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \cdots  & a_{mm}
+        \end{array}\right]
+\] 
+
+Where $A^*$ is the complex transpose matrix of $A$. We have then that $A^*$ is of the form, 
+
+\[
+    A^* = \left[\begin{array}{c c c c}
+        \overline{a_{11}} & \overline{a_{21}} & \cdots & \overline{a_{m1}} \\
+        0 & \overline{a_{22}} & \cdots & \overline{a_{m2}} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots  & \overline{a_{mm}}
+        \end{array}\right]
+\] 
+
+We then define the matrix $C = A^*$, $C^* = A$. Notice that C is an upper triangular, unitary matrix. By the previous proof, $C$ is a diagonal matrix. Notice all of its ``off-diagonal'' elements are zero. As a consequnce, all (i, j)-elements of $C$ which are zero imply that (j, i)-elements of $C^*$ are zero. Therefore, $C^* = A$ is a diagonal matrix.
+
+
+\end{proof}
+
+\item 
+Prove the following in each problem.
+\begin{enumerate}
+\item
+Let $A \in \C^{m \times m}$ be invertible and $\lambda \neq 0$ is an eigenvalue of $A$. Showthat $\lambda^{-1}$ is an eigenvalue of $A^{-1}$.
+
+\begin{proof}
+
+Take any $A \in \C^{m\times m}$ to be invertible. Then we have inverse, $A^{-1}$ exists such that, 
+\[
+    AA^{-1} = \mathrm{I}_m = A^{-1}A
+\]
+We also have by the fact that $\lambda \neq 0$ is an eigenvalue of $A$ that, 
+\[
+    \text{det}(A - \lambda\mathrm{I}_m) = 0
+\]
+We can substitute for $\I_m$.
+\[
+    \text{det}(A - \lambda\I_m) = \text{det}(A - \lambda(A^{-1}A)) = \text{det}(A)\text{det}(\I_m - \lambda A^{-1}) = 0 
+\]
+\[
+    \text{det}(I_m - \lambda A^{-1}) = -\text{det}(A^{-1} - \frac{1}{\lambda}\I_m) = 0
+\]
+\[
+    \text{det}(A^{-1} - \frac{1}{\lambda}\I_m) = 0
+\]
+Therefore, $\lambda^{-1}$ is an eigenvalue of $A^{-1}$.
+
+\end{proof}
+
+
+\item 
+Let $A, B \in \C^{m\times m}$. Show that $AB$ and $BA$ have the same eigenvalues.
+
+\item 
+Let $A \in \R^{m \times m}$. Show that $A$ and $A^*$ have the same eigenvalues.
+(Hint 1: Use det($M$) = det($M^T$) for any square matrix $M \in \R^{m\times m}$
+in connection to the definition of characteristic polynomials. Hint 2:
+When a real-valued matrix $A$ has a complex eigenvalue $\lambda$, then $\overline{\lambda}$ is
+also an eigenvalue of $A$.)
+
+
+    \end{enumerate}
+\end{enumerate}
+
+
+
+\end{document}

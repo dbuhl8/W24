@@ -98,8 +98,8 @@ then $\vec{C}_{k+1}$ is also of the same form. We have that in the matrix produc
 Look at the $(k+1)$-th row of B. We have from the given form of the columns, $\{\vec{c}_1, \cdots, \vec{c}_k\}$, 
 \[
     (\vec{r}_{k+1}^*, \vec{c}_j) = \overline{a_{j(k+1)}}\cdot a_{jj} = \left\{\begin{array}{c c c}
-                                                                0 & \text{if, } & i \neq j\\
-                                                                1 & \text{if, } & i = j
+                                                                0 & \text{if, } & j \neq k+1\\
+                                                                1 & \text{if, } & j = k+1
                                                             \end{array}\right\}, i, j < k+1
 \]
 We also have that each $a_{ii} \neq 0$. Thereby, for all $j < k+1$, 
@@ -187,12 +187,99 @@ Therefore, $\lambda^{-1}$ is an eigenvalue of $A^{-1}$.
 \item 
 Let $A, B \in \C^{m\times m}$. Show that $AB$ and $BA$ have the same eigenvalues.
 
+\begin{proof}
+
+Let $A, B$ be square matrices as shown above. Now look at some eigenvalue of the matrix product $AB$, $\lambda$. We have by definition of an eigenvalue the following equality.
+\[
+    AB\vec{v} = \lambda\vec{v}
+\]
+Now we multiply both vectors by the matrix $B$.
+\[
+    B(AB\vec{v}) = B(\lambda\vec{v})
+\]
+\[
+    (BA)(B\vec{v}) = \lambda(B\vec{v})  
+\]
+\[
+    BA\vec{w} = \lambda\vec{w}
+\]
+Therefore $\lambda$ is also an eigenvalue of the matrix product $BA$. Since our choice of $\lambda$ was arbitrary, we have that all eigenvalues of $AB$ are eigenvalues of $BA$. 
+\end{proof}
+
+
 \item 
-Let $A \in \R^{m \times m}$. Show that $A$ and $A^*$ have the same eigenvalues.
-(Hint 1: Use det($M$) = det($M^T$) for any square matrix $M \in \R^{m\times m}$
-in connection to the definition of characteristic polynomials. Hint 2:
-When a real-valued matrix $A$ has a complex eigenvalue $\lambda$, then $\overline{\lambda}$ is
-also an eigenvalue of $A$.)
+Let $A \in \R^{m \times m}$. Show that $A$ and $A^*$ have the same eigenvalues. (Hint 1: Use det($M$) = det($M^T$) for any square matrix $M \in \R^{m\times m}$ in connection to the definition of characteristic polynomials. Hint 2: When a real-valued matrix $A$ has a complex eigenvalue $\lambda$, then $\overline{\lambda}$ is also an eigenvalue of $A$.)
+
+\begin{proof}
+    
+First look at an an arbitrary eigenvalue, $\lambda$, of $A$.
+\[
+    \text{det}(A - \lambda\I) = 0
+\]
+We look at two cases, 1. $\lambda \in \R$, and 2. $\lambda \in \C$. 
+
+\begin{enumerate}
+
+\item[Case 1:] 
+
+$\lambda \in \R$.
+We have since $A, \I, \lambda$ are all real-valued, that the conjugate transpose of $(A - \lambda\I)^*$ is equal to the transpose of the same matrix quantity. i.e.
+\[
+    (A - \lambda\I)^* = (A - \lambda\I)^T = A^T - \lambda\I = A^* - \lambda\I
+\]
+Therefore we can write, 
+\[
+    \text{det}(A - \lambda\I) = \text{det}(A^* - \lambda\I) = 0
+\]
+We can immediately see that any real eigenvalue of $A$ is also an eigenvalue of $A^*$. 
+
+\item[Case 2:] 
+$\lambda \in \C$, We again look at the conjugate transpose,
+\[
+    (A - \lambda\I)^* = (A^* - \overline{\lambda}\I)
+\]
+
+
+\end{enumerate}
+
+\end{proof}
+
+\item
+Let $A \in \C^{m \times m}$ be hermitian. Suppose that for nonzero eigenvectors of $A$, there exist corresponding eigenvalues $\lambda$ satisfying $Ax = \lambda x$.
+
+\begin{enumerate}
+\item[a]
+Prove that all eigenvalues of A are real.
+
+\begin{proof}
+    We look at an arbitary eigenvalue of $A$. 
+\[
+    Ax = \lambda x, x \in \C^m
+\]
+we multiple both sides by the conjugate transpose of $x$.
+\[
+    x^*(Ax) = x^*(\lambda x)
+\]
+\[  
+    x^*Ax = \lambda(x^*x)
+\]
+We should notice that $x^*x$ is a scalar with a real value. This is because each component of $x$ is multiplied against its complex conjugate. Next we look at the dimensions and hermitian quantity of $x^*Ax$. We have that $x^* \in \C^{1 \times m}$, otherwise known as a row vector. We also have, $Ax \in \C^m$. Thereby, the matrix product of $x^*$ and $Ax$ is a $1\times 1$ quantity, a scalar! More importantly we have, 
+\[
+    (x^*Ax)^* = x^*A^*(x^*)^* = x^*Ax
+\]
+So, $x^*Ax$ is hermitian, or rather, $x^*Ax$ is a real-valued scalar. We then have, 
+\[
+    x^*Ax = \lambda(x^*x)
+\]
+Where both $x^*Ax$ and $x^*x$ are real valued, so consequently $\lambda \in \R$.
+\end{proof}
+
+\item[b.]
+Let x and y be eigenvectors corresponding to distinct eigenvalues.
+Show that (x, y) = 0, i.e., they are orthogonal. (Hint: Use the result
+of Part (a).)
+
+\end{enumerate}
 
 
     \end{enumerate}

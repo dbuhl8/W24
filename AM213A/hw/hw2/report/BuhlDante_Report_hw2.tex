@@ -3,6 +3,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{verbatim}
 \usepackage{xcolor}
@@ -24,6 +25,7 @@
 \newcommand{\m}{\bs{\mu}_*}
 \newcommand{\s}{\bs{\Sigma}_*}
 \newcommand{\dt}{\Delta t}
+\newcommand{\tr}[1]{\text{Tr}(#1)}
 
 \maketitle
 
@@ -156,59 +158,60 @@ We then define the matrix $C = A^*$, $C^* = A$. Notice that C is an upper triang
 \item 
 Prove the following in each problem.
 \begin{enumerate}
-\item
-Let $A \in \C^{m \times m}$ be invertible and $\lambda \neq 0$ is an eigenvalue of $A$. Showthat $\lambda^{-1}$ is an eigenvalue of $A^{-1}$.
 
-\begin{proof}
+    \item
+    Let $A \in \C^{m \times m}$ be invertible and $\lambda \neq 0$ is an eigenvalue of $A$. Showthat $\lambda^{-1}$ is an eigenvalue of $A^{-1}$.
 
-Take any $A \in \C^{m\times m}$ to be invertible. Then we have inverse, $A^{-1}$ exists such that, 
-\[
-    AA^{-1} = \mathrm{I}_m = A^{-1}A
-\]
-We also have by the fact that $\lambda \neq 0$ is an eigenvalue of $A$ that, 
-\[
-    \text{det}(A - \lambda\mathrm{I}_m) = 0
-\]
-We can substitute for $\I_m$.
-\[
-    \text{det}(A - \lambda\I_m) = \text{det}(A - \lambda(A^{-1}A)) = \text{det}(A)\text{det}(\I_m - \lambda A^{-1}) = 0 
-\]
-\[
-    \text{det}(I_m - \lambda A^{-1}) = -\text{det}(A^{-1} - \frac{1}{\lambda}\I_m) = 0
-\]
-\[
-    \text{det}(A^{-1} - \frac{1}{\lambda}\I_m) = 0
-\]
-Therefore, $\lambda^{-1}$ is an eigenvalue of $A^{-1}$.
+    \begin{proof}
 
-\end{proof}
-
-
-\item 
-Let $A, B \in \C^{m\times m}$. Show that $AB$ and $BA$ have the same eigenvalues.
-
-\begin{proof}
-
-Let $A, B$ be square matrices as shown above. Now look at some eigenvalue of the matrix product $AB$, $\lambda$. We have by definition of an eigenvalue the following equality.
-\[
-    AB\vec{v} = \lambda\vec{v}
-\]
-Now we multiply both vectors by the matrix $B$.
-\[
-    B(AB\vec{v}) = B(\lambda\vec{v})
-\]
-\[
-    (BA)(B\vec{v}) = \lambda(B\vec{v})  
-\]
-\[
-    BA\vec{w} = \lambda\vec{w}
-\]
-Therefore $\lambda$ is also an eigenvalue of the matrix product $BA$. Since our choice of $\lambda$ was arbitrary, we have that all eigenvalues of $AB$ are eigenvalues of $BA$. 
-\end{proof}
+    Take any $A \in \C^{m\times m}$ to be invertible. Then we have inverse, $A^{-1}$ exists such that, 
+    \[
+        AA^{-1} = \mathrm{I}_m = A^{-1}A
+    \]
+    We also have by the fact that $\lambda \neq 0$ is an eigenvalue of $A$ that, 
+    \[
+        \text{det}(A - \lambda\mathrm{I}_m) = 0
+    \]
+    We can substitute for $\I_m$.
+    \[
+        \text{det}(A - \lambda\I_m) = \text{det}(A - \lambda(A^{-1}A)) =     \text{det}(A)\text{det}(\I_m - \lambda A^{-1}) = 0 
+    \]
+    \[
+        \text{det}(I_m - \lambda A^{-1}) = -\text{det}(A^{-1} - \frac{1}{\lambda}\I_m) = 0
+    \]
+    \[
+        \text{det}(A^{-1} - \frac{1}{\lambda}\I_m) = 0
+    \]
+    Therefore, $\lambda^{-1}$ is an eigenvalue of $A^{-1}$.
+    
+    \end{proof}
 
 
-\item 
-Let $A \in \R^{m \times m}$. Show that $A$ and $A^*$ have the same eigenvalues. (Hint 1: Use det($M$) = det($M^T$) for any square matrix $M \in \R^{m\times m}$ in connection to the definition of characteristic polynomials. Hint 2: When a real-valued matrix $A$ has a complex eigenvalue $\lambda$, then $\overline{\lambda}$ is also an eigenvalue of $A$.)
+    \item 
+    Let $A, B \in \C^{m\times m}$. Show that $AB$ and $BA$ have the same eigenvalues.
+    
+    \begin{proof}
+    
+    Let $A, B$ be square matrices as shown above. Now look at some eigenvalue of the   matrix product $AB$, $\lambda$. We have by definition of an eigenvalue the following equality.
+    \[
+        AB\vec{v} = \lambda\vec{v}
+    \]
+    Now we multiply both vectors by the matrix $B$.
+    \[
+        B(AB\vec{v}) = B(\lambda\vec{v})
+    \]
+    \[
+       (BA)(B\vec{v}) = \lambda(B\vec{v})  
+    \]
+    \[
+        BA\vec{w} = \lambda\vec{w}
+    \]
+    Therefore $\lambda$ is also an eigenvalue of the matrix product $BA$. Since our choice of $\lambda$ was arbitrary, we have that all eigenvalues of $AB$ are eigenvalues of $BA$. 
+    \end{proof}
+
+
+    \item 
+    Let $A \in \R^{m \times m}$. Show that $A$ and $A^*$ have the same eigenvalues. (Hint 1: Use det($M$) = det($M^T$) for any square matrix $M \in \R^{m\times m}$ in connection to the definition of characteristic polynomials. Hint 2: When a real-valued matrix $A$ has a complex eigenvalue $\lambda$, then $\overline{\lambda}$ is also an eigenvalue of $A$.)
 
 \begin{proof}
     
@@ -218,31 +221,32 @@ First look at an an arbitrary eigenvalue, $\lambda$, of $A$.
 \]
 We look at two cases, 1. $\lambda \in \R$, and 2. $\lambda \in \C$. 
 
-\begin{enumerate}
+            \begin{enumerate}
 
-\item[Case 1:] 
+                \item[Case 1:] 
 
-$\lambda \in \R$.
-We have since $A, \I, \lambda$ are all real-valued, that the conjugate transpose of $(A - \lambda\I)^*$ is equal to the transpose of the same matrix quantity. i.e.
-\[
-    (A - \lambda\I)^* = (A - \lambda\I)^T = A^T - \lambda\I = A^* - \lambda\I
-\]
+                $\lambda \in \R$.
+                We have since $A, \I, \lambda$ are all real-valued, that the conjugate transpose of $(A - \lambda\I)^*$ is equal to the transpose of the same matrix quantity. i.e.
+                \[
+                    (A - \lambda\I)^* = (A - \lambda\I)^T = A^T - \lambda\I = A^* - \lambda\I
+                    \]
 Therefore we can write, 
 \[
     \text{det}(A - \lambda\I) = \text{det}(A^* - \lambda\I) = 0
 \]
 We can immediately see that any real eigenvalue of $A$ is also an eigenvalue of $A^*$. 
 
-\item[Case 2:] 
-$\lambda \in \C$, We again look at the conjugate transpose,
-\[
-    (A - \lambda\I)^* = (A^* - \overline{\lambda}\I)
-\]
-
-
-\end{enumerate}
-
-\end{proof}
+                \item[Case 2:] 
+                    $\lambda \in \C$, We again look at the conjugate transpose,
+                \[
+                    (A - \lambda\I)^* = (A^* - \overline{\lambda}\I)
+                \]
+            
+                
+            \end{enumerate}
+        
+        \end{proof}
+    \end{enumerate}
 
 \item
 Let $A \in \C^{m \times m}$ be hermitian. Suppose that for nonzero eigenvectors of $A$, there exist corresponding eigenvalues $\lambda$ satisfying $Ax = \lambda x$.
@@ -279,10 +283,109 @@ Let x and y be eigenvectors corresponding to distinct eigenvalues.
 Show that (x, y) = 0, i.e., they are orthogonal. (Hint: Use the result
 of Part (a).)
 
-\end{enumerate}
+\begin{proof}
 
+By the quaality that $A$ is hermition, we have for any two vectors, $x, y \in \C^m$, that
+\[
+    (Ax, y) = x^*A^*y = x^*Ay = (x, Ay)
+\]
+Therefore we can say for distinct eigenvectors, $v_1, v_2$ ($v_1 \neq v_2$), with distinct eigenvalues, $\lambda_1, \lambda_2$ ($\lambda_1 \neq \lambda_2$),   
+\[
+    (Av_1, v_2) - (v_1, Av_2) = 0
+\]
+\[
+    = (\lambda_1v_1, v_2) - (v_1, \lambda_2v_2) = \overline{\lambda_1}v_1^*v_2 - v_1^*\lambda_1v_2
+\]
+\[
+    = (\overline{\lambda_1} - \lambda_2)v_1^*v_2 = 0
+\]
+There are two things to notice, first since all eigenvalues are real, $\overline{\lambda_1} = \lambda_1$. Second, by our construction of the problem, $\lambda_1 \neq \lambda_2$. Thereby, $(\overline{\lambda_1} - \lambda_2) \neq 0$. So,
+\[
+    v_1^*v_2 = 0 = (v_1, v_2)
+\]
+\end{proof}
+\end{enumerate} % end of 3
+
+%Problem 4
+\item
+A matrix $A$ is called positive definite if and only if $(Ax, x) > 0$ for all $x \neq 0$
+in $\C^m$. Suppose $A$ is Hermitian. Show that $A$ is positive definite if and
+only if $\lambda_i > 0, \forall \lambda_i \in \Lambda(A)$, the spectrum of A.
+
+\begin{proof}
+
+By the property of $A$ being hermitian, that we can write any vector, $x \in \C_m, x \neq \vec{0}$ as the linear combination of the orthonormal eigenvectors of $A$, $u_i$. 
+\[
+    x = \alpha_1u_1 + \cdots + \alpha_mu_m
+\]
+We then look the inner product, $(Ax, x)$. 
+\[
+    Ax = A(\alpha_1u_1 + \cdots + \alpha_mu_m) = \lambda_1\alpha_1u_1 + \cdots + \lambda_m\alpha_mu_m
+\]
+\[
+    (Ax)^* = \overline{\lambda_1\alpha_1} u_1^* + \cdots + \overline{\lambda_m\alpha_m}u_m^*
+\]
+\[
+    (Ax, x) = (\overline{\lambda_1\alpha_1} u_1^* + \cdots + \overline{\lambda_m\alpha_m}u_m^*)(\alpha_1u_1 + \cdots + \alpha_mu_m)
+\]
+Here by the property of an orthonormal vector set, we have that $u_i^*u_j = 0$ if $i \neq j$ and $= 1$ if $i = j$.
+\[
+    (Ax, x) = \overline{\lambda_1\alpha_1}\alpha_1 + \cdots + \overline{\lambda_m\alpha_m}\alpha_m = \sum_{i=1}^m \lambda_i |\alpha_i|^2
+\]
+Of course, $|\alpha_i|^2$ is a strictly positive value. So for $(Ax, x) < 0$ we need at least one $\lambda_i < 0$. In fact, it is the case that if even one $\lambda_i < 0$ that $(Ax, x) \ngtr 0$ for all $x \in \C^m$. To prove that $(Ax, x) > 0, \forall x \in \C^m$, we take the case of only the smallest $\lambda_i$, $\lambda_k < 0$ (i.e. $|\lambda_k| < |\lambda_i| , \forall \lambda_i \in (\Lambda(A) - \{\lambda_k\})$). We can show by counter-example
+\[
+    \lambda_k < 0, x \in \C^m, x = \alpha_1u_1 + \cdots + \alpha_mu_m
+\]
+\[
+    (Ax, x) = \lambda_k|\alpha_k|^2 + \sum_{i = 1, i\neq k}^m \lambda_i|\alpha_i|^2 
+\]
+\[
+    \exists x_* \in \C^m, \text{ such that } |\alpha_k|^2 = \frac{1}{\lambda_k}\sum_{i = 1, i \neq k}^m \lambda_i|\alpha_i|^2 + 1
+\]
+\[
+    (Ax_*, x_*) < 0, \text{ by construction.}
+\]
+\end{proof} %end of problem 4
+
+\item Suppose A is unitary.
+
+    \begin{enumerate}
+    
+    \item[(a)] Let $(\lambda, x)$ be an eigenvalue-vector pair of $A$. Show $\lambda$ satisfies $|\lambda| = 1$.
+    \begin{proof}
+        Since $A$ is unitary, we have that it preserves the angle and length of vectors under transformations. (i.e $(Ax, Ax) = (x, x)$ for any vector $x \in \C^m$). Thereby we have, 
+\[
+    (Ax, Ax) = (\lambda x, \lambda x) = \overline{\lambda}x^* \lambda x = |\lambda|^2 x^* x = |\lambda|^2 (x, x)
+\]
+\[
+    (x, x) = (Ax, Ax) = |\lambda|^2(x, x) \implies |\lambda|^2 = 1
+\]
+\[
+    |\lambda| = 1
+\]
+    \end{proof}
+
+    \item[(b)] Prove or disprove $||A||_F = 1$
+
+    \begin{proof}
+
+        We have from the definition of the Frobenius Norm and since A is unitary, 
+
+        \[
+            ||A||_F = \sqrt{\tr{A^*A}} = \sqrt{\tr{\I}}
+        \]
+        Assume now that $\I \in \R^{m\times m}$. Then, $\tr{\I} = m$
+        \[
+            ||A||_F = \sqrt{m}
+        \]
+        Therefore, $||A||_F \neq 1$ unless, $A \in \C^{1\times 1}$ i.e. A is a scalar. In general though, for any $A \in \C^{m\times n}$ where $m, n > 1$, $||A||_F \neq 1$. 
+    \end{proof}
 
     \end{enumerate}
+    
+    
+
+
 \end{enumerate}
 
 

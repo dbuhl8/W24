@@ -41,19 +41,6 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Week 2 Reflections}
-    
-    \vspace{10pt}
-
-    \bmp{.4}
-       
-    \emp
-    \hspace{5pt}
-    \bmp{.55}
-        \centering
-        \includegraphics[width=.75\textwidth]{duncan.jpg}
-    \emp
-\end{frame}
 
 
 \begin{frame}{Learning Outcomes}
@@ -72,6 +59,51 @@
 
 \end{frame}
 
+\begin{frame}{U-Substitution}
+\scriptsize{
+U-Substitution is an extremely useful method for integration. It relies on using a change of variables (substitution) in order to integrate a simpler function. It is essentially the chain rule for derivatives in reverse. }
+
+\normalsize
+\vspace{10pt}
+
+
+The Chain Rule. 
+
+\[
+    \frac{d}{dx} f(g(x)) = f'(g(x)) \cdot g'(x)
+\]
+
+
+\end{frame}
+
+\begin{frame}{U-Substitution}
+
+\[
+    \int f'(g(x))g'(x) dx
+\]
+\[
+    u = g(x) \to \frac{du}{dx} = g'(x)
+\]
+\[
+    du = g'(x)dx
+\]
+\[
+    \int f'(g(x))g'(x) dx = \int f'(u)du
+\]
+
+Example: 
+
+\[
+\int 2x\cos{x^2}dx
+\]
+\[
+    u = x^2, \to du = 2xdx
+\]
+\[
+    \int 2x\cos{x^2}dx = \int \cos{u} du = \sin{u} + c = \sin{x^2} + c
+\]
+
+\end{frame}
 
 \begin{frame}{Section Activity 2 (Access Code: )}
     

@@ -381,9 +381,105 @@ Of course, $|\alpha_i|^2$ is a strictly positive value. So for $(Ax, x) < 0$ we 
         Therefore, $||A||_F \neq 1$ unless, $A \in \C^{1\times 1}$ i.e. A is a scalar. In general though, for any $A \in \C^{m\times n}$ where $m, n > 1$, $||A||_F \neq 1$. 
     \end{proof}
 
-    \end{enumerate}
+    \end{enumerate} %end of problem 5
+
+    \item %start of problem 6
+     Let $A \in \C^{m\times m}$ be skew-hermitian, i.e., $A^* = -A$.
+     \begin{enumerate}
+        \item
+        Show that the eigenvalues of A are pure imaginary. 
+        
+        \begin{proof} 
+            We look at the skew-hermition matrix $A$ with $(\lambda, x)$ being an eigenvalue-eigenvector pair ($Ax = \lambda x$). We start by looking at the inner products $(Ax, x), (x, Ax)$. 
+
+            \bmp{.45}
+                \[
+                    (Ax, x) - (x, Ax)
+                \]
+                \[
+                    = x^*A^*x - x^*Ax
+                \]
+                \[  
+                    = -2x^*(Ax)
+                \]
+                \[
+                    = -2\lambda x^*x
+                \]
+            \emp
+            \bmp{.45}
+                \[
+                    (Ax, x) - (x, Ax)
+                \]
+                \[
+                    = (\lambda x)^* x - x^*\lambda x
+                \]
+                \[
+                    = (\overline{\lambda} - \lambda)x^*x
+                \]
+            \emp
+           \[
+                -2\lambda x^*x = (\overline{\lambda} - \lambda) x^*x
+           \]
+            \[
+                -2\lambda = \overline{\lambda} - \lambda
+            \]
+            \[
+                -\lambda = \overline{\lambda} \implies \R(\lambda) = 0
+            \]
+            Since our choice of x and lambda were arbitrary, we have that all eigenvalues of A are purely imaginary. 
+            
+        \end{proof}
+
+        \item
+
+     \end{enumerate}
     
+     \item 
+      Show that $\rho(A) \le ||A||$, where $\rho(A)$ is the spectral radius of $A$.
     
+    \begin{proof}
+
+    Start by taking the eigenvalue-eigenvector pair ($\lambda_*, v$) such that, $|\lambda_*| \ge |\lambda_i|, \lambda_i \in \Lambda(A)$. We have from the definition of the a matrix norm, 
+    \[
+        ||A|| = \sup_{x \in \C^m} \frac{||Ax||}{||x||} \ge \frac{||Av||}{||v||}
+    \]
+    \[
+        \frac{||Av||}{||v||} = \frac{||\lambda_* v||}{||v||} = \frac{|\lambda_*| ||v||}{||v||} = |\lambda_*|
+    \]
+    \[
+        ||A|| = \sup_{x \in \C^m} \frac{||Ax||}{||x||} \ge |\lambda_*| = \rho(A)
+    \]
+    \[
+        ||A|| \ge \rho(A)   
+    \]
+    \end{proof}
+
+    \item 
+    Let $A \in \R^{m\times m}$ and $Av_i = \alpha_i v_i, i = 1, . . . , m$, where $(\alpha_i , v_i)$ is the eigenvalue-eigenvector pair of $A$ for each $i$. Assume that $A$ is symmetric, $A = A^T$ and the eigenvalues $\alpha_i$ are all distinct. Show that the solution to $Ax = b, x \neq 0$, can be written as, 
+\[
+    x = \sum_{i=1}^m\frac{v_i^Tb}{v_i^TAv_i}v_i
+\]
+(Hint 1: Use the fact that symmetric matrices are non-defective, and non-defective matrices are diagonalizable. Hint 2: Use the fact that, for realsymmetric matrices, the eigenvectors corresponding to distinct eigenvalues are orthogonal to each other, i.e., $(v_i , v_j) = 0, i \neq j.$)
+   
+    \begin{proof}
+    
+    Since we have that $A$ is a real, symmetric matrix, it is true that its eigenvectors form an orthogonal basis which spans $\R^m$. Then we could write $b$ as a linear combination of the eigenvalues of $A$., 
+    \[
+        b = c_1v_1 + \cdots + c_mv_m = A(d_1v_1 + \cdots + d_mv_m), c_i = \alpha_i d_i
+    \]  
+    We now need to find the scalar coefficients $d_i$ to obtain the correct linear combination. We next look at the inner products $(v_i, b), (v_i, Av_i)$. We have, 
+    \[
+        (v_i, b) = v_i^T(\alpha_1d_1v_1 + \cdots + \alpha_md_mv_m) = \alpha_id_iv_i^Tv_i
+    \]
+    The inner product of $v_i$ with any $v_j, i\neq j$ is zero by orthogonality, so only the $v_i^Tv_i$ term remains. 
+    \[
+        (v_i, Av_i) = v_i^T(Av_i) = v_i^T(\alpha_iv_i) = \alpha_i v_i^Tv_i
+    \]
+    We have then that, $\frac{(v_i, b)}{(v_i, Av_i)} = d_i$. Therefore we can now write, 
+    \[
+        x = \sum_{i=1}^m \frac{(v_i, b)}{(v_i, Av_i)}v_i = \sum_{i=1}^m \frac{v_i^T b}{v_i^TAv_i}v_i
+    \]
+    \end{proof} 
 
 
 \end{enumerate}

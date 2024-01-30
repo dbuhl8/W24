@@ -33,7 +33,7 @@
 
 \begin{enumerate}
 
-\item
+\item %start of problem 1
 Let $A \in C^{m\times m}$ be both upper-triangular and unitary. Show that A is a
 diagonal matrix. Does the same hold if $A \in C^{m\times m}$ is both lower-triangular
 and unitary?
@@ -154,9 +154,9 @@ Where $A^*$ is the complex transpose matrix of $A$. We have then that $A^*$ is o
 We then define the matrix $C = A^*$, $C^* = A$. Notice that C is an upper triangular, unitary matrix. By the previous proof, $C$ is a diagonal matrix. Notice all of its ``off-diagonal'' elements are zero. As a consequnce, all (i, j)-elements of $C$ which are zero imply that (j, i)-elements of $C^*$ are zero. Therefore, $C^* = A$ is a diagonal matrix.
 
 
-\end{proof}
+\end{proof}%end of problem 1
 
-\item 
+\item %start of problem 2
 Prove the following in each problem.
 \begin{enumerate}
 
@@ -220,36 +220,19 @@ First look at an an arbitrary eigenvalue, $\lambda$, of $A$.
 \[
     \text{det}(A - \lambda\I) = 0
 \]
-We look at two cases, 1. $\lambda \in \R$, and 2. $\lambda \in \C$. 
-
-            \begin{enumerate}
-
-                \item[Case 1:] 
-
-                $\lambda \in \R$.
-                We have since $A, \I, \lambda$ are all real-valued, that the conjugate transpose of $(A - \lambda\I)^*$ is equal to the transpose of the same matrix quantity. i.e.
-                \[
-                    (A - \lambda\I)^* = (A - \lambda\I)^T = A^T - \lambda\I = A^* - \lambda\I
-                    \]
-Therefore we can write, 
+We examine the determinant of a conjugate transpose. Since determinant is the sum/difference of the products along the diagonals, we have that the determinant of the conjugate tranpose is equivalent to the complex conjugate of the determinant of the tranpose. 
 \[
-    \text{det}(A - \lambda\I) = \text{det}(A^* - \lambda\I) = 0
+    \det(A^*) = \overline{\det(A^T)} = \overline{\det(A)}
 \]
-We can immediately see that any real eigenvalue of $A$ is also an eigenvalue of $A^*$. 
-
-                \item[Case 2:] 
-                    $\lambda \in \C$, We again look at the conjugate transpose,
-                \[
-                    (A - \lambda\I)^* = (A^* - \overline{\lambda}\I)
-                \]
-            
-                
-            \end{enumerate}
-        
+We then look at the definition of the characteristic polynomial. 
+\[
+    \det(A-\lambda\I) = 0 \implies \overline{\det(A - \lambda\I)} = 0 = \det[(A - \lambda\I)^*]  = \det(A^* - \overline{\lambda}\I)
+\]
+        We have then that the complex conjugate of all eigenvalues of $A$ are eigenvalues of $A^*$. We also notice that since $A$ and $A^*$ are real, that the characteristic polynomials are also real. Thus if we are to have a complex number as a root of a real polynomial, the complex conjugate must also be a root. Thereby, all complex $\lambda$ and their conjugates $\overline{\lambda}$ are roots of both $A$ and $A^*$. Moreover, if $\lambda$ is not complex it is automatically a root of both $A$ and $A^*$. 
         \end{proof}
-    \end{enumerate}
+    \end{enumerate} %end of problem 2
 
-\item
+\item   %start of problem 3
 Let $A \in \C^{m \times m}$ be hermitian. Suppose that for nonzero eigenvectors of $A$, there exist corresponding eigenvalues $\lambda$ satisfying $Ax = \lambda x$.
 
 \begin{enumerate}
@@ -307,7 +290,7 @@ There are two things to notice, first since all eigenvalues are real, $\overline
 \end{proof}
 \end{enumerate} % end of 3
 
-%Problem 4
+%start of problem 4
 \item
 A matrix $A$ is called positive definite if and only if $(Ax, x) > 0$ for all $x \neq 0$
 in $\C^m$. Suppose $A$ is Hermitian. Show that $A$ is positive definite if and
@@ -341,11 +324,12 @@ Of course, $|\alpha_i|^2$ is a strictly positive value. So for $(Ax, x) < 0$ we 
     (Ax, x) = \lambda_k|\alpha_k|^2 + \sum_{i = 1, i\neq k}^m \lambda_i|\alpha_i|^2 
 \]
 \[
-    \exists x_* \in \C^m, \text{ such that } |\alpha_k|^2 = \frac{1}{\lambda_k}\sum_{i = 1, i \neq k}^m \lambda_i|\alpha_i|^2 + 1
+    \exists x_* \in \C^m, \text{ such that } |\alpha_k|^2 = \frac{1}{|\lambda_k|}\sum_{i = 1, i \neq k}^m \lambda_i|\alpha_i|^2 + 1
 \]
 \[
-    (Ax_*, x_*) < 0, \text{ by construction.}
+    (Ax_*, x_*) = \lambda_k < 0, \text{ by construction.}
 \]
+We have then that if $(Ax, x) < 0$, then $\lambda_i < 0$, and if $\lambda_i < 0$, then $\exists x \in \C^m$ such that $(Ax, x) < 0$. So if $A$ is positive definite if and only if all eigenvalues of $A$ are positive. 
 \end{proof} %end of problem 4
 
 \item Suppose A is unitary.
@@ -432,9 +416,21 @@ Of course, $|\alpha_i|^2$ is a strictly positive value. So for $(Ax, x) < 0$ we 
         \end{proof}
 
         \item
-        Show that I − A is nonsingular
+        Show that $I - A$ is nonsingular
         \begin{proof}
-            
+            To show that $\I - A$ is nonsingular we simply need to show that $\det(\I - A) \neq 0$. We have, 
+            \[
+                \det(\I - A) = (-1)^m\det(A - \I)
+            \]
+            We notice that $\det(A - \I)$ looks very similar to the definition of the characteristic polynomial, $\det(A - \lambda\I)$. We have then by the definition of a characteristic polynomial, 
+            \[
+                \det(\I - A) = (-1)^m\det(A - \I) = 0, \text{ if and only if } \lambda = 1 \text{ is an eigenvalue of } A.
+            \]
+            We have from part (a) of the problem that all eigenvalues of $A$ are pure imaginary, i.e. $\lambda \neq 1$. Therefore
+            \[
+                \det(\I - A) = (-1)^m\det(A - \I) \neq 0
+            \]
+            Therefore, $\I - A$ is nonsingular by definition. 
         \end{proof}
 
      \end{enumerate}
@@ -506,7 +502,7 @@ Of course, $|\alpha_i|^2$ is a strictly positive value. So for $(Ax, x) < 0$ we 
             \[
                 ||A||_2 = ||u||_2\sup\left\{\frac{|\alpha|}{||x||_2} \Big| x\in \C^n\right\}
             \]
-            We now look at the vector norm equality, the H\"{o}lder Inequality, for $p = q = 2$, with x per
+            We now look at the vector norm equality, the H\"{o}lder Inequality, for $p = q = 2$,
             \[
                 |\alpha| = |v^*x| \le ||v||_2||x||_2
             \]

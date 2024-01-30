@@ -1,0 +1,27 @@
+
+
+
+Notes:
+Solve Momentum Equations, Temperature Equations, Div u = 0
+
+NS:
+du/dt + u *grad u = -grad P + BTkhat + (1/Re)laplacian u
+Temp:
+dT/dt  + u * grad T + u_z = (1/Re)Laplacian T
+Continuity:
+Div * u = 0
+
+Code: 
+NS: 
+BT = Bthem*T - Bcomp*S
+Dvisc = 1/Re
+Dtherm = 1/Pe
+Stherm = 1
+Div * u = 0 is always satisfied. 
+
+
+NonDim Nums: Re = 1000, Pe = 100, B = 100
+IC: T(x, y, x) = 10cos(2pix/Lx + 2pix/Lz), U(x, y, z) = 0
+Lz = 2pi, Lx = 4pi, Ly = 2pi
+Nz = 32, Nx = 64, Ny = 32
+Tmax = 10

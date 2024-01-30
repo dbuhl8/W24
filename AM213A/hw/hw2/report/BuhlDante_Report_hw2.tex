@@ -26,6 +26,7 @@
 \newcommand{\s}{\bs{\Sigma}_*}
 \newcommand{\dt}{\Delta t}
 \newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\Tr}[1]{\text{Tr}(#1)}
 
 \maketitle
 
@@ -431,6 +432,10 @@ Of course, $|\alpha_i|^2$ is a strictly positive value. So for $(Ax, x) < 0$ we 
         \end{proof}
 
         \item
+        Show that I − A is nonsingular
+        \begin{proof}
+            
+        \end{proof}
 
      \end{enumerate}
     
@@ -481,8 +486,128 @@ Of course, $|\alpha_i|^2$ is a strictly positive value. So for $(Ax, x) < 0$ we 
     \]
     \end{proof} 
 
+    \item %start of problem 9
+    Let $A$ be defined as an outer product $A = uv^*$ , where $u \in \C^m$ and $v \in \C^n$.
+    \begin{enumerate}
+        \item
+        Prove or disprove $||A||_2 = ||u||_2||v||_2$
+        \begin{proof}
+            We have from the definition for the p-norm of a matrix $A \in \C^{\m \times n}$, 
+            \[
+                ||A||_2 = \sup\left\{\frac{||Ax||_2}{||x||_2} \Big| x \in \C^n\right\}
+            \]   
+            \[
+                ||A||_2 = ||u v^*||_2 = \sup\left\{\frac{||uv^*x||_2}{||x||_2} \Big| x\in \C^n\right\}
+            \]
+            Notice here, that $v^*a$ produces a $1\times 1$ matrix, a scalar. We have the by the property of matrix and vector norms, 
+            \[
+                ||A||_2 = \sup\left\{\frac{||u\alpha||_2}{||x||_2} \Big| x\in \C^n\right\} = \sup\left\{\frac{||u||_2|\alpha|}{||x||_2} \Big| x\in \C^n\right\}, \text{ } \alpha = |v^*x|
+            \]
+            \[
+                ||A||_2 = ||u||_2\sup\left\{\frac{|\alpha|}{||x||_2} \Big| x\in \C^n\right\}
+            \]
+            We now look at the vector norm equality, the H\"{o}lder Inequality, for $p = q = 2$, with x per
+            \[
+                |\alpha| = |v^*x| \le ||v||_2||x||_2
+            \]
+            So, 
+            \[
+                \sup\left\{\frac{|\alpha|}{||x||_2} \Big| x\in \C^n\right\} \le ||v||_2
+            \]
+            We now chose $x = cv, c \in \R$, $c$ constant. Therefore, 
+            \[
+                |(v, x)| = |v^*x| =|\alpha|= |v^*cv| = |c|||v||_2^2 = ||v||_2||x||_2
+            \]
+            We have then that any $x$ colinear to $v$ gives us the supremum case. Therefore, 
+            \[
+                ||A||_2 = ||u||_2\left(\frac{||v||_2||x||_2}{||x|_2}\right) = ||u||_2||v||_2
+            \]
+        \end{proof}
+
+        \item
+        Prove or disprove $||A||_F = ||u||_F||v||_F$
+
+        \begin{proof}
+            We begin with the definition of the Frobenius Norm. 
+            \[
+                ||A||_F = \sqrt{\Tr{AA^*}} = \sqrt{\Tr{uv^*vu^*}}
+            \]
+            \[
+                ||A||_F = \sqrt{\Tr{u||v||_2^2u^*}} = ||v||_2 \sqrt{\tr{uu^*}}
+            \]
+            \[
+                ||A||_F = ||v||_2 \sqrt{||u||_2^2} = ||v||_2||u||_2 = ||v||_F||u||_F 
+            \]
+        \end{proof}
+    \end{enumerate}%end of problem 9
+
+    \item %start of problem 10
+    Let $A, Q \in \C^{m\times m}$ , where $A$ is arbitrary and $Q$ is unitary
+    \begin{enumerate}
+        \item Show that $||AQ||_2 = ||A||_2$
+        \begin{proof}
+        We begin with the definition of a 2-norm for matrices. 
+        \[
+            ||AQ||_2 = \sup\left\{\frac{||AQx||_2}{||x||_2} \Big| x \in \C^m\right\}
+        \]
+        \[
+            ||AQ||_2 = \sup\left\{\frac{||Ay||_2}{||x||_2} \Big| x \in \C^m\right\}, \text{ } y = Qx, ||y||_2 = ||x||_2
+        \]
+        We have by the property of unitary matrices that the length and angles of vectors are preserved under transformations. Thus, $||Qx||_2 = ||x||_2 = ||y||_2$. We then substitute, 
+        \[
+            ||AQ||_2 = \sup\left\{\frac{||Ay||_2}{||y||_2} \Big| y \in \C^m\right\} = ||A||_2
+        \]
+        \end{proof}
+
+        \item  Show that $||AQ||_F = ||QA||_F = ||A||_F$.
+        \begin{proof}
+            We start with the definition of the frobenius norm. 
+            \[
+                ||AQ||_F = \sqrt{\tr{(AQ)^*AQ}} = \sqrt{\tr{(QA)^*QA}} = ||QA||_F
+            \]
+            \[
+                ||AQ||_F = \sqrt{\tr{A^*Q^*QA}} = \sqrt{\tr{A^*A}} = ||A||_F
+            \]
+        \end{proof}
+    \end{enumerate} %end of problem 10
+    
+    \item %start of problem 11 
+    We say that $A, B \in \C^{m\times m}$ are unitarily equivalent if $A = QBQ^*$ for some
+unitary $Q \in \C^{m\times m}$.
+    \begin{enumerate}
+    \item 
+    Show that if $A$ and $B$ are unitarily equivalent, then they have the
+same singular values.
+    \begin{proof}
+        We start with the SVD of $B$. 
+        \[
+            B = U_B\Sigma V_B^T 
+        \]
+        \[
+            A = QBQ^* = QU_B\Sigma V_B^TQ^* = U_A\Sigma V_A^T
+        \]
+    \end{proof}
+    \item 
+    Show that the converse of Part (a) is not necessarily true
+    \begin{proof}
+        Assume that $A, B$ share the same singular value matrix $\Sigma$. We have then that, 
+        \[
+            A = U_A\Sigma V_A^T, \text{ } B = U_B\Sigma V_B^T
+        \] 
+        In order for $A$ and $B$ to be unitarily equivalent, we must have that $U_A = QU_B$ and $V_A^T = V_B^TQ^*$
+        \[
+           V_A^TU_A = V_B^TQ^*QU_B = V_B^TU_B
+        \]
+        \[
+            (V_A^TU_A)^* = Q^*U_A^*
+        \]
+    \end{proof}
+    \end{enumerate}%end problem 11
+    
+
 
 \end{enumerate}
+
 
 
 

@@ -586,19 +586,106 @@ same singular values.
     \item 
     Show that the converse of Part (a) is not necessarily true
     \begin{proof}
-        Assume that $A, B$ share the same singular value matrix $\Sigma$. We have then that, 
+        We start with a 2D case for simplicity to disprove the converse. Let us take $A, B$ with the same singular values, i.e. they share the same matrix $\Sigma$ in their singular value decompositions.
         \[
-            A = U_A\Sigma V_A^T, \text{ } B = U_B\Sigma V_B^T
-        \] 
-        In order for $A$ and $B$ to be unitarily equivalent, we must have that $U_A = QU_B$ and $V_A^T = V_B^TQ^*$
-        \[
-           V_A^TU_A = V_B^TQ^*QU_B = V_B^TU_B
+            A = U_A\Sigma V_A^*
         \]
         \[
-            (V_A^TU_A)^* = Q^*U_A^*
+            B = U_B\Sigma V_B^*
         \]
+        We have since $A, B \in \C^{2\times 2}$. That $U_A, U_B, V_A, V_B$ are all unit basis for $\C^2$. We can then impose some choice of $U_A$ and $U_B$. We chose for example, 
+        \[
+            U_A = \left[\begin{array}{c c}
+                        0 & 1 \\
+                        -1 & 0 \end{array}\right]
+        \]
+        \[
+            U_B = \left[\begin{array}{c c}
+                        1 & 0 \\
+                        0 & 1 \end{array}\right] = \I_2
+        \]
+        \[
+            U_A = QU_B 
+        \]
+        \[
+            U_A = Q
+        \]
+        We now need to fix $V_A$, $V_B$ which cannot be transformed by $Q/Q^*$. We have, 
+        \[
+            V_A^* = V_B^*Q^* \to V_A = QV_B
+        \]
+        We chose $V_B = \I_2$ for simplicity. Therfore,
+        \[
+            V_A = Q
+        \]
+        We now have to chose a $V_A$ that is not equal to $Q$. There exists some matrix $A$ with the the choice of $U_A$ so far and $V_A$, 
+        \[
+            V_A = \left[\begin{array}{c c}
+                        0 & -1 \\
+                        1 & 0 \end{array}\right] \implies V_A \neq Q
+        \]
+        Thus, $A$ and $B$ share the same singular values, but are not unitarily equivalent. 
     \end{proof}
     \end{enumerate}%end problem 11
+
+    \item %start of problem 12
+     Find the relative condition number of the following functions and discuss
+if there is any concern of being ill-conditioned. If so, discuss when.
+    \begin{enumerate}
+        \item $f(x_1, x_2) = x_1 + x_2$
+            \[
+                J(x) = [1, 1]
+            \]
+            \[
+                k(x) = \frac{||J||_{\infty}||x||_{\infty}}{||f(x)||_\infty}
+            \]
+            \[
+                k(x) = \frac{2\max\{x_1, x_2\}}{|x_1 + x_2|}
+            \]
+            \[
+                \lim_{x_1 \to -x_2} k(x) \to \infty
+            \]
+            f is ill-conditioned when $x_1$ is very close to negative $x_2$.
+
+        \item $f(x_1, x_2) = x_1x_2$
+            \[
+                J(x) = [x_2, x_1]
+            \]
+            \[
+                k(x) = \frac{|x_2 + x_1|\max\{x_2, x_1\}}{|x_2x_1|}
+            \]  
+            \[
+                \lim_{x_1x_2 \to 0} k(x) =  \infty
+            \]
+            f is ill-conditioned when $x_1x_2 << 1$. 
+
+        \item $f(x) = (x - 2)^9$
+            \[
+                f'(x) = 9(x-2)^8  
+            \]
+            \[
+                k(x) = \frac{9(x-2)^8|x|}{|(x-2)^9|} = \frac{9|x|}{|x-2|}
+            \]
+            f is ill-conditioned near $x = 2$. 
+
+    \end{enumerate}
+
+
+    \item %start of problem 13
+    Note that the function $f(x) = (x-2)^9$ in Part (c) in Problem 9 can also be expressed as $g(x) = x9 - 18x^8 + 144x^7 -672x^6 +2016x^5 -4032x^4 +5376x^3 - 4608x^2 + 2304x - 512$. Note that, mathematically, the two functions f and g are identical. (Note: Use Matlab or Python for this problem, particularly for plotting purposes. Fortran coding is not necessary.)
+    \begin{enumerate}
+    \item 
+    Plot f (x) by evaluating discrete function values of f at1.920, 1.921, 1.922, . . . , 2.080, which are equally spaced with the dis-tance of 0.001.
+    \item 
+    Over-plot g(x) at the same set of discrete points in Part (a).
+    \begin{center}
+    \includegraphics[width=.5\textwidth]{"../python/question13.png"}
+    \end{center}
+    \item
+    Draw your conclusion from your results of Part (c) in Prob. 11 and Parts (a) and (b) in this problem.
+
+    The plot shown very clearly demonstrates the stability of using $f(x)$ rather than $g(x)$ for numerics. It can be easily seen that $g(x)$ becomes very ragged when near $x = 2$ which $f(x)$ does not demonstrate at all. This is perhaps from numerical errors in the large amplitude of the terms in $g(x)$ as opposed to the single term in $f(x)$. 
+   \end{enumerate}
     
 
 

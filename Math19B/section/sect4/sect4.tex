@@ -1,0 +1,165 @@
+\documentclass{beamer}
+
+\title{Section 4}
+\author{TA: Dante Buhl}
+\institute{UCSC Math-19B}
+%\date{Week 2}
+\graphicspath{ {./images/} }
+%\usepackage{xcolor}
+\usepackage{verbatim}
+\usetheme{Goettingen}
+\usecolortheme{seahorse}
+\usefonttheme{serif}
+%\usepackage[x11names]{xcolor}
+\usepackage{amsmath}
+\usepackage{pifont}
+
+
+\begin{document}
+
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+
+
+%Title
+\frame{\titlepage}
+
+\section{Agenda}
+\begin{frame}{Plan for Today}
+    Topics to Cover
+    \begin{itemize}
+        \item Figuring out working groups
+        \item Work and Energy
+        \item Numerical Approximations
+    \end{itemize}
+    Section Activity 4
+    \begin{itemize}
+        \item 4 questions
+    \end{itemize}
+    Upcoming Assignments
+    \begin{itemize}
+        \item Homework 4 (Due Fri, Feb. $2^{nd}$)
+        \item Project 1 (Due Tues, Feb $13^{th}$).
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Scan this to submit working groups form!}
+
+    https://forms.gle/tGbYvzhE8Eyqxw9c6
+
+\end{frame}
+
+\section{Review}
+\begin{frame}{Learning Outcomes}
+    \begin{itemize}
+        \item Understanding physically motivated integration problems
+        \item Differentiating and applying Numerical Integration Techniques
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Work and Energy Integrals}
+
+Physics is a language spoken in calculus often consisting of derivatives, integrals, and differential equations. 
+
+Recall that we can relate acceleration $a(t)$, velocity $v(t)$, and position $s(t)$ through derivatives. 
+\[
+    a(t) = \frac{d v(t)}{dt}, \quad v(t) = \frac{d s(t)}{dt}
+\]
+Similarly, we can express Work and Energy in terms of integrals. We have, 
+\[
+    \text{Work, } W = \int_{\mathcal{D}} F dx
+\]
+Where $\mathcal{D}$ represents the domain over which you integrate (e.g. $x \in \mathcal{D} := [a, b]$) and $F(x)$ represents a force that varies in $x$. 
+\end{frame}
+\begin{frame}{Work and Energy}
+    We can look at this relationship a little more closely. By the fundamental theorem of calculus we should recover force $F(x)$ by taking the derivative of Work. 
+    \[
+        \frac{d}{dx} W = \frac{d}{dx} \int_a^x F(s)ds = F(x) 
+    \]
+    Another thing to notice is the units of force and work. In physics, forces are often measures in Newtons ($N$). By integrating in x (i.e. meters, $m$), we obtain a new scientific unit, Joules ($J$). 
+    \[
+        N = \frac{kg \cdot m }{s^2}
+    \]  
+    \[
+        J = N \cdot m = \frac{kg \cdot m^2}{s^2}
+    \]
+\end{frame}
+
+\begin{frame}{Numerical Methods for Integrals}
+
+    There are a couple new methods for approximating integrals and quantifying their errors shown in section 7.1 in the book.
+    \begin{itemize}
+        \item Trapezoidal Rule $T_N$
+        \item Simpson's Rule $S_N$
+        \item Error Bound, Error($A_N$)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Trapezoidal Rule}
+    \[
+        A_{Trap} = \frac{1}{2}(w)(h_1 + h_2) = \frac{1}{2}\Delta x (f(x_{i-1}) + f(x_i)) = A_i
+    \]
+    \[
+        \Delta x = \frac{b - a}{N}, \quad x_i = a + i \Delta x 
+    \]
+    \[
+        T_N = \sum_{i=1}^N A_i = \frac{\Delta x}{2}\sum_{i=1}^N (f(x_{i-1}) + f(x_i))
+    \]  
+    Error Bound for $T_N$
+    \[
+        \text{Error}(T_N) \le \frac{K_2(b-a)^3}{12N^3}
+    \]
+    Where $K_2$ is defined to be equal to be the maximum of $|f''(x)|$ on $[a, b]$. 
+\end{frame}
+
+\begin{frame}{Simpson's Rule $S_N$}
+    Simpson's Rule is obtained from a combination of the Trapezoidal Rule and the Midpoint Approximation. 
+
+    \[
+        S_N = \frac{1}{3}T_{N/2} + \frac{2}{3}M_{N/2}, \quad N \text{ even}
+    \]
+    \[
+        \Delta x = \frac{b-a}{N}, \quad  y_i = f(a + i\Delta x)
+    \]
+    \[
+        S_N = \frac{1}{3}\Delta x [y_0 + 4y_1 + 2y_2  + \cdots + 2y_{N-2} + 4y_{N-1} + y_N]
+    \]
+    
+\end{frame}
+
+\begin{frame}{Error Bound}
+
+    Error Bounds are also defined, with $K_2$ being the maximum value of the second derivative $f''(x)$ on $[a, b]$ and $K_4$ being defined the same but with the fourth derivative. 
+
+    \[
+        \text{Error}(T_N) \le \frac{K_2(b-a)^3}{12N^2}
+    \]
+    \[
+        \text{Error}(T_N) \le \frac{K_2(b-a)^3}{24N^2}
+    \]
+    \[
+        \text{Error}(S_N) \le \frac{K_4(b-a)^5}{180N^4}
+    \]
+    \[
+        K_2 = \max_{x \in [a, b]}\{f''(x)\}, \quad K_4 = \max_{x \in [a, b]}\{f^{(4)}(x)\}
+    \]
+
+
+\end{frame}
+
+
+\section{Attenance}
+\begin{frame}{Discussion Section Activity 4}
+    \raggedright
+    Woah look, the TA is about to write the code on the board!
+\end{frame}
+
+\begin{frame}
+
+Better
+
+\end{frame}
+
+
+\end{document}

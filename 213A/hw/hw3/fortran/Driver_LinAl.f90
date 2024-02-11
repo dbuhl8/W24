@@ -1,12 +1,12 @@
 Program Driver_LinAl
 
-  use LinAl, only: mat, msize, nsize, readMat
+  use LinAl, only: mat, msize, nsize, readMat, str, trace, printmat, twonorm
 
   implicit none
   
   character(len=100) :: myFileName
   integer :: i,j
-  real :: traceA
+  real :: traceA=0., norm=0.
 
   
   myFileName = 'Amat.dat'
@@ -22,6 +22,16 @@ Program Driver_LinAl
   
   
   call readMat(myFileName)
+
+  call printmat(mat, msize, nsize)
+
+  call trace(mat, msize, traceA)
+  print *, "Trace of the matrix is ", traceA
+
+  do i = 1, nsize
+    call twonorm(mat(:, i), msize, norm)
+    print *, "Norm of "//trim(str(i))//"th column is ", norm
+  end do
 
   do i = 1, msize
      write(*,*) (mat(i,j) , j = 1, nsize )

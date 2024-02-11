@@ -1,10 +1,8 @@
-module LinAl
-  implicit none
-  
-  integer, save :: msize, nsize
-  real, dimension(:,:), allocatable, save :: mat
-  
+module LinAl 
 
+implicit none 
+integer, save :: msize, nsize 
+real, dimension(:,:), allocatable, save :: mat
 contains
 
   !********************************************************
@@ -44,7 +42,72 @@ contains
     
   end subroutine readMat
 
+  subroutine trace(A, m, tr)
+    
+    implicit none
+    
+    real, intent(in) :: A(:, :)
+    integer, intent(in) :: m
+    real, intent(out) :: tr 
+    integer :: i
 
+    do i = 1, m
+        tr = tr + A(i, i)
+    end do
 
+  end subroutine trace
+
+  subroutine twonorm(v, m, nrm)
+    
+    implicit none
+
+    real, intent(in) :: v(:)
+    integer, intent (in) :: m
+    real, intent(out) :: nrm 
+    integer :: i
+
+    do i = 1, m
+        nrm = nrm + v(i)**2
+    end do
+
+    nrm = sqrt(nrm)
+
+  end subroutine twonorm
+
+  subroutine printmat(A, m, n)
+
+    real, intent(in) :: A(:, :)
+    integer, intent(in) :: m, n
+    integer :: i, j
+
+    print "(A, I3, A, I3)", "A is an ", m," by ", n," matrix."
+    do i = 1, m
+        print "("//trim(str(n))//"F6.2)", A(i, :)
+    end do
+
+  end subroutine printmat
+
+character(len=20) function str(k)
+!   "Convert an integer to string."
+    integer, intent(in) :: k
+    write (str, *) k
+    str = adjustl(str)
+end function str
+
+  subroutine GE(A, B, ma, mb, nb, bool)
+
+  end subroutine GE
+
+  subroutine UBsolver(U, B, X, mu, mb, n)
+
+  end subroutine UBsolver
+
+  subroutine LUdecomp(A, m, bool, s)
+
+  end subroutine LUdecomp
+
+  subroutine LUsolver(LU, m, B, mb, s)
+
+  end subroutine LUsolver
 
 end module LinAl

@@ -10,7 +10,7 @@
 
 \title{Homework 3: Report}
 \author{Dante Buhl}
-\date{Feb. $12^{th}$ 2024}
+\date{Feb. $14^{th}$ 2024}
 
 \begin{document}
 
@@ -62,7 +62,188 @@ Since we have this property, we have that $Q$ contains the eigenvectors of $A$ a
 
 \end{proof}
 
+\item
+Consider the following system
+\[
+\left(\begin{array}{c c}
+1 & 1 \\
+\epsilon & 1 
+\end{array}\right) \left(\begin{array}{c}
+x \\
+y
+\end{array}\right) = \left(\begin{array}{c}
+2 \\ 
+1
+\end{array}\right) 
+\]
+Multiply the last row of the matrix and the right-hand side vector by a large
+constant $c$ such that $c\epsilon \gg 1$. Perform Gaussian elimination with partial
+pivoting to the modified row-scaled system and discuss what happens. If
+solving the resulting system has numerical issues, identify the issues and
+discuss how to improve the method.
 
+\[
+\left(\begin{array}{c c}
+1 & 1 \\
+c\epsilon & c 
+\end{array}\right) \left(\begin{array}{c}
+x \\
+y
+\end{array}\right) = \left(\begin{array}{c}
+2 \\ 
+c
+\end{array}\right) 
+\]
+\[
+\left(\begin{array}{c c}
+1 & 1 \\
+0 & c(1-\epsilon) 
+\end{array}\right) \left(\begin{array}{c}
+x \\
+y
+\end{array}\right) = \left(\begin{array}{c}
+2 \\ 
+c(1-2\epsilon)
+\end{array}\right) 
+\]
+\[
+    y = \frac{1 - 2\epsilon}{1 - \epsilon} \approx 1
+\]
+\[
+    x = \frac{1}{1- \epsilon} \approx 1
+\]
+This method actually does a decent job computing $x$ and $y$ within machine precision.
+
+\item   What can you say about the diagonal entries of a symmetric positive definite matrix? Justify your assertion.
+
+Claim: All diagonal entries of a symmetric pos. def. matrix are positive. 
+
+\begin{proof}
+    Take $A$ to be a symmetric positive definite square matrix, $A \in \C^{m\times m}$. We have that for all vectors $x \in \C^m$, that the inner product is greater than zero, (.i.e. $(x, Ax) > 0$). We can now chose vectors $x$ to demonstrate that the diagonal elements are positive. Let us chose $x = \hat{e}_1$.
+\[
+    (\hat{e}_1, A\hat{e}_1) = \hat{e}_1^*A\hat{e}_1 = \hat{e}_1^*\vec{a}_1
+\]
+Where $\vec{a}_i$ is the ith column vector of $A$. 
+\[
+    (\hat{e}_1, A\hat{e}_1) = \hat{e}_1^*\vec{a}_1 = a_{11} 
+\]
+\[
+      (\hat{e}_1, A\hat{e}_1) > 0 \implies a_{11} > 0
+\]
+This argument can be repeated for unit basis vectors, $\hat{e}_i, \forall i \in 1, \cdots, m$. Thus we have, that $a_{ii} > 0 \forall i \in 1, \cdots, m$.
+\end{proof}
+
+
+\item Suppose $A \in \C^{m \times m}$ is written in the block form
+\[
+A = \left(\begin{array}{c c}
+        A_{11} & A_{12}\\
+        A_{21} & A_{22}
+    \end{array}\right)
+\]
+where $A_{11} \in \C^{n\times n}$ and $A_{22} \in \C^{(m-n)\times(m-n)}$. Assume that A satisfies the condition: $A$ has an $LU$ decomposition if and only if the upper-left $k\times k$ block matrix $A_{1:k,1:k}$ is nonsingular for each $k$ with $1 \le k \le m$.
+\begin{enumerate}
+\item Verify the formula
+\[
+ \left(\begin{array}{c c}
+        \I & 0\\
+        -A_{21}A_{11}^{-1} & \I
+    \end{array}\right)
+ \left(\begin{array}{c c}
+        A_{11} & A_{12}\\
+        A_{21} & A_{22}
+    \end{array}\right) =  \left(\begin{array}{c c}
+        A_{11} & A_{12}\\
+        0 & A_{22} - A_{21}A_{11}^{-1}A_{12}
+    \end{array}\right)
+\]
+which “eliminate” the block $A_{21}$ from $A$. The matrix $A_{22}-A_{21}A_{11}^{-1}A_{12}$ is known as the Schur complement of $A_{11}$ in $A$, denoted as $A/A_{11}$.
+
+\begin{proof}
+
+\[
+ \left(\begin{array}{c c}
+        \I & 0\\
+        -A_{21}A_{11}^{-1} & \I
+    \end{array}\right)
+ \left(\begin{array}{c c}
+        A_{11} & A_{12}\\
+        A_{21} & A_{22}
+    \end{array}\right) =  \left(\begin{array}{c c}
+        \I A_{11} & \I A_{12}\\
+        \I A_{21} - A_{21}A_{11}^{-1}A_{11} & \I A_{22} - A_{21}A_{11}^{-1}A_{12}
+    \end{array}\right)
+\]
+\[
+    =  \left(\begin{array}{c c}
+            A_{11} & A_{12}\\
+            A_{21} - A_{21} & A_{22} - A_{21}A_{11}^{-1}A_{12}
+        \end{array}\right) =  \left(\begin{array}{c c}
+            A_{11} & A_{12}\\
+            0  & A_{22} - A_{21}A_{11}^{-1}A_{12}
+        \end{array}\right) 
+\]
+
+\end{proof}
+
+\item Suppose that after applying n steps of Gaussian elimination on the
+matrix $A$ in (2), $A_{21}$ is eliminated row by row, resulting in a matrix
+\[
+    \left(\begin{array}{c c}
+        A_{11} & C\\
+        0 & D
+    \end{array}\right)
+\]
+Show that the bottom-right $(m -n)\times(m-n)$ block matrix $D$ is
+again $A_{22} - A_{21}A_{11}^{-1}A_{12}$. Note: Part (b) is separate from Part (a)).
+\begin{proof}
+We start by looking at the process of gaussian elimination. We have that we progress by devloping these $L$ matrices, so as to eliminate the entries below the diagonal element in each column. We look at $L_1$. 
+\[
+    L_1 = \left(\begin{array}{c c c c}
+            1 & 0 & \cdots & \textbf{0} \\
+            -\frac{a_{21}}{a_{11}} & \ddots & \cdots & \textbf{0} \\
+            \vdots & 0  & \ddots & \textbf{0}\\
+            -\frac{\vec{a_{21}}^1}{a_{11}} & \vdots & \cdots & \I
+            \end{array}\right)
+\]
+Where $\vec{a_{21}}^i$ denotes the ith column vector of $A_{21}$. 
+We will ultimately have,
+\[
+    D(i, j) = A_{22}(i, j) - \sum_{k=1}^{n}\frac{1}{a_{kk}}(\vec{a_{21}}^k(i) \cdot \vec{a_{12}}^k(j))
+\]
+with $a_{kk}$ are the diagonal elements of $A_{11}$, and $\vec{a_{12}}^k$ is the kth column vector of $A_{12}$.
+Note that if $A_{11}$ is a diagonal block matrix, then this exactly gives, 
+\[
+    D = A_{22} - A_{21}A_{11}^{-1}A_{12}
+\]
+
+
+\end{proof}
+\end{enumerate}
+
+\item Consider solving $Ax = b$, with $A$ and $b$ are complex-valued of order $m$, i.e., $A \in \C^{m\times m}, b \in \C^m$.
+\begin{enumerate}
+\item Modify this problem to a problem where you only solve a real square system of order $2m$. (Hint: Decompose $A = A_1 + iA_2$ , where $A_1 = Re(A)$ and $A_2 = Im(A)$, and similarly for $b$ and $x$. Determine equations to be satisfied by $x_1 = Re(x)$ and $x_2 = Im(x)$.
+
+\[
+    (A_1 + i A_2)(x_1 + ix_2) = b_1 + i b_2
+\]
+\[
+    A_1x_1 - A_2x_2 = b_1, \quad A_1x_2 + A_2x_1 = b_2
+\]
+\[
+    \left(\begin{array}{c c}
+    A_1 & -A_2 \\
+    A_2 & A_1
+    \end{array}\right) 
+    \left(\begin{array}{c}
+    x_1 \\ x_2 \end{array}\right)
+    = \left(\begin{array}{c}
+    b_1 \\ b_2 \end{array}\right)
+\]
+
+\item Determine the storage requirement and the number of floating-point operations for the real-valued method in (a) of solving the original complex-valued system $Ax = b$. Compare these results with those based on directly solving the original complex-valued system using Gaussian elimination (without pivoting) and complex arithmetic. Use the fact that the operation count of Gaussian elimination is $O\left(\frac{m^3}{3}\right)$ for an $m \times m$ real-valued system with one right-hand side vector. Pay close attention to the greater expense of complex arithmetic operations. Make your conclusion by quantifying the storage requirement and the operating expense of each method. Draw your conclusion on which method is computationally advantageous.
+\end{enumerate}
 
 \end{enumerate}
 

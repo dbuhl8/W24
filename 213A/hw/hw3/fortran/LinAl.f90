@@ -95,7 +95,45 @@ character(len=20) function str(k)
 end function str
 
   subroutine GE(A, B, ma, mb, nb, bool)
-
+        
+    implicit none
+    
+    integer, intent(in) :: ma, mb, nb
+    logical :: bool
+    real :: A(:, :), B(:, :)
+    real, dimension(1, ma) :: rowapivot
+    real, dimension(1, mb) :: rowbpivot
+    real :: colsum
+    integer, dimension(ma, ma) :: P
+    real, dimension(ma, ma) :: Ltemp, L
+    integer :: i, j
+    bool = .false. 
+    L = 0.0
+    do i = 1, ma
+        colsum = sum(abs(A(:, i)))
+        if (colsum .eq. 0.) then
+            bool = .true.
+        end if
+    end do
+    if (.not. bool) then
+        !check to see if diagonal entries are zero (pivoting is needed)
+        do i = 1, ma
+            L(i, i) = 1.0 
+            if (A(i, i) .eq. 0) then
+            !call pivot swap row of A with the one below it
+            ! check to see which rows below have nonzero in the ith column element, jth row
+            !rowpivot = A(i,:), A(i, :) = A(j, :), A(j, :) = rowpivot
+            !return bool true if A is singular, i.e. (an entire column of A is zero). 
+        end do
+        !begin GE 
+        do i = 1, ma
+            Ltemp = L
+            Ltemp(i+1:ma, :) = -A(i+1:ma,:)/A(i, i)
+            A = matmul(Ltemp, A)
+            B = matmul(Ltemp, B)
+        end do 
+    end if
+    
   end subroutine GE
 
   subroutine UBsolver(U, B, X, mu, mb, n)

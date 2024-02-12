@@ -34,7 +34,35 @@
 \begin{enumerate}
 
 \item %start of problem 1
-Problem 1 haha
+The Schur decomposition theorem states that if $A \in C^{m\times m}$, then there
+exist a unitary matrix $Q$ and an upper triangular matrix $U$ such that
+$A = QUQ^{-1}$ . Use the Schur decomposition theorem to show that a real
+symmetric matrix $A$ is diagonalizable by an orthogonal matrix, i.e., $\exists$ an
+orthogonal matrix $Q$ such that $Q^T AQ = D$, where $D$ is a diagonal matrix
+with its eigenvalues in the diagonal.
+
+\begin{proof}
+
+We begin with the Schur Decomposition Theorm for real symmetric matrix $A$. We have, 
+\[
+    A = QUQ^{-1} = QUQ^*
+\]
+By the property that $A$ is real and symmetric, we have that $A^* = A$.
+\[
+    A^* = A = QUQ^*
+\]
+\[
+    Q^*A^*Q = U^* = Q^*AQ = U
+\]
+So we have, $U = U^*$. Since we have that $U$ is upper triangular, that means that $U^*$ is lower triangular. However, since they are equal to one another, we must have that they are both diagonal. Thereby we have that $A$ is diagonalizable by an othorgonal matrix $Q$ (a property of unitary matrices).
+\[
+    A = QUQ^* \implies Q^{-1}AQ = U = D
+\]
+Since we have this property, we have that $Q$ contains the eigenvectors of $A$ and $U$ is a diagonal matrix contianing its eigenvalues. 
+
+\end{proof}
+
+
 
 \end{enumerate}
 

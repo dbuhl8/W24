@@ -66,12 +66,14 @@ contains
     real, intent(out) :: nrm 
     integer :: i
 
-    do i = 1, m
-        nrm = nrm + v(i)**2
-    end do
+    !nrm = 0.
 
-    nrm = sqrt(nrm)
-    !nrm = sqrt(sum(v**2))
+    !do i = 1, m
+    !    nrm = nrm + v(i)**2
+    !end do
+
+    !nrm = sqrt(nrm)
+    nrm = sqrt(sum(v**2))
 
   end subroutine twonorm
 
@@ -83,7 +85,7 @@ contains
 
     print "(A, I3, A, I3)", "This is an ", m," by ", n," matrix."
     do i = 1, m
-        print "("//trim(str(n))//"F8.2)", A(i, :)
+        print "("//trim(str(n))//"F10.5)", A(i, :)
     end do
 
   end subroutine printmat
@@ -95,27 +97,25 @@ character(len=20) function str(k)
     str = adjustl(str)
 end function str
 
-  subroutine GE(A, B, ma, bool)
+  subroutine GE(A, B, ma, nb, bool)
         
     implicit none
     
-    integer, intent(in) :: ma
+    integer, intent(in) :: ma, nb
     logical :: bool
     real :: A(:, :), B(:, :)
-    real, allocatable :: rowapivot(:)
-    !real, dimension(1, mb) :: rowbpivot
-    real, allocatable :: rowlpivot(:)
-    real, dimension(ma) :: rowppivot
+    real, allocatable :: rowapivot(:), rowbpivot(:), rowlpivot(:)
+    real :: rowppivot
     real, dimension(ma, ma) :: L
-    integer, dimension(ma, ma) :: P
+!    integer, dimension(ma) :: P
     integer :: i, j, k
     bool = .false. 
     !initializing our matrices. 
     L = 0.0
-    P = 0
+!    P = 0
     do i = 1, ma
         L(i, i) = 1.0 
-        P(i, i) = 1
+!        P(i) = i
     end do
 
     !begin GE 
@@ -127,20 +127,22 @@ end function str
                 k = j
             end if
         end do
-        allocate(rowlpivot(1:(k-1)), rowapivot(k:ma))
-        rowapivot = A(i, k:ma)
-        !rowbpivot = B(i, k:m)
-        rowlpivot = L(i, 1:(k-1))
-        rowppivot = P(i, :)
-        A(i, k:ma) = A(k, k:ma)
-        !B(i, k:m) = B(k, k:m)
-        L(i, 1:(k-1)) = L(k, 1:(k-1))
-        P(i, :) = P(k, :)
-        A(k, k:ma) = rowapivot
-        !B(k, k:m) = rowbpivot
-        L(k, 1:(k-1)) = rowlpivot
-        P(k, :) = rowppivot
-        deallocate(rowlpivot, rowapivot)
+        allocate(rowlpivot(1:i), rowapivot(k:ma), rowbpivot(nb))
+        rowapivot = A(i, i:ma)
+        rowbpivot = B(i, :)
+        rowlpivot = L(i, 1:i)
+!        rowppivot = P(i)
+        A(i, i:ma) = A(k, i:ma)
+        B(i, :) = B(k, :)
+        L(i, 1:i) = L(k, 1:i)
+!        P(i) = P(k)
+        A(k, i:ma) = rowapivot
+        B(k, :) = rowbpivot
+        L(k, 1:i) = rowlpivot
+!        P(k) = rowppivot
+!        print *, "printing A during GE"
+!        call printmat(A, ma, ma)
+        deallocate(rowlpivot, rowapivot, rowbpivot)
         if (A(i, i) .eq. 0) then
             bool = .true.
             return
@@ -150,8 +152,12 @@ end function str
         do  j = i+1, ma
             A(j, i:ma) = A(j, i:ma) - L(j, i)*A(i, i:ma)
         end do
+        do j = i+1, ma
+            B(j, :) = B(j, :) - L(j, i)*B(i, :)
+        end do
+!        print *, "printing a during GE"
+!        call printmat(A, ma, ma)
     end do 
-    B = matmul(L, matmul(P, B))
     
   end subroutine GE
 
@@ -165,11 +171,9 @@ end function str
     integer :: i, j, k
 
     X(mu, :) = B(mu, :)/U(mu,mu)
-    do j = 1, mb
-        do i = 1, mu-1
-            k = mu - i
-            X(k, j) = (B(k, j) - dot_product(U(k, k+1:mu), X(k+1:mu, j)))/U(k, k)
-        end do
+    do i = 1, mu-1
+        k = mu - i
+        X(k, :) = (B(k, :) - matmul(U(k, k+1:mu), X(k+1:mu, :)))/U(k, k)
     end do
 
   end subroutine backsub
@@ -183,50 +187,58 @@ end function str
     real :: A(:, :)
     real, allocatable :: rowapivot(:)
     real, allocatable :: rowlpivot(:)
-    real, dimension(ma) :: rowppivot
+    real :: rowppivot
     real, dimension(ma, ma) :: L
-    integer :: P(:, :)
+    integer :: P(:)
     integer :: i, j, k
     bool = .false. 
     !initializing our matrices. 
     L = 0.0
     P = 0
     do i = 1, ma
-        L(i, i) = 1.0 
-        P(i, i) = 1
+        P(i) = i
     end do
-
+    k = 0
     !begin GE 
     do i = 1, ma-1
         !pivoting step
         k = i
         do j = i+1, ma
-            if (abs(A(j, i)) .gt. abs(A(k, i))) then
+            if (abs(A(j, i)) .gt. abs(A(k, i))) then !set pivot row to k
                 k = j
             end if
         end do
-        allocate(rowlpivot(1:(k-1)), rowapivot(k:ma))
-        rowapivot = A(i, k:ma)
-        rowlpivot = L(i, 1:(k-1))
-        rowppivot = P(i, :)
-        A(i, k:ma) = A(k, k:ma)
-        L(i, 1:(k-1)) = L(k, 1:(k-1))
-        P(i, :) = P(k, :)
-        A(k, k:ma) = rowapivot
-        L(k, 1:(k-1)) = rowlpivot
-        P(k, :) = rowppivot
-        deallocate(rowlpivot, rowapivot)
-        if (A(i, i) .eq. 0) then
+        if (k .ne. i) then !pivot A and P
+            allocate(rowapivot(k:ma))
+            rowapivot = A(i, i:ma)
+            rowppivot = P(i)
+            A(i, i:ma) = A(k, i:ma)
+            P(i) = P(k)
+            A(k, i:ma) = rowapivot
+            P(k) = rowppivot
+            deallocate(rowapivot)
+            if (i .ne. 1) then !pivot l
+                allocate(rowlpivot(1:i-1))
+                rowlpivot = L(i, 1:i-1)
+                L(i, 1:i-1) = L(k, 1:i-1)
+                L(k, 1:i-1) = rowlpivot
+                deallocate(rowlpivot)
+            end if
+        end if
+        if (A(i, i) .eq. 0) then !return singular
             bool = .true.
             return
         end if
         !L U step
+        call printmat(A, ma, ma)
         L(i+1:ma, i) = A(i+1:ma,i)/A(i, i)
         do  j = i+1, ma
             A(j, i:ma) = A(j, i:ma) - L(j, i)*A(i, i:ma)
         end do
-        A = A + L !this gives A as L + U where the only overlap is along the diagonals
     end do 
+!    print *, "Printing L before adding L to A"
+!    call printmat(L, ma, ma)
+    A = A + L !this gives A as L + U where the only overlap is along the diagonals
 
   end subroutine LU
 
@@ -234,7 +246,7 @@ end function str
 
     implicit none
 
-    integer, intent(in) :: ma, mb, P(:, :)
+    integer, intent(in) :: ma, mb, P(:)
     real, intent(in) :: LU(:, :), X(:,:)
     real :: B(:, :)
     real, dimension(ma, ma) :: L, U
@@ -248,7 +260,7 @@ end function str
         do i = 1, ma
             if(i .eq. j) then   
                 L(i, j) = 1.
-                U(i, j) = LU(i, j) - 1
+                U(i, j) = LU(i, j)
             else if(i .gt. j) then
                 L(i, j) = LU(i, j)
             else
@@ -256,7 +268,12 @@ end function str
             end if
         end do
     end do
-    B = matmul(P, B)
+    ! need to permute B
+    do i = 1, ma
+        Y(i, :) = B(P(i), :)
+    end do
+    B = Y
+    Y = 0.
     !forward sub for Ly = b
     call forwardsub(L, B, Y, ma, mb)
 
@@ -275,11 +292,8 @@ end function str
     Y = 0. 
      
     Y(1, :) = B(1, :)
-    do j = 1, mb
-        do i = 2, ma
-            ! THIS NEEDS TO BE A DOT PRODUCT INSTEAD OF COORESP SCALAR MULT
-            Y(i, j) = (B(i, j) - dot_product(L(i, 1:i-1), Y(1:i-1, j)))/L(i, i)
-        end do
+    do i = 2, ma
+        Y(i, :) = B(i, :) - matmul(L(i, 1:i-1), Y(1:i-1, :))
     end do
 
   end subroutine forwardsub

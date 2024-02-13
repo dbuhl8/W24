@@ -7,8 +7,9 @@ Program Driver_LinAl
   character(len=100) :: myFileName
   integer :: i,j
   real :: traceA=0., norm=0.
-  real, allocatable :: A1(:, :), A2(:,:), As(:,:), B1(:,:), B2(:,:), Bs(:,:), X1(:,:), X2(:,:), E1(:,:), E2(:,:)
-  integer, allocatable :: P1(:,:), P2(:,:)
+  real, allocatable :: A1(:, :), A2(:,:), As(:,:), B1(:,:), B2(:,:), Bs(:,:), X1(:,:), X2(:,:), E1(:,:), E2(:,:), E3(:, :)
+  real, allocatable :: L(:, :), U(:, :)
+  integer, allocatable :: P1(:)
   integer :: ma, mb, nb
   logical :: isSingular
 
@@ -19,7 +20,8 @@ Program Driver_LinAl
   read(10,*) msize,nsize
   close(10)
 
-  allocate(A1(msize,nsize), A2(msize,nsize), As(msize, nsize), mat(msize, nsize), P1(msize, nsize), P2(msize, nsize))
+  allocate(A1(msize,nsize), A2(msize,nsize), As(msize, nsize), mat(msize, nsize), P1(msize), L(msize, nsize), U(msize, nsize),&
+    & E3(msize, nsize))
   ma = msize
   ! Always initialize with zeros
   mat = 0.0
@@ -28,6 +30,8 @@ Program Driver_LinAl
   A1 = mat
   A2 = A1
   As = A1
+  L = 0.
+  U = 0.
   deallocate(mat)
 
   myFileName = 'Bmat.dat'
@@ -50,6 +54,7 @@ Program Driver_LinAl
   E2 = 0.0
   X1 = 0.0
   X2 = 0.0
+  E3 = 0.0
 
   print *, "Question 2: Basic Fortran Routines"
   call printmat(A1, ma, nsize)
@@ -71,7 +76,7 @@ Program Driver_LinAl
   call printmat(A1, ma, ma)
   print *, "Matrix B1, before GE"
   call printmat(B1, mb, nb)
-  call GE(A1, B1, ma, isSingular)
+  call GE(A1, B1, ma, nb, isSingular)
   print *, "Matrix A1, after GE"
   call printmat(A1, ma, ma)
   print *, "Matrix B1, after GE"
@@ -82,6 +87,9 @@ Program Driver_LinAl
   E1 = matmul(As, X1) - Bs
   print *, "Matrix E1"
   call printmat(E1, mb, nb)
+  do i = 1, msize
+     write(*,*) (E1(i,j) , j = 1, nb)
+  end do
   do i = 1, nb
     call twonorm(E1(:, i), mb, norm)
     print *, "Norm of "//trim(str(i))//"th column is ", norm
@@ -93,7 +101,27 @@ Program Driver_LinAl
   call LU(A2, ma, isSingular, P1)
   print *, "Matrix A2, after LU"
   call printmat(A2, ma, ma)
-!print A, L, U
+  do j = 1, ma
+    do i = 1, ma
+        if (i .eq. j) then
+            L(i, j) = 1.
+            U(i, j) = A2(i, j)
+        else if (i .gt. j) then
+            L(i, j) = A2(i, j)
+        else 
+            U(i, j) = A2(i, j)
+        end if
+    end do
+  end do
+  E3 = matmul(L, U)
+  print *, "DEBUGGING: This is the error in the LU decomp"
+  call printmat(E3, ma, ma)
+  print *, "L after LU decomposition"
+  call printmat(L, ma, ma)
+  print *, "U after LU Decomposition"
+  call printmat(U, ma, ma)
+  print *, "A1 from GE (should be same as U)"
+  call printmat(A1, ma, ma)
   call LUsolve(A2, ma, B2, X2, nb, P1)
   E2 = matmul(As, X2) - Bs
   print *, "Matrix X2"
@@ -105,6 +133,6 @@ Program Driver_LinAl
     print *, "Norm of "//trim(str(i))//"th column is ", norm
   end do
 
-  deallocate(mat, A1, A2, As, B1, B2, Bs, X1, X2, E1, E2, P1, P2)
+  deallocate(mat, A1, A2, As, B1, B2, Bs, X1, X2, E1, E2, P1, L, U)
 
 End Program Driver_LinAl

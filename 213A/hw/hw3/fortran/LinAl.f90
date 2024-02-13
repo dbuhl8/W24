@@ -71,6 +71,7 @@ contains
     end do
 
     nrm = sqrt(nrm)
+    !nrm = sqrt(sum(v**2))
 
   end subroutine twonorm
 
@@ -80,9 +81,9 @@ contains
     integer, intent(in) :: m, n
     integer :: i, j
 
-    print "(A, I3, A, I3)", "A is an ", m," by ", n," matrix."
+    print "(A, I3, A, I3)", "This is an ", m," by ", n," matrix."
     do i = 1, m
-        print "("//trim(str(n))//"F6.2)", A(i, :)
+        print "("//trim(str(n))//"F8.2)", A(i, :)
     end do
 
   end subroutine printmat
@@ -94,58 +95,193 @@ character(len=20) function str(k)
     str = adjustl(str)
 end function str
 
-  subroutine GE(A, B, ma, mb, nb, bool)
+  subroutine GE(A, B, ma, bool)
         
     implicit none
     
-    integer, intent(in) :: ma, mb, nb
+    integer, intent(in) :: ma
     logical :: bool
     real :: A(:, :), B(:, :)
-    real, dimension(1, ma) :: rowapivot
-    real, dimension(1, mb) :: rowbpivot
-    real :: colsum
+    real, allocatable :: rowapivot(:)
+    !real, dimension(1, mb) :: rowbpivot
+    real, allocatable :: rowlpivot(:)
+    real, dimension(ma) :: rowppivot
+    real, dimension(ma, ma) :: L
     integer, dimension(ma, ma) :: P
-    real, dimension(ma, ma) :: Ltemp, L
-    integer :: i, j
+    integer :: i, j, k
     bool = .false. 
+    !initializing our matrices. 
     L = 0.0
+    P = 0
     do i = 1, ma
-        colsum = sum(abs(A(:, i)))
-        if (colsum .eq. 0.) then
-            bool = .true.
-        end if
+        L(i, i) = 1.0 
+        P(i, i) = 1
     end do
-    if (.not. bool) then
-        !check to see if diagonal entries are zero (pivoting is needed)
-        do i = 1, ma
-            L(i, i) = 1.0 
-            if (A(i, i) .eq. 0) then
-            !call pivot swap row of A with the one below it
-            ! check to see which rows below have nonzero in the ith column element, jth row
-            !rowpivot = A(i,:), A(i, :) = A(j, :), A(j, :) = rowpivot
-            !return bool true if A is singular, i.e. (an entire column of A is zero). 
+
+    !begin GE 
+    do i = 1, ma-1
+        !pivoting step
+        k = i
+        do j = i+1, ma
+            if (abs(A(j, i)) .gt. abs(A(k, i))) then
+                k = j
+            end if
         end do
-        !begin GE 
-        do i = 1, ma
-            Ltemp = L
-            Ltemp(i+1:ma, :) = -A(i+1:ma,:)/A(i, i)
-            A = matmul(Ltemp, A)
-            B = matmul(Ltemp, B)
-        end do 
-    end if
+        allocate(rowlpivot(1:(k-1)), rowapivot(k:ma))
+        rowapivot = A(i, k:ma)
+        !rowbpivot = B(i, k:m)
+        rowlpivot = L(i, 1:(k-1))
+        rowppivot = P(i, :)
+        A(i, k:ma) = A(k, k:ma)
+        !B(i, k:m) = B(k, k:m)
+        L(i, 1:(k-1)) = L(k, 1:(k-1))
+        P(i, :) = P(k, :)
+        A(k, k:ma) = rowapivot
+        !B(k, k:m) = rowbpivot
+        L(k, 1:(k-1)) = rowlpivot
+        P(k, :) = rowppivot
+        deallocate(rowlpivot, rowapivot)
+        if (A(i, i) .eq. 0) then
+            bool = .true.
+            return
+        end if
+        !L U step
+        L(i+1:ma, i) = A(i+1:ma,i)/A(i, i)
+        do  j = i+1, ma
+            A(j, i:ma) = A(j, i:ma) - L(j, i)*A(i, i:ma)
+        end do
+    end do 
+    B = matmul(L, matmul(P, B))
     
   end subroutine GE
 
-  subroutine UBsolver(U, B, X, mu, mb, n)
+  subroutine backsub(U, B, X, mu, mb)
+    implicit none
+    
+    integer, intent(in) :: mu, mb
+    real, intent(in) :: B(:, :), U(:, :)
+    real :: X(:, :)
 
-  end subroutine UBsolver
+    integer :: i, j, k
 
-  subroutine LUdecomp(A, m, bool, s)
+    X(mu, :) = B(mu, :)/U(mu,mu)
+    do j = 1, mb
+        do i = 1, mu-1
+            k = mu - i
+            X(k, j) = (B(k, j) - dot_product(U(k, k+1:mu), X(k+1:mu, j)))/U(k, k)
+        end do
+    end do
 
-  end subroutine LUdecomp
+  end subroutine backsub
 
-  subroutine LUsolver(LU, m, B, mb, s)
+  subroutine LU(A, ma, bool, P)
+    
+    implicit none
+    
+    integer, intent(in) :: ma
+    logical :: bool
+    real :: A(:, :)
+    real, allocatable :: rowapivot(:)
+    real, allocatable :: rowlpivot(:)
+    real, dimension(ma) :: rowppivot
+    real, dimension(ma, ma) :: L
+    integer :: P(:, :)
+    integer :: i, j, k
+    bool = .false. 
+    !initializing our matrices. 
+    L = 0.0
+    P = 0
+    do i = 1, ma
+        L(i, i) = 1.0 
+        P(i, i) = 1
+    end do
 
-  end subroutine LUsolver
+    !begin GE 
+    do i = 1, ma-1
+        !pivoting step
+        k = i
+        do j = i+1, ma
+            if (abs(A(j, i)) .gt. abs(A(k, i))) then
+                k = j
+            end if
+        end do
+        allocate(rowlpivot(1:(k-1)), rowapivot(k:ma))
+        rowapivot = A(i, k:ma)
+        rowlpivot = L(i, 1:(k-1))
+        rowppivot = P(i, :)
+        A(i, k:ma) = A(k, k:ma)
+        L(i, 1:(k-1)) = L(k, 1:(k-1))
+        P(i, :) = P(k, :)
+        A(k, k:ma) = rowapivot
+        L(k, 1:(k-1)) = rowlpivot
+        P(k, :) = rowppivot
+        deallocate(rowlpivot, rowapivot)
+        if (A(i, i) .eq. 0) then
+            bool = .true.
+            return
+        end if
+        !L U step
+        L(i+1:ma, i) = A(i+1:ma,i)/A(i, i)
+        do  j = i+1, ma
+            A(j, i:ma) = A(j, i:ma) - L(j, i)*A(i, i:ma)
+        end do
+        A = A + L !this gives A as L + U where the only overlap is along the diagonals
+    end do 
+
+  end subroutine LU
+
+  subroutine LUsolve(LU, ma, B, X, mb, P)
+
+    implicit none
+
+    integer, intent(in) :: ma, mb, P(:, :)
+    real, intent(in) :: LU(:, :), X(:,:)
+    real :: B(:, :)
+    real, dimension(ma, ma) :: L, U
+    real, dimension(ma, mb) :: Y
+    integer :: i , j, k
+
+    L = 0.
+    U = 0.
+
+    do j = 1, ma
+        do i = 1, ma
+            if(i .eq. j) then   
+                L(i, j) = 1.
+                U(i, j) = LU(i, j) - 1
+            else if(i .gt. j) then
+                L(i, j) = LU(i, j)
+            else
+                U(i, j) = LU(i, j)
+            end if
+        end do
+    end do
+    B = matmul(P, B)
+    !forward sub for Ly = b
+    call forwardsub(L, B, Y, ma, mb)
+
+    !Backward sub for Ux = y
+    call backsub(U, Y, X, ma, mb)
+
+  end subroutine LUsolve
+    
+  subroutine forwardsub(L, B, Y, ma, mb) 
+
+    implicit none
+
+    integer, intent(in) :: ma, mb
+    real :: L(:, :), B(:, :), Y(:, :)
+    integer :: i, j
+    Y = 0. 
+     
+    Y(1, :) = B(1, :)
+    do j = 1, mb
+        do i = 2, ma
+            ! THIS NEEDS TO BE A DOT PRODUCT INSTEAD OF COORESP SCALAR MULT
+            Y(i, j) = (B(i, j) - dot_product(L(i, 1:i-1), Y(1:i-1, j)))/L(i, i)
+        end do
+    end do
+
+  end subroutine forwardsub
 
 end module LinAl

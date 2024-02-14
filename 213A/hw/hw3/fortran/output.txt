@@ -62,16 +62,16 @@ This is   4 by   6
  Matrix E1
 This is   4 by   6
  matrix.
+     0.000     0.000     0.000    -0.000    -0.000    -0.000
      0.000     0.000     0.000    -0.000    -0.000     0.000
-     0.000     0.000     0.000    -0.000    -0.000     0.000
-     0.000    -0.000     0.000     0.000    -0.000     0.000
-     0.000    -0.000     0.000    -0.000    -0.000     0.000
+     0.000     0.000     0.000     0.000     0.000    -0.000
+     0.000    -0.000     0.000    -0.000    -0.000    -0.000
  Norm of 1th column is    1.8310267194088950E-015
- Norm of 2th column is    3.9720546451956370E-015
- Norm of 3th column is    0.0000000000000000     
- Norm of 4th column is    1.6890356739932773E-014
- Norm of 5th column is    1.3111789431856821E-012
- Norm of 6th column is    1.5203165631859585E-014
+ Norm of 2th column is    1.7763568394002505E-015
+ Norm of 3th column is    4.4408920985006262E-016
+ Norm of 4th column is    1.4638533715242841E-014
+ Norm of 5th column is    1.1498520265231557E-012
+ Norm of 6th column is    2.0810685643830562E-014
   
  --------------------------------------------------------------
   
@@ -117,14 +117,31 @@ This is   4 by   6
  Matrix E2
 This is   4 by   6
  matrix.
+     0.000     0.000     0.000    -0.000    -0.000    -0.000
      0.000     0.000     0.000    -0.000    -0.000     0.000
-     0.000     0.000     0.000    -0.000    -0.000     0.000
-    -0.000    -0.000     0.000     0.000    -0.000     0.000
+     0.000     0.000     0.000     0.000    -0.000    -0.000
      0.000    -0.000     0.000    -0.000    -0.000     0.000
- Norm of 1th column is    1.7763568394002505E-015
- Norm of 2th column is    3.9720546451956370E-015
- Norm of 3th column is    0.0000000000000000     
- Norm of 4th column is    1.6890356739932773E-014
- Norm of 5th column is    1.6977670504095128E-012
- Norm of 6th column is    2.4948171360229557E-014
+ Norm of 1th column is    1.9860273225978185E-015
+ Norm of 2th column is    1.7763568394002505E-015
+ Norm of 3th column is    4.4408920985006262E-016
+ Norm of 4th column is    1.4638533715242841E-014
+ Norm of 5th column is    1.3626140597491767E-012
+ Norm of 6th column is    8.1886004264334452E-015
   
+ --------------------------------------------------------------
+  
+ Question 5: Application Problem
+  
+ In order to find the equation for the plane, we simply need to solve the Linear System, AX = B
+ Here is matrix A
+This is   3 by   3
+ matrix.
+    -3.000     1.000     3.142
+     2.000     2.000     2.718
+     1.000     1.000     1.000
+ The solution is:
+This is   3 by   1
+ matrix.
+     2.741
+   -12.269
+     8.114

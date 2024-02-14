@@ -7,7 +7,7 @@ Program Driver_LinAl
   character(len=100) :: myFileName
   integer :: i,j
   real :: traceA=0., norm=0.
-  real, allocatable :: A1(:, :), A2(:,:), As(:,:), B1(:,:), B2(:,:), Bs(:,:), X1(:,:), X2(:,:), E1(:,:), E2(:,:), E3(:, :)
+  real, allocatable :: A1(:, :), A2(:,:), As(:,:), B1(:,:), B2(:,:), Bs(:,:), X1(:,:), X2(:,:), E1(:,:), E2(:,:)
   real, allocatable :: L(:, :), U(:, :)
   integer, allocatable :: P1(:)
   integer :: ma, mb, nb
@@ -20,8 +20,7 @@ Program Driver_LinAl
   read(10,*) msize,nsize
   close(10)
 
-  allocate(A1(msize,nsize), A2(msize,nsize), As(msize, nsize), mat(msize, nsize), P1(msize), L(msize, nsize), U(msize, nsize),&
-    & E3(msize, nsize))
+  allocate(A1(msize,nsize), A2(msize,nsize), As(msize, nsize), mat(msize, nsize), P1(msize), L(msize, nsize), U(msize, nsize))
   ma = msize
   ! Always initialize with zeros
   mat = 0.0
@@ -54,51 +53,73 @@ Program Driver_LinAl
   E2 = 0.0
   X1 = 0.0
   X2 = 0.0
-  E3 = 0.0
 
+  print *, " "
+  print *, "--------------------------------------------------------------"
+  print *, " "
   print *, "Question 2: Basic Fortran Routines"
+  print *, " "
+
+  print *, "Matrix A from Amat.dat"
   call printmat(A1, ma, nsize)
+  print *, " "
 
   call trace(A1, ma, traceA)
   print *, "Trace of the matrix is ", traceA
+  print *, " "
 
   do i = 1, ma
     call twonorm(A1(:, i), ma, norm)
     print *, "Norm of "//trim(str(i))//"th column is ", norm
   end do
+  print *, " "
 
-  do i = 1, msize
-     write(*,*) (A1(i,j) , j = 1, ma)
-  end do
-  
+  print *, "--------------------------------------------------------------"
+  print *, " "
   print *, "Question 3: Gaussian Elimination"
+  print *, " " 
+
   print *, "Matrix A1, before GE"
   call printmat(A1, ma, ma)
   print *, "Matrix B1, before GE"
   call printmat(B1, mb, nb)
+  print *, " "
+
   call GE(A1, B1, ma, nb, isSingular)
+
   print *, "Matrix A1, after GE"
   call printmat(A1, ma, ma)
   print *, "Matrix B1, after GE"
   call printmat(B1, mb, nb)
+  print *, " "
+
   call backsub(A1, B1, X1, ma, nb)
+
   print *, "Matrix X1"
   call printmat(X1, mb, nb)
+
   E1 = matmul(As, X1) - Bs
+
   print *, "Matrix E1"
   call printmat(E1, mb, nb)
-  do i = 1, msize
-     write(*,*) (E1(i,j) , j = 1, nb)
-  end do
+
   do i = 1, nb
     call twonorm(E1(:, i), mb, norm)
     print *, "Norm of "//trim(str(i))//"th column is ", norm
   end do
+  print *, " "
 
+  print *, "--------------------------------------------------------------"
+  print *, " "
   print *, "Question 4: LU Method for Solving Systems of Equations"
+  print *, " "
+
   print *, "Matrix A2 before LU"
   call printmat(A2, ma, ma)
+  print *, " "
+
   call LU(A2, ma, isSingular, P1)
+
   print *, "Matrix A2, after LU"
   call printmat(A2, ma, ma)
   do j = 1, ma
@@ -113,16 +134,14 @@ Program Driver_LinAl
         end if
     end do
   end do
-  E3 = matmul(L, U)
-  print *, "DEBUGGING: This is the error in the LU decomp"
-  call printmat(E3, ma, ma)
   print *, "L after LU decomposition"
   call printmat(L, ma, ma)
   print *, "U after LU Decomposition"
   call printmat(U, ma, ma)
-  print *, "A1 from GE (should be same as U)"
-  call printmat(A1, ma, ma)
+  print *, " "
+
   call LUsolve(A2, ma, B2, X2, nb, P1)
+
   E2 = matmul(As, X2) - Bs
   print *, "Matrix X2"
   call printmat(X2, mb, nb)
@@ -132,6 +151,8 @@ Program Driver_LinAl
     call twonorm(E2(:, i), mb, norm)
     print *, "Norm of "//trim(str(i))//"th column is ", norm
   end do
+
+  print *, " "
 
   deallocate(mat, A1, A2, As, B1, B2, Bs, X1, X2, E1, E2, P1, L, U)
 

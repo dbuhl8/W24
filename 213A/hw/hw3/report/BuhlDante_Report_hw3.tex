@@ -30,7 +30,73 @@
 
 \maketitle
 
+\colorbox{yellow}{All example code outputs are in stored in a text file, ``output.txt'', within the fortran tar-ball.}
 
+\section{Warming-Up Fortran Routines}
+\begin{enumerate}
+\item Write a function which computes the trace of a square matrix A. 
+
+This was not all too difficult, in fact it only used one loop. On first inspection it also seems to be accurally calculating the trace of matrix A from Amat.dat. 
+
+\item Write a function which computes the two norm of a (column) vector.
+
+This was also not very difficult, besides defining my variables, this took 1 line of code. 
+
+\item Write a function which prints a matrix and its dimensions to a screen.
+
+This was slightly more complex, in that I like to format my print statements in fortran for matrices. So I chose an arbitrary amount of digits to keep and added a small routine for turning integers in string formats.
+
+\item Write a driver routine which reads in a matrix from Amat, and then computes its trace, prints it to the terminal, and then computes the norm of each of its column vectors. 
+
+This was very simple. I decided to use one driver file for all 3 of the main programing questions. I simply called the routines from my module, and made sure to use all of the routines I had placed in my module at the top of the file. 
+
+\begin{center}
+    \includegraphics[width = .6\textwidth]{files/Q2sol.png}
+\end{center}
+
+\end{enumerate}
+
+\section{Gaussian Elimination with Pivoting}
+\begin{enumerate}
+\item Write a subroutine which performs Gaussian Elimination with Pivoting to on a Matrix A and a rhs-matrix B. 
+
+This was tricky and I realized about midway through that storing the permutation matrix was a little crazy (especially for very large scale problems which I don't necessarily have to care about right now). So I changed the method I was pivoting and now it seems to work very well. 
+
+\item Write a subroutine which performs backsubstitution to solve the linear system $UX = B$. 
+
+This was a fairly short routine and not very difficult. It can be easily scaled so that it computes the solutions for all columns of B at once, so I programmed it to do so. 
+
+\item Write a driver routine which calls your GE subroutine and backsub subroutine, and prints the matrices, before GE, after GE but before backsubstitution, the solution matrix X, and the error matrix $E = B_s - A_sX$, and the 2-norms of the column vectors of $E$. 
+
+The code runs very well except for the fact that there is a small artifact of error for the one very odd, 5th column of B in Bmat.dat. The error for that specific column in of order $10^{-13}$ rather than $10^{-16}$ which we all know and love to be machine double precision. I'm going to double check the backsub routine to see if there is any large gleaming issue with it (I've triple checked the GE and LU routines and there is no error there). Below is the found solution and error.
+
+\begin{center}
+    \includegraphics[width = .6\textwidth]{files/GEsol.png}
+\end{center}
+
+\end{enumerate}
+
+\section{LU Decomposition with Pivoting}
+\begin{enumerate}
+\item Write a subroutine which performs LU Decomposition with Pivoting to on a Matrix A. 
+
+This routine was very similar to my GE routine except that it doesn't do any computations for the matrix B. The permutation matrix was also very easy to return. I did the actual calculation manually and found the same matrices that my decomposition yields. 
+
+\item Write a subroutine which performs forward subsitution and backwards substitution to solve the linear system $UX = Y$, $LY = B$ for $X$. 
+
+This was also very straight forward and easily scalable for rhs matrices. I used the same backsub routine from GE to solve, $UX = Y$ and wrote a forward subroutine to solve $LY = PB$. 
+
+\item Write a driver routine which calls your LU subroutine and LU solver routine, and prints A before LU decompition, A, L, and U after the decomposition, the solution matrix X after solving, and the error matrix $E = B_s - A_sX$, and the 2-norms of the column vectors of $E$. 
+
+This method goes as planned and has the same exact solution you find in GE. With nearly the same error norms as in GE. It has the same artifact of error as the GE method. 
+
+\begin{center}
+    \includegraphics[width = .6\textwidth]{files/LUsol.png}
+\end{center}
+
+\end{enumerate}
+
+\section{Theory Problems}
 \begin{enumerate}
 
 \item %start of problem 1

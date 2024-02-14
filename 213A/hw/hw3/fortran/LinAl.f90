@@ -66,13 +66,6 @@ contains
     real, intent(out) :: nrm 
     integer :: i
 
-    !nrm = 0.
-
-    !do i = 1, m
-    !    nrm = nrm + v(i)**2
-    !end do
-
-    !nrm = sqrt(nrm)
     nrm = sqrt(sum(v**2))
 
   end subroutine twonorm
@@ -83,9 +76,9 @@ contains
     integer, intent(in) :: m, n
     integer :: i, j
 
-    print "(A, I3, A, I3)", "This is an ", m," by ", n," matrix."
+    print "(A, I3, A, I3)", "This is ", m," by ", n," matrix."
     do i = 1, m
-        print "("//trim(str(n))//"F10.5)", A(i, :)
+        print "("//trim(str(n))//"F10.3)", A(i, :)
     end do
 
   end subroutine printmat
@@ -104,18 +97,15 @@ end function str
     integer, intent(in) :: ma, nb
     logical :: bool
     real :: A(:, :), B(:, :)
-    real, allocatable :: rowapivot(:), rowbpivot(:), rowlpivot(:)
-    real :: rowppivot
+    real, allocatable :: rowapivot(:), rowbpivot(:)
     real, dimension(ma, ma) :: L
-!    integer, dimension(ma) :: P
     integer :: i, j, k
     bool = .false. 
+    
     !initializing our matrices. 
     L = 0.0
-!    P = 0
     do i = 1, ma
         L(i, i) = 1.0 
-!        P(i) = i
     end do
 
     !begin GE 
@@ -127,36 +117,30 @@ end function str
                 k = j
             end if
         end do
-        allocate(rowlpivot(1:i), rowapivot(k:ma), rowbpivot(nb))
+        allocate(rowapivot(k:ma), rowbpivot(nb))
         rowapivot = A(i, i:ma)
         rowbpivot = B(i, :)
-        rowlpivot = L(i, 1:i)
-!        rowppivot = P(i)
         A(i, i:ma) = A(k, i:ma)
         B(i, :) = B(k, :)
-        L(i, 1:i) = L(k, 1:i)
-!        P(i) = P(k)
         A(k, i:ma) = rowapivot
         B(k, :) = rowbpivot
-        L(k, 1:i) = rowlpivot
-!        P(k) = rowppivot
-!        print *, "printing A during GE"
-!        call printmat(A, ma, ma)
-        deallocate(rowlpivot, rowapivot, rowbpivot)
+        deallocate(rowapivot, rowbpivot)
         if (A(i, i) .eq. 0) then
             bool = .true.
             return
         end if
-        !L U step
+        !L Step
         L(i+1:ma, i) = A(i+1:ma,i)/A(i, i)
-        do  j = i+1, ma
-            A(j, i:ma) = A(j, i:ma) - L(j, i)*A(i, i:ma)
-        end do
+    
+        A(i+1:ma, i:ma) = A(i+1:ma, i:ma) - matmul(L(i+1:ma, i:i), A(i:i, i:ma))
+        !do  j = i+1, ma
+            ! this can be optimized to not require a loop 
+            ! A(i+1:ma, i:ma) = A(i+1:ma, i:ma) - matmul(L(i+1:ma, i), A(i, i:ma))
+        !    A(j, i:ma) = A(j, i:ma) - L(j, i)*A(i, i:ma)
+        !end do
         do j = i+1, ma
             B(j, :) = B(j, :) - L(j, i)*B(i, :)
         end do
-!        print *, "printing a during GE"
-!        call printmat(A, ma, ma)
     end do 
     
   end subroutine GE
@@ -230,7 +214,6 @@ end function str
             return
         end if
         !L U step
-        call printmat(A, ma, ma)
         L(i+1:ma, i) = A(i+1:ma,i)/A(i, i)
         do  j = i+1, ma
             A(j, i:ma) = A(j, i:ma) - L(j, i)*A(i, i:ma)

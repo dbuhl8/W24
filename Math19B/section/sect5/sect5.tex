@@ -1,0 +1,134 @@
+\documentclass{beamer}
+
+\title{Section 5}
+\author{TA: Dante Buhl}
+\institute{UCSC Math-19B}
+%\date{Week 2}
+\graphicspath{ {./images/} }
+%\usepackage{xcolor}
+\usepackage{verbatim}
+\usetheme{Berkeley}
+\usecolortheme{spruce}
+\usefonttheme{serif}
+%\usepackage[x11names]{xcolor}
+\usepackage{amsmath}
+\usepackage{pifont}
+
+
+\begin{document}
+
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+
+
+%Title
+\frame{\titlepage}
+
+\section{Agenda}
+\begin{frame}{Plan for Today}
+    Topics to Cover
+    \begin{itemize}
+        \item Integration by Parts
+        \item Trig Substitution
+    \end{itemize}
+    Section Activity 5
+    \begin{itemize}
+        \item 4 questions
+    \end{itemize}
+    Upcoming Assignments
+    \begin{itemize}
+        \item Homework 5 (Due Fri, Feb. $16^{th}$)
+        \item Project 1 (Due Tues, Feb $20^{th}$).
+    \end{itemize}
+\end{frame}
+
+
+\section{Review}
+\begin{frame}{Learning Outcomes}
+    \begin{itemize}
+        \item Understanding and applying the concept of Integration by Parts
+        \item Understanding how to use Trig Substitution
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Integration By Parts}
+
+Integration by parts, similar to u-substition, is motivated by a rule for differentiation. Take a guess. Its the product rule!!!
+
+Recall: 
+\[
+    \frac{d}{dx} \left[f(x)g(x)\right] = f'(x)g(x) + f(x)g'(x)
+\]
+We can therefore impose that if we are given an integral of the form, $\int f'(x)g(x)dx$.
+\[
+    \int f'(x)g(x)dx = f(x)g(x) - \int f(x)g'(x)dx
+\]
+\footnotesize{Note: people sometimes write this in an alternate form}
+\normalsize
+\[
+    \int u dv = u v - \int v du
+\]
+
+\end{frame}
+\begin{frame}{Integration by Parts}
+
+An example application of this practice can be seen here. 
+    \[
+        \int \ln(x)dx
+    \]
+    \[
+        f'(x) = 1, \quad g(x) = \ln(x)
+    \]
+    \[
+        f(x) = x, \quad g'(x) = \frac{1}{x}
+    \]
+    \[
+        \int \ln(x)dx = x\ln(x) - \int 1dx 
+    \]
+    \[
+        = x\ln(x) - x + C
+    \]
+\end{frame}
+
+\begin{frame}{Now do a couple problems yourself}
+
+    \bmp{.45}
+        \[
+            \int \cos^2(x)dx
+        \]
+        \footnotesize{Note: this can be done with the trig identity}
+        \[
+            \cos^2(x) + \sin^2(x) = 1
+        \]
+        \normalsize
+    \emp
+    \bmp{.45}
+        \[
+            \int x\ln(x)dx
+        \]
+    \emp
+
+\end{frame}
+
+\begin{frame}{Trigonometric Integrals}
+
+Some weird trig integrals have reduction formulas obtained by Integration by Parts. An example of one is below. 
+\scriptsize
+    \[
+        \int \sin^m(x)\cos^n(x)dx = \frac{\sin^{m+1}(x)\cos^{n-1}(x)}{n} + \frac{n - 1}{n}\int \sin^{m}(x)\cos^{n-2}(x)dx
+    \]
+These can be truly ugly. Hint hint, wink wink, you might be asked to prove one or two on your homework :)
+\normalsize
+
+\end{frame}
+
+
+\section{Attenance}
+\begin{frame}{Discussion Section Activity 5}
+    \raggedright
+    Woah look, the TA is about to write the code on the board!
+\end{frame}
+
+
+
+\end{document}

@@ -171,8 +171,10 @@ Program Driver_LinAl
   print *, "Question 5: Application Problem"
   print *, " "
   
-  Aa = reshape((/ -3., 2., 1., 1., 2., 1., pi, exp(1.0), 1. /), shape(Aa))
+  !Aa = reshape((/ -3., 2., 1., 1., 2., 1., pi, exp(1.0), 1. /), shape(Aa))
+  Aa = reshape((/ -3., 1., pi, 2., 2., exp(1.), 1., 1., 1. /), shape(Aa))
   Ba = reshape((/ 5., 3., -sqrt(2.0) /), shape(Ba))
+  call printmat(Ba, 3, 1)
   Xa = 0.0
   print *, "In order to find the equation for the plane, we simply need to solve the Linear System, AX = B"
   print *, "Here is matrix A"
@@ -183,6 +185,19 @@ Program Driver_LinAl
     call LUsolve(Aa, 3, Ba, Xa, 1, Pa)
     print *, "The solution is:"
     call printmat(Xa, 3, 1)
+
+    Aa = reshape((/ -3., 1., pi, 2., 2., exp(1.), 1., 1., 1. /), shape(Aa))
+  Ba = reshape((/ 5., 3., -sqrt(2.0) /), shape(Ba))
+
+    Xa = Ba - matmul(Aa, Xa)
+    print *, "The error is:"
+    call printmat(Xa, 3, 1)
+
+    call twonorm(Xa(:, 1), 3, norm)
+    print *, norm
+    
+    print *, "The permutation vector is"
+    print *, Pa(:)
   else
     print *, "The matrix A is singular!"
   end if

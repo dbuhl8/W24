@@ -1,0 +1,237 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{verbatim}
+\usepackage{xcolor}
+
+\title{AM 213A Midterm: Report}
+\author{Dante Buhl}
+\date{Feb. $16^{th}$ 2024}
+
+\begin{document}
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\K}{\bs{\mathrm{K}}}
+\newcommand{\m}{\bs{\mu}_*}
+\newcommand{\s}{\bs{\Sigma}_*}
+\newcommand{\dt}{\Delta t}
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\Tr}[1]{\text{Tr}(#1)}
+
+\maketitle
+
+
+\section{Problem 1: Define the Following}
+\begin{enumerate}
+
+\item A full rank matrix $A$ and a rank deficient matrix $B$, for $A, B \in  \R^{m\times n}$. 
+
+We have that $A$ is such that, rank$(A) = \min(m, n) = k$. That is, $A$ has k linearly independant columns. \colorbox{yellow}{NEED TO DO B STILL}.
+
+\item An orthogonal matrix $Q$ and a unitary matrix $U$, where $Q$ and $U$ are square. 
+
+We have that $Q \in \R^{n\times n}$ such that, $Q^TQ = \I$. It is also a fact that the columns of $Q$ form a basis for $\R^n$. A unitary matrix $U$ is very similar but for complex spaces. We have, $U \in \C^{n\times n}$, such that $U^*U = \I$. The columns of $U$ form a basis for $\C^n$.
+
+\item Singular value decomposition of $A \in \C^{m\times n}$ with rank$(A) = k \le \min(m, n)$
+
+\item Orthogonal projector $P \in \R^{m\times m}$. 
+
+\item Defective matrix $A \in \R^{m\times m}$.
+
+\item Relative condition number $\kappa(x_0)$ of a differentiable function $f(x) = Ax$ at $x = x_0$ and its upper bound when A is nonsingular
+
+\item Condition number $\kappa$ or cond($A$) of a nonsingular matrix $A$ with rank($A) = k$ in the 2-norm in terms of singular values.
+
+\item Diagonalizable matrix $A \in \R^{m\times m}$.
+
+\item Machine accuracy $\epsilon_{\text{mach}}$ in single and double precisions.
+
+\item Backward stable algorithm $\tilde{f}$ for a problem $f$. What is the relation between the backward stability and accuracy?
+
+
+\end{enumerate}
+
+\section{Problem 2 - Let $A = (a_{ij})_{i,j=1}^n \in \R^{n\times n}$}
+\begin{enumerate}
+\item Suppose A has nonnegative entries such that $\sum_{j=1}^n a_{ij} = 1$ for $1 \le i \le n$. Show that no eigenvalule of $A$ has an absolute value greater than 1. 
+
+\item Suppose that $\sum_{j=1}^n |a_{ij}| < 1$ for each $i$. Prove that $B = \I - A$ is invertible.  (Hint: Using the Equivalence Theorem for a nonsingular matrix A, it suffices to show that the dimension of the null space of B is 0.)
+
+\end{enumerate}
+
+\section{Problem 3 - Let $A \in \R^{m\times m}$ be symmetric.}
+\begin{enumerate}
+\item Define what it means to say A is symmetric positive definite.
+
+If $A$ is real, symmetric, positive definite we have the following properties of $A$. $A^* = A^T = A$, and $(x, Ax) > 0, \forall x \in \R^m$. 
+
+
+\item  Show that the eigenvalues of a symmetric positive definite matrix A are positive.
+
+
+\begin{proof}
+
+We look at the inner product of the eigenvectors of $A$, with the matric product between $A$ and its eigenvector. 
+
+\[
+    Av = \lambda v, \quad \text{an eigenvalue eigenvector pair } (\lambda, v)
+\]
+\[
+    (v, Av) = v^TAv = v^T(\lambda v) = \lambda ||v||_2^2 > 0
+\]
+\[
+    ||v||_2^2 > 0 \implies \lambda > 0
+\]
+Since our choice of $\lambda$ and $v$ were arbitrary, we have that all eigenvalues of $A$ are positive. 
+\end{proof}
+
+
+\item What can you say about the diagonal entries of a symmetric positive definite matrix
+A? Justify your answer by proving or disproving it.
+
+Claim: The diagonal entries of a symmetric positive definite matrix $A$ are positive. 
+
+\begin{proof}
+    We begin by looking at the inner product with the unit basis vectors of $\R^m$. 
+    \[
+        \hat{e}_i = \left[\begin{array}{c} 0\\\vdots\\1\\\vdots\\0\end{array}\right]
+    \]
+    Where only the i-th element of $\hat{e}_i$ is nonzero. 
+    \[
+        (\hat{e}_i, A\hat{e}_i) = \hat{e}_i^T \left[\begin{array}{c} a_{1i}\\\vdots\\a_{mi}\end{array}\right] = a_{ii} > 0 
+    \]
+    Therefore the diagonal elements of $A$ are all positive. 
+\end{proof}
+
+\end{enumerate}
+
+\section{Problem 4 - Consider the following algorithm for a linear system with $A \in \R^{m\times m}$}
+
+\begin{enumerate}
+\item
+
+\item
+
+\item 
+
+\item 
+
+\end{enumerate}
+
+
+\section{Problem 5 - Consider the matrix}
+
+\[
+    A = \left[\begin{array}{c c}
+                1 & 1 \\ \epsilon & 0 \\ 0 & \epsilon \end{array}\right]
+\]
+for the least squares problem $Ax \approxeq b$ with $0 < \epsilon < \sqrt{\epsilon_{\text{mach}}}$ Here $\epsilon_{\text{mach}}$ is the small value in
+machine accuracy and is numerical zero. In this problem, all your arithmetic manipulations should mimic the computer’s finite precision handling.
+
+\begin{enumerate}
+\item Carry out to use the normal equation by first multiplying $A^T$ on both sides to directly solve the linear system. Discuss what happens.
+
+\item  Check if the resulting $A^TA$ is symmetric positive definite (SPD) by directly using the definition of SPD. Conclude whether you can use the Cholesky factorization method or not for the resulting normal equation. Justify your answer.
+
+\item In general, using the normal equation $A^TAx = A^Tb$ for solving the least squares problem $Ax \approxeq b$ is not always ideal. Justify why it is not ideal by proving the condition number of the Gram matrix $A^TA$ is the square of the condition number of $A$, i.e $\kappa(A^TA) = (\kappa(A))^2$, for a full rank matrix $A \in \R^{m\times n}, m \ge n$. What is the implication of $\kappa(A^TA) = (\kappa(A))^2$.
+
+\item 
+
+\end{enumerate}
+
+\section{Problem 6 }
+
+\begin{enumerate}
+\item
+
+\item
+The Schur decomposition theorem states that if $A \in C^{m\times m}$, then there
+exist a unitary matrix $Q$ and an upper triangular matrix $U$ such that
+$A = QUQ^{-1}$ . Use the Schur decomposition theorem to show that a real
+symmetric matrix $A$ is diagonalizable by an orthogonal matrix, i.e., $\exists$ an
+orthogonal matrix $Q$ such that $Q^T AQ = D$, where $D$ is a diagonal matrix
+with its eigenvalues in the diagonal.
+
+\begin{proof}
+
+We begin with the Schur Decomposition Theorm for real symmetric matrix $A$. We have, 
+\[
+    A = QUQ^{-1} = QUQ^*
+\]
+By the property that $A$ is real and symmetric, we have that $A^* = A$.
+\[
+    A^* = A = QUQ^*
+\]
+\[
+    U = Q^*AQ, \quad U^* = Q^*AQ
+\]
+\[
+    U = U^*, \implies U \text{ is real, symmetric, DIAGONAL}
+\]
+We also have that $U$ has the same eigenvalues of $A$ by the fact that they are similar matrices (Nate I will not cite this, sorry about it). So we have that $A$ is diagonalized by unitary matrices $Q, Q^{-1}$. Now all we need is to show that $Q$ is real (orthogonal). We start from that fact that $A = A^* = A^T = \overline{A}$.
+\[
+    AA^* = A^TA = AA^T = A^TA^T
+\] 
+\[
+    QU^2Q^* = Q^{*T}UQ^TQUQ^* = QUQ^*Q^{*T}UQ^T = Q^{*T}U^2Q^T
+\]
+\[
+   QU = Q^{*T}UQ^TQ, \quad UQ^* = Q^*Q^{*T}UQ^T
+\]
+\[
+    QU^2Q^* = Q^{*T}UQ^TQQ^*Q^{*T}UQ^T = Q^{*T}U^2Q^T 
+\]
+\[
+    U^2 = UQ^TQU, \implies Q^TQ = \I, \text{ EUREKA!}
+\]
+So we therefore have that $Q$ is orthogonal by definition, or rather Q is real and unitary! Therefore, $A$ is diagonalizable by an orthogonal matrix, $Q$. (Nate, in retrospect I realize this logic might be flawed. I just checked and there is a $Q^T$ out of place in my last substitution. But I have 10 minutes to submit and I don't care anymore. Do your worst)
+\end{proof}
+
+
+\item 
+
+\item 
+
+\end{enumerate}
+
+\section{Problem 7 - }
+
+\begin{enumerate}
+\item
+
+\item
+
+\item 
+
+\item 
+
+\end{enumerate}
+
+
+
+\section{Problem 8 - Let $P \in \R^{m\times m}$ be an orthogonal projector}
+\begin{enumerate}
+
+\item Show that P is positive semi-definite with its eigenvalues either zero or one. (Hint: A symmetric matrix is orthogonally diagonalizable.)
+
+\item What can you say about the dimension of P if its eigenvalues are all distinct with
+algebraic multiplicity of 1?
+
+\item Construct $P \in \R^{2\times2}$ whose entries are all nonzero. Identify all possible choices of P. For each of your constructed P, show that it is positive semi-definite and its eigenvalues are either 0 and 1.
+
+\end{enumerate}
+
+
+
+
+\end{document}

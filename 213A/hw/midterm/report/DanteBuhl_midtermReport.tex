@@ -27,6 +27,7 @@
 \newcommand{\dt}{\Delta t}
 \newcommand{\tr}[1]{\text{Tr}(#1)}
 \newcommand{\Tr}[1]{\text{Tr}(#1)}
+\newcommand{\Span}[1]{\text{span}(#1)}
 
 \maketitle
 
@@ -36,7 +37,7 @@
 
 \item A full rank matrix $A$ and a rank deficient matrix $B$, for $A, B \in  \R^{m\times n}$. 
 
-We have that $A$ is such that, rank$(A) = \min(m, n) = k$. That is, $A$ has k linearly independant columns. \colorbox{yellow}{NEED TO DO B STILL}.
+We have that $A$ is such that, rank$(A) = \min(m, n) = k_A$. That is, $A$ has $k_A$ linearly independant columns. For $B$ to be rank deficient we have that rank$(B) = k_b < \min(m, n)$. That is, $B$ only has $k_B$ linearly independent column vectors (less than the maximal number of linearly independent column vectors). 
 
 \item An orthogonal matrix $Q$ and a unitary matrix $U$, where $Q$ and $U$ are square. 
 
@@ -44,19 +45,81 @@ We have that $Q \in \R^{n\times n}$ such that, $Q^TQ = \I$. It is also a fact th
 
 \item Singular value decomposition of $A \in \C^{m\times n}$ with rank$(A) = k \le \min(m, n)$
 
-\item Orthogonal projector $P \in \R^{m\times m}$. 
+A singular value decomposition of a matrix $A$ is of the following form. 
+
+\[
+    A = U\Sigma V^T
+\]
+Such that $U, V$ are unitary matrices and $\Sigma$ is an $m\times n$ matrix with k nonzero entries on the 1st k diagonal elements ordered from largest in absolute value to the lowest. These nonzero enetries are the singular values of $A$. We have that $A$ takes vectors from the span of $V$ and returns vectors in the span of $U$. That is, 
+\[
+    Av = \sigma u
+\]
+
+\item Orthogonal projector $P \in \R^{m\times m}$
+
+An orthogonal projector $P$ is a matrix with the following properties, 
+
+\[
+    P^2 = P, \quad P^T = P
+\]
+There are two definitions which yield such a $P$. 
+\[
+    P = \left\{\begin{array}{c}A(A^TA)^{-1}A^T \\QQ^T\end{array}\right\}
+\]
+$P$ is a matrix which will project any vector onto the span of $A/Q$.
 
 \item Defective matrix $A \in \R^{m\times m}$.
 
+A defective matrix $A$ is any matrix such that at least one of its eigenvalues has an algebraic multiplicity less than its geometric multiplicity. That is that an eigenvalue $\lamba_i$ appears a root of the characterisitic polynomial for $A$ more times than the number of corresponding eigenvectors it has. This is equivalent to saying, $A$ has less than $m$ linearly independent eigenvectors. $A$ does not span $\R^{m}$. 
+
 \item Relative condition number $\kappa(x_0)$ of a differentiable function $f(x) = Ax$ at $x = x_0$ and its upper bound when A is nonsingular
+
+We have $\kappa(x_0)$ is defined to be the norm of the Jacobian of $f$ times the norm of $x_0$ over the norm of $f(x_0)$. We have then, 
+
+\[
+    \kappa(x_0) = \frac{||J_0||||x_0||}{||f(x_0)||} = \frac{||A||||x_0||}{||Ax_0||} 
+\]
+We then assume that $A$ is invertible. 
+\[
+     = \frac{||A||||A^{-1}Ax_0||}{||Ax_0||} \le \frac{||A||||A^{-1}||||Ax_0||}{||Ax_0||} = ||A||||A^{-1}||
+\]
+Therefore by triangle inequality we have that the condition number is bound by $||A||||A^{-1}||$ when $A$ is nonsingular ($A$ is invertible because of this). 
 
 \item Condition number $\kappa$ or cond($A$) of a nonsingular matrix $A$ with rank($A) = k$ in the 2-norm in terms of singular values.
 
+We look at $\kappa(A)$. We have already that it is defined to be $\kappa(A) = ||A||||A^{-1}||$. We now look at this value in the two norm. We have that the largest singular value corresponds to the transformation from one unit vector $v$ to another unit vector $u$. We have by a propety of unitary matrices (specifically that they preserve length under transformations), 
+\[
+    ||A||_2 = \sup_{x} \frac{||Ax||_2}{||x||_2} = \sup_x \frac{||\Sigma x||}{||x||} = ||\Sigma||_2
+\]
+It can be easily shown that the $||\Sigma||_2 = \sigma_1$ by the fact that $\sigma_1 > \sigma_i, \forall i>1$. (If you take any $x$ such that $x \neq \hat{e}_1, 0$ then, $\frac{||\Sigma x||}{||x||} \le \frac{\sigma_1}{1}$). For similar reasons we have that the largest singular value of $A^{-1}$ is going to be $\frac{1}{\sigma_k}$, we then have by the same logic that $||A^{-1}||_2 = ||\Sigma^{-1}||_2 = \frac{1}{\sigma_k}$. So we have,  
+\[
+    \kappa(A) = ||A||_2||A^{-1}||_2  = \frac{\sigma_1}{\sigma_k}
+\]
+
 \item Diagonalizable matrix $A \in \R^{m\times m}$.
+We have that $A$ is a matrix such that it can be expressed as, $A = VDV^{-1}$. More specically, we have, 
+\[
+    V^{-1}AV = D
+\]
+where $D$ is a diagonal matrix containing the eigenvalues of $A$, and $V$ is an invertible matrix containing the eigenvectors of $A$ which are linearly independent. Some other consequences are that $A$ is non-defective. 
+
 
 \item Machine accuracy $\epsilon_{\text{mach}}$ in single and double precisions.
 
+Machine accuracy is defined by two numbers. For single precision, we have that $\epsilon_{\text{mach}} = 10^{-7}$, and for double precision we have that $\epsilon_{\text{mach}} = 10^{-16}$. 
+
 \item Backward stable algorithm $\tilde{f}$ for a problem $f$. What is the relation between the backward stability and accuracy?
+
+A backward stable algorithm $\tilde{f}$ for $f$ is defined to be an algorithm such that, 
+\[
+    \tilde{f}(X) = f(\tilde{X}), \quad \frac{||\tilde{X} - X||}{||X||} = O(\epsilon_{\text{mach}})
+\]
+Where $\tilde{X}$ is the approximated solution obtained by the algorithm. The relationship between backward stability and accuracy is given by a constant $C$. 
+
+\[
+    \frac{||\delta f||}{||f(x)||} \le \kappa(x)\frac{||\delta x||}{||x||} \le \kappa(x)C\epsilon_{\text{mach}}
+\]
+This is obtained by the argument that $\kappa(x)$ related $||\delta f||$ to $||\delta x||$ and that as a given for backwards stability $\frac{||\delta x||}{||x||}$ is of order $\epsilon_{\text{mach}}$, i.e $= C\epsilon_{\text{mach}}$.
 
 
 \end{enumerate}
@@ -64,6 +127,15 @@ We have that $Q \in \R^{n\times n}$ such that, $Q^TQ = \I$. It is also a fact th
 \section{Problem 2 - Let $A = (a_{ij})_{i,j=1}^n \in \R^{n\times n}$}
 \begin{enumerate}
 \item Suppose A has nonnegative entries such that $\sum_{j=1}^n a_{ij} = 1$ for $1 \le i \le n$. Show that no eigenvalule of $A$ has an absolute value greater than 1. 
+
+We start with the definition of an eigenvector/value pair and the inner product of (v, Av). 
+
+\[
+    Av = \lambda v, \quad (v, Av) = (v, \lambda v)
+\]
+\[
+    \lambda||v||_2^2 =  (v, Av) = v^TAv = v^T \left[\begin{array}{c} v_2 \end{array}\right]
+\]
 
 \item Suppose that $\sum_{j=1}^n |a_{ij}| < 1$ for each $i$. Prove that $B = \I - A$ is invertible.  (Hint: Using the Equivalence Theorem for a nonsingular matrix A, it suffices to show that the dimension of the null space of B is 0.)
 
@@ -118,13 +190,37 @@ Claim: The diagonal entries of a symmetric positive definite matrix $A$ are posi
 \section{Problem 4 - Consider the following algorithm for a linear system with $A \in \R^{m\times m}$}
 
 \begin{enumerate}
-\item
+\item What is this algorithm for? What are the anticipated outcomes?
+This is the Gaussian Elimination Algorithm without pivoting. The anticipated outcomes are a matrix $R$ and $B'$ such that $R$ is upper triangular and $B$ is a modified matrix in the same manner that $A$ was manipulated to obtain $R$.
+ 
+\item Count the floating point operations, including additions, subtractions, multiplications,
+and divisions in this algorithm.
 
-\item
+\item  The algorithm is subject to an issue when $a_{jj}$ is zero or close to zero. Give a simple
+example of a $2 \times 2$ system that demonstrates the potential issue when $a_{jj}$ is close to machine
+accuracy $\epsilon_{\text{mach}}$.
 
-\item 
+This issue can be demonstrated with the matrix, 
 
-\item 
+\[
+    \left(\begin{array}{c c} \epsilon & 1 \\ 1 & 1\end{array}\right)
+\]
+When conducting Gaussian Elimination we have to include a term which is divided by $\epsilon$ which when close to machine precision, is extraordinarily large. 
+
+\item  Describe the approach you learned in class, which can resolve the issue in (c). What is
+this approach called? Write a pseudo algorithm that can resolve the issue by modifying the
+given algorithm.
+
+The technique learned in class is Pivoting. This allows us to choose the term that we divide by in the GE algorithm. The algorithm obtains an additional piece described by this. 
+(before the if $a_{jj} = 0$ statement)
+\begin{enumerate}
+\item  Find the element in the i-th column on or below the diagonal such that the absolute value of that element is the largest out of the absolute values of the rest of the values in that column (on or below the diagonal). Call this element $a_{ki}$
+
+\item Swap the k-th rows of $A$ and $B$ with the i-th rows of $A$ and $B$. 
+
+\item Proceed with the GE algorithm
+\end{enumerate}
+After doing this, the algorithm does not have to divide by $\epsilon$ and instead the term becomes of order $\frac{1}{\epsilon}$ to order $\epsilon$. This will result in a much more stable algorithm.
 
 \end{enumerate}
 
@@ -141,66 +237,123 @@ machine accuracy and is numerical zero. In this problem, all your arithmetic man
 \begin{enumerate}
 \item Carry out to use the normal equation by first multiplying $A^T$ on both sides to directly solve the linear system. Discuss what happens.
 
+\[
+    A^TA = \left[\begin{array}{c c} 1+\epsilon^2 & 1 \\ 1 & 1 + \epsilon^2\end{array}\right] \approx_{\text{mach}} \left[\begin{array}{c c} 1 & 1 \\ 1 & 1\end{array}\right]
+\] 
+We have that the matrix product becomes order of $\epsilon^2$ which is actually smaller than order $\epsilon$. It is so small, and by the given value of $\epsilon$ that $\epsilon^2 < \epsilon_{\text{mach}}$. Therefore all terms of order $\epsilon^2$ will dissapear from the system. 
+
 \item  Check if the resulting $A^TA$ is symmetric positive definite (SPD) by directly using the definition of SPD. Conclude whether you can use the Cholesky factorization method or not for the resulting normal equation. Justify your answer.
+
+Let us investigate with a dummy vector v. 
+\[
+    v = \left[\begin{array}{c}v_1 \\ v_2\end{array}\right]
+\]
+\[
+    (v, Av) = v^T Av = v^T \left[\begin{array}{c}v_1 + v_2 \\ v_1 + v_2\end{array}\right] = v_1(v_1 + v_2) + v_2(v_1+v_2)
+\]
+\[
+    = v_1^2 + 2v_1v_2 + v_2^2 = (v_1 + v_2)^2 > 0 
+\]
+Therefore, we have that $A^TA$ is symmetric positive definite. Because of this we can conclude that $A^TA$ has a cholesky factorization and we can use it for the resulting normal equation to the system. 
 
 \item In general, using the normal equation $A^TAx = A^Tb$ for solving the least squares problem $Ax \approxeq b$ is not always ideal. Justify why it is not ideal by proving the condition number of the Gram matrix $A^TA$ is the square of the condition number of $A$, i.e $\kappa(A^TA) = (\kappa(A))^2$, for a full rank matrix $A \in \R^{m\times n}, m \ge n$. What is the implication of $\kappa(A^TA) = (\kappa(A))^2$.
 
-\item 
+\begin{proof}
+
+We start with the singular value decomposition of $A$, with the notion in mind that $U, V$ are unitary (orthogonal if $A \in \R^{m\times n}$). 
+\[
+    A = U\Sigma V^T, \quad A^T = V\Sigma^T U^T
+\]
+
+By definition we have that the condition number of $A$, $\kappa(A)$ is defined by the largest singular value of $A$ and the largest singular value of $A^{-1}$. Let us now look at the singular values of $A^TA$ and $(A^TA)^{-1}$ 
+
+\[
+    A^TA = V\Sigma^T U^T U \Sigma V^T
+\]
+\[
+    A^TA = V\Sigma^2 V^T
+\]
+Therefore the singular values of $A^TA$ are the singular values of $A$ squared. 
+\[
+    (A^TA)^{-1} = V\Sigma^{-2}V^{T}
+\]
+Therefore we have that the largest singular value of $(A^TA)^{-1}$ is $\frac{1}{\sigma_k^2}$, where $\sigma_k$ is the smallest non-zero singular value of $A$. 
+\[
+    \kappa(A^TA) = \sigma_1^2 \frac{1}{\sigma_k^2} = \frac{\sigma_1}{\sigma_k}^2 = (\kappa(A))^2
+\]
+The implicaiton of this is that we will find that the condition number of $A^TA$ will be the square of the condition number of $A$. Therefore, if we have a nicely conditioned $A$ it is the case that $A^TA$ might be very poorly conditioned. That is, if $\kappa(A) \approx 10^5$, $\kappa(A^TA) \approx 10^{10}$. This is often unacceptable in numerical methods. 
+
+\end{proof}
+
 
 \end{enumerate}
 
 \section{Problem 6 }
+The Schur decomposition theorem states that if $A \in \R^{m\times m}$ , then $A = QUQ^{-1}$ where $Q$ is orthogonal and $U$ is an upper triangular. Let $A\in \R^{m\times m}$ be normal, i.e., $A^T A = AA^T $
 
 \begin{enumerate}
 \item
+We start by looking at the matrix products, 
 
-\item
-The Schur decomposition theorem states that if $A \in C^{m\times m}$, then there
-exist a unitary matrix $Q$ and an upper triangular matrix $U$ such that
-$A = QUQ^{-1}$ . Use the Schur decomposition theorem to show that a real
-symmetric matrix $A$ is diagonalizable by an orthogonal matrix, i.e., $\exists$ an
-orthogonal matrix $Q$ such that $Q^T AQ = D$, where $D$ is a diagonal matrix
-with its eigenvalues in the diagonal.
-
-\begin{proof}
-
-We begin with the Schur Decomposition Theorm for real symmetric matrix $A$. We have, 
 \[
-    A = QUQ^{-1} = QUQ^*
-\]
-By the property that $A$ is real and symmetric, we have that $A^* = A$.
-\[
-    A^* = A = QUQ^*
-\]
-\[
-    U = Q^*AQ, \quad U^* = Q^*AQ
-\]
-\[
-    U = U^*, \implies U \text{ is real, symmetric, DIAGONAL}
-\]
-We also have that $U$ has the same eigenvalues of $A$ by the fact that they are similar matrices (Nate I will not cite this, sorry about it). So we have that $A$ is diagonalized by unitary matrices $Q, Q^{-1}$. Now all we need is to show that $Q$ is real (orthogonal). We start from that fact that $A = A^* = A^T = \overline{A}$.
-\[
-    AA^* = A^TA = AA^T = A^TA^T
+    A^T A = AA^T
 \] 
+Examining the first element in the product we have that, 
 \[
-    QU^2Q^* = Q^{*T}UQ^TQUQ^* = QUQ^*Q^{*T}UQ^T = Q^{*T}U^2Q^T
+    a_{11}^2  = a_{11}^2 + a_{12}^2 + \cdots + a_{1m}^2 
 \]
+This implies that, 
 \[
-   QU = Q^{*T}UQ^TQ, \quad UQ^* = Q^*Q^{*T}UQ^T
+    a_{12}^2 + \cdots + a_{1m}^2 = 0, \implies a_{12} = \cdots = a_{1m} = 0 
 \]
+We look at the next diagonal element, 
 \[
-    QU^2Q^* = Q^{*T}UQ^TQQ^*Q^{*T}UQ^T = Q^{*T}U^2Q^T 
+    a_{12}^2 + a_{22}^2 = a_{22}^2 + a_{23}^2 + \cdots + a_{2m}^2
 \]
-\[
-    U^2 = UQ^TQU, \implies Q^TQ = \I, \text{ EUREKA!}
-\]
-So we therefore have that $Q$ is orthogonal by definition, or rather Q is real and unitary! Therefore, $A$ is diagonalizable by an orthogonal matrix, $Q$. (Nate, in retrospect I realize this logic might be flawed. I just checked and there is a $Q^T$ out of place in my last substitution. But I have 10 minutes to submit and I don't care anymore. Do your worst)
-\end{proof}
+We have by the same logic that, $a_{23} = \cdots = a_{2m} = 0$. 
+Thus an inductive argument develops. From the matrix product we have that the following is given , 
 
+\[
+    a_{1, i}^2 + \cdots + a_{i, i}^2 = a_{i, i}^2 + a_{i, i+1}^2 + \cdots + a_{i, m}^2
+\]
+Given that all elements above the diagonal and above the i-th row are zero, we have that, 
+\[
+    a_{i, i+1} =  \cdots = a_{i, m} = 0
+\]
+Thus stating that the i-th row above the diagonal is also zero. We have already shown the base case. The next m rows follow. Thus $A$ is diagonal! 
+\item
+We now use the Schur decomposition. 
+\[
+    A^TA = AA^T, \quad A = QUQ^{-1}
+\]
+\[
+    A^TA = Q^{-T}U^TQ^TQUQ^{-1} = QUQ^{-1}Q^{-T}U^TQ^T
+\]
+Note that, $Q^TQ = \I$ and that $Q^{-1}Q^{-T} = (Q^TQ)^{-1} = \I$
+\[
+    Q^{-T}U^TUQ^{-1} = QUU^TQ^T
+\]
+We also have in the specific case, that $Q^T = Q^{-1}$ by the definition of an orthogonal matrix ($Q^TQ = \I = Q^{-1}Q$
+\[
+    (Q^T)^TU^TUQ^T = QUU^TQ^T
+\]
+\[
+    QU^TUQ^T = QUU^TQ^T, \implies U^TU = UU^T
+\]
+So we have that $U$ is upper triangular and normal, we must have then that $U$ is diaognal! Therefore the orthogonal matrix $Q$ diagonalizes $A$. 
+\[
+    A = QUQ^{-1}, \implies Q^{-1}AQ = U, \text{diagonal}
+\]
+\item 
+I would argue that $A$ is non-defective on the basis that since $A$ is diagonalizable $A$ must be nondefective. 
 
 \item 
-
-\item 
+There is a condition that $A$ is inveritble. We look at $A^{-1}$
+\[
+    A = QUQ^T, \implies A^{-1} = QU^{-1}Q
+\]
+Where since $U$ is diagonal we must have that $U^{-1}$ contains the reprocal of each diagonal element of $U$'s diagonal.  
+Notice that $A^{-1}A = \I = AA^{-1}$. However we must note that if one of the eigenvalues (diagonal elements of $U$) are zero then $U^{-1}$ contains infinity. Therefore the condition must be met that all of the eigenvalues of $A$ (diagonal elements of $U$ are non-zero). 
 
 \end{enumerate}
 
@@ -208,8 +361,35 @@ So we therefore have that $Q$ is orthogonal by definition, or rather Q is real a
 
 \begin{enumerate}
 \item
+To show that $A_{i+1}$ is symmetric we must take the tranpose.
+\[
+    A_{i+1}^T = (L_i^TL_i)^T = L_i^TL_I
+\]
+So $A_{i+1}$ is symmetric. 
+To show that it is positive definite we look at the inner product for some nonzero vector $v$.
+\[
+    (v, A_{i+1}v) = v^TL_i^TL_iv = ||L_iv||_2^2 > 0
+\]
+We have since the null space of $L_i$ is zero we have that the two norm is non-zero. Hence, $A_{i+1}$ is also positive definite.
 
 \item
+We have, 
+\[
+    A_1 = L_1^TL_1, \quad A_0 = L_1L_1^T
+\]
+\[
+    L_1 = A_0L_1^{-T}
+\]
+\[
+    A_1 = L_1^TA_0L_1^{-T}
+\]
+\[
+    A_{i+1} = L_{i+1}^T\cdots L_1^TA_0L_1^{-T}\cdots L_{i+1}^{-T}
+\]
+\[
+    B = L_1^{-T}\cdots L_{i+1}^{-T} = (L_{i+1}^{-1}\cdots L_{1}^{-1})^T
+\]
+Thus A is similar to B
 
 \item 
 
@@ -224,10 +404,54 @@ So we therefore have that $Q$ is orthogonal by definition, or rather Q is real a
 
 \item Show that P is positive semi-definite with its eigenvalues either zero or one. (Hint: A symmetric matrix is orthogonally diagonalizable.)
 
-\item What can you say about the dimension of P if its eigenvalues are all distinct with
-algebraic multiplicity of 1?
+\begin{proof}
+
+We start with a vector $v$ and a vector $w$. Let us define the orthogonal projector $P = vv^T$. That is P will return the projection of a vector $w$ onto the span of $v$. Therefore $P$ should only have one non-zero eigenvector which is colinear to $v$. All other eigenvectors $u_i$ must be orthogonal to $v$ (i.e. $(u_i, v) = 0)$ and are arbitrary. Notice that the projector should only return vectors colinear to $v$. So the eigenvalues for all eigenvectors not v, must have corresponding eigenvalues of 0. We also note that $P$ is symmetric and thus has eigendecomposition/diagonalization. 
+
+\[
+    P = VDV^{-1}, \quad V = \left[\begin{array}{c | c} \frac{v}{||v||_2^2} & u_i \end{array}\right], \quad D = \left[\begin{array}{c c}1 & 0 \\ 0 & 0\end{array}\right]
+\]
+Take the matrices $V$ and $D$ to be composed of block matrices (not necessarily $2\times 1$ and $2\times 2$). 
+Therefore, 
+\[
+    (x, Px) = x^T VDV^{-1}x = x^T V D \left[\begin{array}{c} (x, v) \\ \hline (x, u_i) \end{array}\right]
+\]
+\[
+     = x^T v \frac{(x, v)}{||v||_2^2} = \frac{(x, v)^2}{||v||_2^2} \ge 0 
+\]
+Therefore we have that $P$ is semi-positive definite and obviously have eigenvalues of 0 and 1. 
+\end{proof}
+
+\item What can you say about the dimension of P if its eigenvalues are all distinct with algebraic multiplicity of 1?
+
+We must have that $P$ is a $2\times 2$ matrix (only two eigenvalues 1, and 0 with two linearly independent vectors). 
 
 \item Construct $P \in \R^{2\times2}$ whose entries are all nonzero. Identify all possible choices of P. For each of your constructed P, show that it is positive semi-definite and its eigenvalues are either 0 and 1.
+
+We chose some vector $v$ with $v_1, v_2 \neq 0$ to construct $P$. 
+
+\[
+    v = \left[\begin{array}{c} v_1 \\ v_2\end{array}\right]
+\]
+\[
+    P = \frac{vv^T}{||v||_2^2} = \frac{1}{v_1^2 + v_2^2}\left[\begin{array}{c  c} v_1^2 & v_1v_2 \\ v_1v_2 & v_2^2 \end{array}\right]
+\]
+Notice that $P$ is nonzero. Take $x = \left[\begin{array}{c} x_1 \\ x_2\end{array}\right]$
+\[
+    (x, Px) = \frac{1}{||v||_2^2} \left[x_1, x_2\right] \left[\begin{array}{c} x_1v_1^2 + x_2v_1v_2 \\ x_1v_1v_2 + x_2v_2^2\end{array}\right] = \frac{1}{||v||_2^2}(x_1^2v_1^2 + 2x_1x_2v_1v_2 + x_2^2v_2^2) = \frac{1}{||v||_2^2} (x_1v_a + x_2v_2)^2 \ge 0
+\]
+\[
+    P_P(\lambda) := \lambda^2 - \Tr{P}\lambda + \det(P) = 0 
+\]
+\[
+    \det(P) = \frac{1}{||v||_2^4}(v_1^2v_2^2 - (v_1v_2)^2) = 0
+\]
+\[
+   \Tr{P} =  \frac{v_1^2 + v_2^2}{v_1^2 + v_2^2} = 1
+\]
+\[
+    \lambda^2 - \lambda = 0, \implies \lambda = 1, 0
+\]
 
 \end{enumerate}
 

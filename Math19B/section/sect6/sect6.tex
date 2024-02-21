@@ -1,0 +1,126 @@
+\documentclass{beamer}
+
+\title{Section 6}
+\author{TA: Dante Buhl}
+\institute{UCSC Math-19B}
+%\date{Week 2}
+\graphicspath{ {./images/} }
+%\usepackage{xcolor}
+\usepackage{verbatim}
+\usetheme{Berkeley}
+\usecolortheme{spruce}
+\usefonttheme{serif}
+%\usepackage[x11names]{xcolor}
+\usepackage{amsmath}
+\usepackage{pifont}
+
+
+\begin{document}
+
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+
+
+%Title
+\frame{\titlepage}
+
+\section{Agenda}
+\begin{frame}{Plan for Today}
+    Topics to Cover
+    \begin{itemize}
+        \item Trig Substitution
+        \item Partial Fraction Decomposition
+    \end{itemize}
+    Section Activity 6
+    \begin{itemize}
+        \item 1 question
+    \end{itemize}
+    Upcoming Assignments
+    \begin{itemize}
+        \item Homework 6 (Due Fri, Feb. $16^{th}$)
+        \item Midterm (On Mon, Feb $26^{th}$)
+    \end{itemize}
+\end{frame}
+
+
+\section{Review}
+\begin{frame}{Learning Outcomes}
+    \begin{itemize}
+        \item Revisiting the notion of substitution and trigonometric substitution.
+        \item Applying the methods of Partial Fraction Decomposition.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Trig Substitution}
+
+This substitution method is used when a trigonometric identity can reduce the complexity of an integral. Lets look at an example. 
+\bmp{.45}
+\[
+    \int \sqrt{1 - x^2}dx 
+\]
+\footnotesize
+\[
+    x = \sin(\theta), \quad dx = \cos(\theta)d\theta
+\]
+\normalsize
+\[
+    \int \sqrt{\cos^2(\theta)}\cos(\theta)d\theta
+\]
+\[
+    = \int \cos^2(\theta)d\theta
+\]
+\emp
+\bmp{.45}
+\centering 
+\underline{The Usual Suspects:}
+\[
+    \cos^2(x) + \sin^2(x) = 1
+\]
+\[
+    1 + \tan^2(x) = \sec^2(x)   
+\]
+\[
+    \cot^2(x) + 1 = \csc^2(x)
+\]
+
+\emp
+\end{frame}
+
+\begin{frame}{Partial Fraction Decomposition}
+
+Partial Fraction Decomposition expands rational function into a sum/difference of smaller rational functions. i.e. 
+\[
+    \frac{1}{x^2 - 5x + 6} = \frac{1}{(x-2)(x-3)} = \frac{A}{x-2} + \frac{B}{x-3}
+\]
+Notice that the two terms on the right are easier to integrate than the one on the left. They integrate into natural logarithms.
+
+\end{frame}
+\begin{frame}{Partial Fraction Decomposition (Continued)}
+
+Partial Fraction Decomposition coefficients are found using a series of equations. 
+\[
+    1 = A(x - 3) + B(x - 2)
+\]
+Note: it helps to isolate the equations by orders of x. One equation for $x^0$, one for $x^1$, one for $x^2$, and so on as needed. 
+\[
+    A + B = 0, \quad -3A - 2B = 1
+\]
+\[
+    A = -B, \quad -3A + 2A = 1
+\]
+\[
+    A = -1, \quad B = 1
+\]
+\end{frame}
+
+\begin{frame}{Warm Up - Partial Fraction Decomposition}
+    \Large
+    \[
+        \int \frac{1}{x^2 - 2x}dx
+    \] 
+    \normalsize
+    When your group is done working on this problem, review polyonomial long division and then let me know (I'll come give you the section activity code). 
+
+\end{frame}
+
+\end{document}

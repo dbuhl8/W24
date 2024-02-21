@@ -1,0 +1,19 @@
+Note that you're doing a linear regression problem, which fits the data in the "atkinson.dat" file.
+
+You may first plot the data using Python/Matlab and see how it looks.
+
+For instance, in Python you do:
+
+>> import numpy as np
+>> import matplotlib.pyplot as plt
+>> dd = np.loadtxt('atkinson.dat')
+>> plt.plot(dd[:,0], dd[:,1],'o-')
+
+or in Matlab, you do:
+
+>> dd = load('atkinson.dat', '-ascii');
+>> plot(dd(:,1),dd(:,2),'o-')
+
+To do the data fit, recall a linear fit (or a curve fit) that we learned at the very beginning of Chapter 3.
+
+In the PDF lecture note, this is "1.3.2 Polynomial fitting" where you now construct a Vandermonde matrix. Since the problem asks you to do a fit with a 3rd-degree polynomial and a 5th-degree polynomial, you will form two such matrices, one for each. You'll form 21x4 for a 3rd degree poly, for example since there are 21 data points.

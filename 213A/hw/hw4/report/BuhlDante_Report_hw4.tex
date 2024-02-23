@@ -1,0 +1,171 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{verbatim}
+\usepackage{xcolor}
+
+\title{Homework 4: Report}
+\author{Dante Buhl}
+\date{Feb. $26^{th}$ 2024}
+
+
+\DeclareMathOperator{\cond}{cond}
+
+\begin{document}
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\K}{\bs{\mathrm{K}}}
+\newcommand{\m}{\bs{\mu}_*}
+\newcommand{\s}{\bs{\Sigma}_*}
+\newcommand{\dt}{\Delta t}
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\Tr}[1]{\text{Tr}(#1)}
+
+\maketitle
+
+
+\setcounter{section}{1}
+
+\section{Cholesky Solution of the least-squares problem}
+\begin{enumerate}
+\item 
+
+\end{enumerate}
+
+\section{QR Solution of the least-squares problem}
+\begin{enumerate}
+\item 
+
+\end{enumerate}
+
+\section{Theory Problems}
+\begin{enumerate}
+
+\item %start of problem 1
+Show that is $P$ is an orthogonal projector, then $\I - 2P$ is unitary. 
+
+\begin{proof}
+    We begin with the definition of a unitary matrix. We have a unitary matrix $Q$ is a matrix such that $Q^*Q = \I$. We now look for this quality in $(\I - 2P)$. 
+    \[
+        (\I - 2P)^*(\I - 2P) = (\I - 2P^T)(\I - 2P) = (\I - 2P)(\I - 2P)
+    \]
+    The above quality $P^T = P$ is from the fact that $P$ is an orthogonal projector. We also have the quality that $P^2 = P$.
+    \[
+        (\I - 2P)(\I - 2P) = \I(\I - 2P) - 2P(\I - 2P) = \I - 2P - 2P + 4P^2
+    \]
+    \[
+        = \I - 4P +4P = \I
+    \]  
+    We have recovered the condition for unitary matrices. We can therefore declare $(\I - 2P)$ a unitary matrix. 
+\end{proof}
+
+
+\item % start of problem 2
+Let $P \in \R^{m \times m}$ be a nonzero projector. 
+\begin{enumerate}
+    \item Show that $||P||_2 \ge 1$, with equality if and only if $P$ is an orthogonal projector. 
+
+    \item Show that if $P$ is an orthogonal projector, then P is semi-positive deinite with its eigenvalues either zero or 1. 
+        \begin{proof}
+            We look at the vector product definition of $P$. $P = xx^T$ for a unit vector $x$. 
+            \[
+                (v, Pv) = v^Txx^Tv = (v, x)(x, v) = (x, v)^2 \ge 0
+            \]
+            Since our choice of $v$ was arbitary we have that $P$ is semi-positive definite. 
+            
+            Next we look at the eigenvalues of $P$. Say that we have an arbitary eigenvalue-eigenvector pair ($\lambda, v$) for $P$ such that $v \neq \vec{0}$ (obviously). We have,
+            \[
+                Pv = \lambda v
+            \]
+            \[
+                Pv = xx^Tv = (x, v)x = \lambda v
+            \]
+            Notice that $(x, v)$ and $\lambda$ are scalars. This implies that $x$ and $v$ are colinear but this was not an assumption made. Therefore we are left with two cases: $v$ and $x$ are colinear, or $v$ and $x$ are orthogonal. Let's look at the first case, $v = \alpha x$.
+            \[
+                (x, v)x = \alpha x = \alpha\lambda x
+            \] 
+            \[
+                x = \lambda x \implies \lambda = 1
+            \]
+            We find that for all vectors colinear to $x$ are eigenvectors with eigenvalue 1. We look at the other case. If $x$ and $v$ are orthogonal we have $(x, v) = 0$. 
+            \[
+                \vec{0} = \lambda v \implies \lambda = 0
+            \]
+            Therefore all vectors orthogonal to $x$ will be eigenvectors with $\lambda = 0$. 
+        \end{proof}
+\end{enumerate}
+
+\item   % start of problem 3
+Let $A \in \R^{m \times m}$ with $m \ge n$, and let $A = \hat{Q}\hat{R}$ be a reduced $QR$ factorization. 
+
+\begin{enumerate}
+\item Show that $A$ has rank $n$ if and only if all the diagonal entries of $\hat{R}$ are nonzero.
+
+\item Suppose $\hat{R}$ has $k$ nonzero diagonal entries for some $k$ with $0 \le k < n$. What does this imply about the rank of $A$? Exacktly $k$? At least $k$? At most $k$? Give a precise answer and prove it.
+\end{enumerate}
+
+
+\item % start of problem 4
+Determine the (i) eigenvalues, (ii) determinant, and (iii) singular values of a Householder reflector. For the eigenvalues, give a geometric argument as well as an algebraic proof. 
+
+\begin{proof}
+    (i)
+    We start with the definition of a householder reflector for a unit vector $x$. Take $H = \I - 2xx^T$ with an eigenvalue-eigenvector pair ($\lambda, v$) such that $Hv = \lambda v$. 
+    \[
+        Hv = (\I - 2xx^T)v = v - 2xx^Tv = v - 2(x, v)x = \lambda v  
+    \]
+    \[
+        -2(x, v) x = (\lambda - 1) v
+    \]
+    We again have a case where $x$ and $v$ are vectors connected by scalar arguments. We must have that $x$ and $v$ are colinear. We take the two cases, $x$ and $v$ are colinear, $x$ and $v$ are orthogonal. 
+    \[
+        v = \alpha x, \quad -2(x, v) = -2\alpha
+    \]
+    \[
+        -2\alpha = (\lambda - 1) \alpha 
+    \]
+    \[
+        \lambda = -1
+    \]
+    Therefore if $x$ and $v$ are colinear we have that $v$ is an eigenvector of $H$ and that its eigenvalue is $\lambda = -1$. We look at the next case, $x$ and $v$ are orthogonal, therefore $(x, v) = 0$. 
+    \[
+        -2(0)x = (\lambda - 1)v \implies \lambda - 1 = 0
+    \]
+    \[
+        \lambda = 1 
+    \]
+    Therefore we have that if $x$ and $v$ are orthogonal that the eigenvalue corresponding to $v$ is equal to 1. 
+    \vspace{5pt}
+
+    (ii) Next we look at the determinant of $H$. We have that from exercise one that $H$ is unitary (orthogonal) and symmetric. Therefore (going in one direction) that $H^{-1} = H^*$. This is because $H^*H = \I = H^{-1}H$. Next we also have that for any matrix A, $\det(A^*) = \overline{\det(A)}$. We also have that, $\det(A)\det(A^{-1}) = 1$.
+    \[
+        \det(H^{-1}H) = \det(H^{-1})\det(H) = 1
+    \]
+    \[
+        \overline{\det(H)}\det(H) = 1 
+    \]
+    \[
+        \det(H)^2 = 1 \implies \det(H) = \pm 1
+    \]
+    
+    (iii) \colorbox{yellow}{SINGULAR VALUES} 
+\end{proof}
+
+\item  % start of problem 5
+Let $A \in \R^{m\times n}$. Show that $\cond(A^TA) = \left(\cond(A)\right)^2$. 
+
+We start with 
+
+\end{enumerate}
+
+\end{document}

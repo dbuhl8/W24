@@ -119,7 +119,8 @@ Let $A \in \R^{m \times m}$ with $m \ge n$, and let $A = \hat{Q}\hat{R}$ be a re
 Determine the (i) eigenvalues, (ii) determinant, and (iii) singular values of a Householder reflector. For the eigenvalues, give a geometric argument as well as an algebraic proof. 
 
 \begin{proof}
-    (i)
+    (i) Eigenvalues 
+
     We start with the definition of a householder reflector for a unit vector $x$. Take $H = \I - 2xx^T$ with an eigenvalue-eigenvector pair ($\lambda, v$) such that $Hv = \lambda v$. 
     \[
         Hv = (\I - 2xx^T)v = v - 2xx^Tv = v - 2(x, v)x = \lambda v  
@@ -147,7 +148,9 @@ Determine the (i) eigenvalues, (ii) determinant, and (iii) singular values of a 
     Therefore we have that if $x$ and $v$ are orthogonal that the eigenvalue corresponding to $v$ is equal to 1. 
     \vspace{5pt}
 
-    (ii) Next we look at the determinant of $H$. We have that from exercise one that $H$ is unitary (orthogonal) and symmetric. Therefore (going in one direction) that $H^{-1} = H^*$. This is because $H^*H = \I = H^{-1}H$. Next we also have that for any matrix A, $\det(A^*) = \overline{\det(A)}$. We also have that, $\det(A)\det(A^{-1}) = 1$.
+    (ii) Determinant 
+
+    Next we look at the determinant of $H$. We have that from exercise one that $H$ is unitary (orthogonal) and symmetric. Therefore (going in one direction) that $H^{-1} = H^*$. This is because $H^*H = \I = H^{-1}H$. Next we also have that for any matrix A, $\det(A^*) = \overline{\det(A)}$. We also have that, $\det(A)\det(A^{-1}) = 1$.
     \[
         \det(H^{-1}H) = \det(H^{-1})\det(H) = 1
     \]
@@ -158,7 +161,28 @@ Determine the (i) eigenvalues, (ii) determinant, and (iii) singular values of a 
         \det(H)^2 = 1 \implies \det(H) = \pm 1
     \]
     
-    (iii) \colorbox{yellow}{SINGULAR VALUES} 
+    (iii) Singular Values
+
+    We have from the proof in exercise one, we have that $H \in \R^{m\times m}$ is a unitary (orthogonal) matrix. We have therefore that $H$ preserves the length of vectors under transformation. We also look at the singular value decomposition of $H$. 
+    \[
+        H = U\Sigma V^T, \quad ||Hv|| = ||v||, \forall v \in \R^{m}
+    \]
+    Let us look at a specific vector $v_i$ now such that $v_i$ is i-th column vector of $V$. 
+    \[
+        ||Hv|| = ||U\Sigma V^Tv_i|| = ||u_i\sigma_{ii}|| 
+    \]
+    We recover the scalar-vector product, $u_i\sigma_{ii}$ where $u_i$ is the i-th column vector of $U$ and $\sigma_{ii}$ is the i-th diagonal element of $\Sigma$. We return to the fact that by the Singular Value Decomposition Theorem, that $U, V$ are unitary, that is they are composed of orthogonal column vectors with norm of 1. Therefore we have, 
+    \[
+        ||Hv|| = ||v_i|| = ||\sigma_{ii}u_i|| = |\sigma_{ii}|||u_i||
+    \]
+    \[
+        1 = |\sigma_{ii}|1, \implies \sigma_{ii} = \pm 1
+    \]
+    Therefore since our choice of $v$ was arbitrary among the column vectors of $V$ we have that this example exhausts all singular values for $H$. Thus the singular values of $H$ are $\pm 1$. It can even be argued that the plus minus in this context does not matter. Since singular values are scalars which in a transformation from one vector basis to another scale the vector in the resulting basis. The vectors in the output basis are orthogonal so scaling one vector say by $-1$ would not make that basis linearly dependent. Therefore we claim that any $u_i$ will absorb the sign of $\sigma_{ii}$ (Also because of the fact that singular values are always positive). So it is as simpler to claim that, 
+    \[
+        \sigma_{ii} = 1.
+    \]
+    Therefore the singular values of $H$ are such that, $\sigma_{ii} = \sigma_i = 1$. 
 \end{proof}
 
 \item  % start of problem 5

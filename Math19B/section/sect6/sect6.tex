@@ -28,7 +28,6 @@
 \begin{frame}{Plan for Today}
     Topics to Cover
     \begin{itemize}
-        \item Trig Substitution
         \item Partial Fraction Decomposition
     \end{itemize}
     Section Activity 6
@@ -111,6 +110,28 @@ Note: it helps to isolate the equations by orders of x. One equation for $x^0$, 
 \[
     A = -1, \quad B = 1
 \]
+\end{frame}
+\begin{frame}{The slightly more complicated case}
+    We also have the case where the polynomial in the denominator is not completely factorable. 
+    \[
+        \int \frac{dx}{x^3 + 4x}
+    \]
+    \[
+        x^3 + 4x = x(x^2 + 4)
+    \]
+    Notice that $x^2 + 4$ can't be factored without introducing complex numbers. We therefore need the following form of Partial Fraction Decomposition. 
+    \[
+        \frac{1}{x^3 + 4x} = \frac{A}{x} + \frac{Bx + C}{x^2 + 4}
+    \]
+    \[
+        1 = A(x^2 + 4) + (Bx + C)x
+    \]
+    \[
+        1 = 4A, \quad 0 = A + B, \quad 0 = C
+    \]
+    \[
+        A = \frac{1}{4}, \quad B = -\frac{1}{4}, \quad C = 0
+    \]
 \end{frame}
 
 \begin{frame}{Warm Up - Partial Fraction Decomposition}

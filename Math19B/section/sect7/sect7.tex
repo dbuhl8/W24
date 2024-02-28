@@ -1,0 +1,85 @@
+\documentclass{beamer}
+
+\title{Section 7}
+\author{TA: Dante Buhl}
+\institute{UCSC Math-19B}
+%\date{Week 2}
+\graphicspath{ {./images/} }
+%\usepackage{xcolor}
+\usepackage{verbatim}
+\usetheme{Berkeley}
+\usecolortheme{spruce}
+\usefonttheme{serif}
+%\usepackage[x11names]{xcolor}
+\usepackage{amsmath}
+\usepackage{pifont}
+
+
+\begin{document}
+
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+
+
+%Title
+\frame{\titlepage}
+
+\section{Agenda}
+\begin{frame}{Plan for Today}
+    Topics to Cover
+    \begin{itemize}
+        \item Improper Integrals
+        \item Arc Length
+        \item Surface Area
+    \end{itemize}
+    Section Activity 7
+    \begin{itemize}
+        \item 1 question
+    \end{itemize}
+    Upcoming Assignments
+    \begin{itemize}
+        \item Homework 7 (Due Fri, Mar. $1^{st}$)
+        \item Project 2 (Will be released by the end of the week)
+    \end{itemize}
+\end{frame}
+
+
+\section{Review}
+\begin{frame}{Learning Outcomes}
+    \begin{itemize}
+        \item Accomodating improper integrals with the use of limits. 
+        \item Integral forms for Arc Length and Surface Area
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Improper Integrals}
+
+Improper Integrals are integral cases where we find infinity arrive in some form in our work, often in the limits of integration.
+\[
+    \int_0^{\infty} f(x) dx = F(\infty) - F(0)
+\]
+What is to do be done here is to take the limit of the terms that involve infinity and see if they converge to a value or not. Take for example, $f(x) = -e^{-x}$
+\[
+    \int_0^{\infty} e^{-x}dx = -e^{x}\Big|_0^{\infty} = \left(\lim_{x\to \infty} -e^{-x}\right) + 1 = 1
+\]
+
+
+\end{frame}
+
+\begin{frame}{Arc Length and Surface Area}
+
+We now introduce two new integral forms. These are integrals for 1D functions which have geometrical interpretations. 
+
+    Arc Length (of $f(x)$ over the interval $[a, b]$)
+    \[
+        \int_a^b \sqrt{1 + (f'(x))^2}dx
+    \]
+    Surface Area (by rotating $f(x)$ about the x-axis on $[a,b]$)
+    \[
+        \int_a^b f(x)\sqrt{1 + (f'(x))^2}dx
+    \]
+
+\end{frame}
+
+
+\end{document}

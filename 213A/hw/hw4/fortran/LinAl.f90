@@ -5,9 +5,9 @@ integer, save :: msize, nsize
 real, dimension(:,:), allocatable, save :: mat
 contains
 
-  !********************************************************
+!********************************************************
 
-  subroutine readMat(filename)
+subroutine readMat(filename)
 
     implicit none
     character(len=*) :: filename
@@ -292,26 +292,37 @@ end function str
     !check if A is singular
     ! check if diagonal entries are zero
     
+    ! books algorithm (creates R*R)
+     do i = 1, ma
+         do j = i+1, ma
+             A(j, j:ma) = A(j, j:ma) - A(i, j:ma)*(A(i, j)/A(i, i))
+         end do
+         A(i, i:ma) = A(i, i:ma)/sqrt(A(i, i))
+     end do
+ 
     !do loop over the lower triangle of A (plus diagonal)
-    A(1, 1) = sqrt(A(1, 1))
-    do i = 2, ma
-            A(i, 1) = A(i, 1)/A(1, 1)
-    end do
-    do j = 2, ma
-        !Ljj = sqrt(a_jj - sum_k=1^j-1 ljk(ljk)*)
-        A(j, j) = sqrt(A(j, j) - sum(A(j, 1:j-1)**2))
-        do i = j+1, ma
-            !Lij = aij - sum_k=1^j-1 lik(ljk)^*
-            A(i, j) = (A(i, j) - sum(A(i, 1:j-1)*A(j, 1:j-1)))/A(j, j)
-        end do
-    end do
+!    do i = 2, ma
+!            A(i, 1) = A(i, 1)/A(1, 1)
+!    end do
+!    A(1, 1) = sqrt(A(1, 1))
+!    do j = 2, ma
+!        !Ljj = sqrt(a_jj - sum_k=1^j-1 ljk(ljk)*)
+!        do i = j+1, ma
+!            !Lij = aij - sum_k=1^j-1 lik(ljk)^*
+!            A(i, j) = (A(i, j) - sum(A(i, 1:j-1)*A(j, 1:j-1)))/A(j, j)
+!        end do
+!        A(j, j) = sqrt(A(j, j) - sum(A(j, 1:j-1)**2))
+!    end do
 
-    !clears upper triangular region of A
-    do j = 2, ma
-        do i = 1, j-1
-            A(i, j) = 0.0
-        end do  
-    end do
+    !`A = transpose(A)
+    
+
+!    clears upper triangular region of A
+!    do j = 2, ma
+!        do i = 1, j-1
+!            A(i, j) = 0.0
+!        end do  
+!    end do
         
   end subroutine cholesky
 

@@ -56,8 +56,8 @@ Program Driver_LinAl
 
   !constructing Vandermonde matrix A1
   do j = 1, na
-    As(:, j) = data2(:, 1)**(20 - j)
-    Bs(j, 1) = data2(j, 2)
+    As(:, j) = data(:, 1)**(j-1)
+    Bs(j, 1) = data(j, 2)
   end do
 
   A1 = As

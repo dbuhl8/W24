@@ -272,9 +272,9 @@ end function str
     integer :: i, j
     Y = 0. 
      
-    Y(1, :) = B(1, :)
+    Y(1, :) = B(1, :)/L(1, 1)
     do i = 2, ma
-        Y(i, :) = B(i, :) - matmul(L(i, 1:i-1), Y(1:i-1, :))
+        Y(i, :) = (B(i, :) - matmul(L(i, 1:i-1), Y(1:i-1, :)))/L(i, i)
     end do
 
   end subroutine forwardsub
@@ -290,15 +290,7 @@ end function str
     real :: A(:, :)
 
     !check if A is singular
-    ! check if diagonal entries are zero
-    
-    ! books algorithm (creates R*R)
-    ! do i = 1, ma
-    !     do j = i+1, ma
-    !         A(j, j:ma) = A(j, j:ma) - A(i, j:ma)*(A(i, j)/A(i, i))
-    !     end do
-    !     A(i, i:ma) = A(i, i:ma)/sqrt(A(i, i))
-    ! end do
+    !how tho lol?
     
     !clears upper triangular region of A
     do j = 2, ma
@@ -306,22 +298,12 @@ end function str
             A(i, j) = 0.0
         end do  
     end do
-    !call printmat(A, ma, ma)
 
  
-    !do loop over the lower triangle of A (plus diagonal)
     A(:, 1) = A(:, 1)/sqrt(A(1, 1))
     do j = 2, ma
         A(j, j) = sqrt(A(j, j) - sum(A(j, 1:j-1)**2))
-        !print *, "Factors of the cholesky factorization"
-        !call printmat(transpose(A(j:j, 1:j-1)), j-1, 1)
-        !call printmat(A(j+1:ma, 1:j-1), ma-j, j-1)
-        !call printmat(matmul(A(j+1:ma, 1:j-1), transpose(A(j:j, 1:j-1))), j-1, 1)
         A(j+1:ma, j:j) = (A(j+1:ma, j:j) - matmul(A(j+1:ma, 1:j-1), transpose(A(j:j, 1:j-1))))/A(j, j)
-        !call printmat(A, ma, ma)
-        !do i = j+1, ma
-            !A(i, j) = (A(i, j) - sum(A(i, 1:j-1)*A(j, 1:j-1)))/A(j, j)
-        !end do
     end do
             
   end subroutine cholesky
@@ -338,6 +320,7 @@ end function str
     !call forward sub for Ly = b
     call forwardsub(L, B, X, ml, mb)
     B = X
+    !call printmat(B, mb, 1)
     !call backward sub for L*x = y
     call backsub(transpose(L), B, X, ml, mb)
 
@@ -357,40 +340,54 @@ end function str
     real :: norm
     integer :: i, j
 
-    print *, "entered householder call"
-
     R = 0.0
 
     !start loop
-    do i = 1, na
-        allocate(x(i:ma, 1))
+    do i = 1, na    
+        allocate(x(ma-i+1, 1))
+        x = 0
     
         !take column below the diagonal 
         x(:, 1) = A(i:ma, i)
-        print *, "got past x vec assingment"
+!        print *, "gets past x assignment"
 
         !make vector x = sign(x1)twonorm(x)ihat + x
         call twonorm(x(:, 1), norm)
-        x(i, 1) = x(i, 1) + (x(i, 1)/abs(x(i, 1)))*norm
-        print *, "got past the x vec creation"
+        x(1, 1) = x(1, 1) + (x(1, 1)/abs(x(1, 1)))*norm
+!        print *, "gets past x to v"
         
         !normalize x
         call twonorm(x(:, 1), norm)
         x = x/norm
-        print *, "got past xvec norm"
+!        print *, "gets past v normalization"
 
         ! Multiply A by the householder reflector
-        A(i:ma, i:na) = A(i:ma, i:na) - 2*matmul(matmul(x, transpose(x)), A(i:ma, i:na))
+        A(i:ma, i:na) = A(i:ma, i:na) - 2*matmul(x, matmul(transpose(x), A(i:ma, i:na)))
         R(i) = A(i, i)
         A(i, i) = 0
         A(i:ma, i) = x(:, 1)
-        print *, "got past I-th step"
+!        print *, "gets past A manipulation"
         deallocate(x)
-
+        
     !end loop
     end do
 
   end subroutine householderQR
+
+  subroutine ident(I, ma)
+
+    implicit none
+
+    integer, intent(in) :: ma
+    real :: I(:, :)
+    integer :: k
+
+    I = 0.0
+    do k = 1, ma
+        I(k, k) = 1.0
+    end do  
+
+  end subroutine ident
 
   subroutine formQstar(A, Q, ma, na)
 
@@ -400,17 +397,27 @@ end function str
     integer :: i, j
     real :: A(:, :),  Q(:, :)
     real, dimension(ma, ma) :: eye, Qi, QTEMP
+    
+    ! Q = Q1...QN
 
+    ! Qi = | I 0 |
+    !      | 0 H |
+    
+    ! H = I - 2vv^T
+
+    ! QTEMP = 2
+    ! from i = n to 1
+    ! QTEMP = Qi QTEMP
+    
     eye = 0.0
-
-    do i = 1, ma
-        eye(i, i) = 1
-    end do
+    call ident(eye, ma)
+    
     QTEMP = eye
 
-    do i = 1, na
+    do j = 1, na
+        i = na - j + 1
         Qi = eye
-        Qi(i:ma, i:ma) = Qi(i:ma, i:ma) - 2*matmul(Q(i:ma, i:i), transpose(Q(i:ma, i:i)))
+        Qi(i:ma, i:ma) = Qi(i:ma, i:ma) - 2*matmul(A(i:ma, i:i), transpose(A(i:ma, i:i))) ! H = I - 2vv^T
         QTEMP = matmul(Qi, QTEMP)
     end do
     Q = QTEMP(:, 1:na) 

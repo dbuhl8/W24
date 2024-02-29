@@ -11,6 +11,7 @@ Program Driver_LinAl
   logical :: isSingular
   real, allocatable :: A1(:, :), B1(:, :), X1(:, :), As(:, :), Bs(:, :), E1(:, :), ATA(:, :), ATB(:, :)
   real, allocatable :: R(:, :), Q(:, :)
+  real, allocatable :: eye(:, :)
   real, dimension(ma) :: rvec
   real, dimension(20, 2) :: data, data2
   real, dimension(1, 2) :: datapivot
@@ -27,7 +28,7 @@ Program Driver_LinAl
 
 !  ma = msize
   allocate(A1(ma, na), B1(mb, nb), X1(na, nb), E1(mb, nb), As(ma, na), Bs(mb, nb), ATA(na, na), ATB(na, nb))
-  allocate(R(na, na), Q(ma, na))
+  allocate(R(na, na), Q(ma, na), eye(na, na))
   !note that ma = mb, na = mata = matb
   A1 = 0.0
   As = 0.0
@@ -59,6 +60,15 @@ Program Driver_LinAl
   B1 = Bs
   ATB = matmul(transpose(As), Bs)
 
+  print *, "Vandermonde Matrix from Atkinson.dat"
+  call printmat(As, ma, na)
+  print *, " "
+    
+  print *, "Y val Matrix from Atkinson.dat"
+  call printmat(Bs, mb, nb)
+  print *, " "
+
+
 
   print *, " "
   print *, "--------------------------------------------------------------"
@@ -66,12 +76,16 @@ Program Driver_LinAl
   print *, "Question 1: Cholesky Factorization"
   print *, " "
 
-  print *, "Vandermonde Matrix for from Atkinson.dat"
-  call printmat(As, ma, na)
-  print *, " "
+!  print *, "Vandermonde Matrix for from Atkinson.dat"
+!  call printmat(As, ma, na)
+!  print *, " "
     
-  print *, "Vandermonde Matrix (Normalized) for from Atkinson.dat"
+  print *, "Vandermonde Matrix (Normalized) from Atkinson.dat"
   call printmat(ATA, mata, na)
+  print *, " "
+
+  print *, " ATB before cholesky factorization"
+  call printmat(ATB, matb, nb)
   print *, " "
 
   call cholesky(ATA, mata, isSingular, tol)
@@ -83,7 +97,7 @@ Program Driver_LinAl
   print *, "ATA after cholesky factorization"
   call printmat(ATA, mata, na)
   print *, " "
-    
+
   if (.not. isSingular) then  
       call LLsolve(ATA, ATB, X1, mata, matb)
     
@@ -107,46 +121,51 @@ Program Driver_LinAl
   print *, "Question 2: QR Solution of the Least-Squares Problem"
   print *, " "
 
-! A1 = As
-! B1 = Bs
-! X1 = 0.0
-! E1 = 0.0
+  A1 = As
+  B1 = Bs
+  X1 = 0.0
+  E1 = 0.0
 
-! print *, "Matrix A before QR"
-! call printmat(A1, ma, na)  
-! print *, "does this even get printed?"
+  print *, "Matrix A before QR"
+  call printmat(A1, ma, na)  
 
-! call householderQR(A1, rvec, ma, na, isSingular, tol)
-! if (.not. isSingular) then
-!   print *, "Matrix A1, after QR"
-!   call printmat(A1, ma, na)
+  call householderQR(A1, rvec, ma, na, isSingular, tol)
+  if (.not. isSingular) then
+    print *, "Matrix A1, after QR"
+    call printmat(A1, ma, na)
 
-!   call formR(A1, R, rvec, na)
-!   call formQstar(A1, Q, ma, na)
+    call formR(A1, R, rvec, na)
+    call formQstar(A1, Q, ma, na)
 
-!   print *, "Matrix R, after QR"
-!   call printmat(R, na, na)
-!   print *, "Matrix Q, after QR"
-!   call printmat(transpose(Q), ma, na)
+    print *, "Matrix R, after QR"
+    call printmat(R, na, na)
+    print *, "Matrix Q, after QR"
+    call printmat(transpose(Q), ma, na)
+    print *, "Matrix QTQ, after QR"
+    call printmat(matmul(transpose(Q), Q), na, na)
+    call ident(eye, na)
+    call frobnorm(matmul(transpose(Q), Q) - eye, norm)
+    print *, "Frob Norm of QTQ - 1: ", norm
 
-!   B1 = matmul(Q, B1)
 
-!   call backsub(R, B1, X1, ma, mb) 
+    B1 = matmul(transpose(Q), B1)
 
-!   E1 = matmul(As, X1) - Bs
-!   print *, "Matrix X"
-!   call printmat(X1, mb, nb)
-!   print *, "Matrix E"
-!   call printmat(E1, mb, nb)
-!   
-!   call frobnorm(E1, norm)
-!     print *, "Frobenious norm of the error is: ", norm
-!else 
-!  print *, "The Matrix is Singular"
-!end if
+    call backsub(R, B1, X1, na, mb) 
 
-!print *, " "
-!print *, "--------------------------------------------------------------"
+    E1 = matmul(As, X1) - Bs
+    print *, "Matrix X"
+    call printmat(X1, mb, nb)
+    print *, "Matrix E"
+    call printmat(E1, mb, nb)
+    
+    call frobnorm(E1, norm)
+      print *, "Frobenious norm of the error is: ", norm
+ else 
+   print *, "The Matrix is Singular"
+ end if
+
+ print *, " "
+ print *, "--------------------------------------------------------------"
 ! print *, " "
 ! print *, "Question 5: Application Problem"
 ! print *, " "

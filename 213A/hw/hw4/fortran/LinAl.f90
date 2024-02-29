@@ -317,64 +317,52 @@ end function str
     integer, intent(in) :: ml, mb
     real :: B(:, :), X(:, :)
 
-    !call forward sub for Ly = b
     call forwardsub(L, B, X, ml, mb)
     B = X
-    !call printmat(B, mb, 1)
-    !call backward sub for L*x = y
     call backsub(transpose(L), B, X, ml, mb)
 
   end subroutine LLsolve
 
-  subroutine householderQR(A, R, ma, na, isSingular, tol)
-    !this routine takes A (some m by n matrix) and returns a matrix with an upper triangular R without the diagonal and the
-    !vectors that form Q on/below the diagonal 
+  subroutine householderQR(A, Rvec, ma, na, isSingular, tol)
+    !this routine takes A (some m by n matrix) and returns a matrix with an upper triangular R (diagonal entries of R are
+    !stores in rvec and the vectors that form Q on/below the diagonal 
 
     implicit none
 
     integer, intent(in) :: ma, na
     real, intent(in) :: tol
     logical :: isSingular
-    real :: A(:, :), R(:)
+    real :: A(:, :), Rvec(:)
     real, allocatable :: x(:, :)
     real :: norm
     integer :: i, j
 
-    R = 0.0
+    Rvec = 0.0
 
-    !start loop
     do i = 1, na    
         allocate(x(ma-i+1, 1))
         x = 0
-    
         !take column below the diagonal 
         x(:, 1) = A(i:ma, i)
-!        print *, "gets past x assignment"
-
         !make vector x = sign(x1)twonorm(x)ihat + x
         call twonorm(x(:, 1), norm)
         x(1, 1) = x(1, 1) + (x(1, 1)/abs(x(1, 1)))*norm
-!        print *, "gets past x to v"
-        
         !normalize x
         call twonorm(x(:, 1), norm)
         x = x/norm
-!        print *, "gets past v normalization"
-
         ! Multiply A by the householder reflector
         A(i:ma, i:na) = A(i:ma, i:na) - 2*matmul(x, matmul(transpose(x), A(i:ma, i:na)))
-        R(i) = A(i, i)
+        Rvec(i) = A(i, i)
         A(i, i) = 0
         A(i:ma, i) = x(:, 1)
-!        print *, "gets past A manipulation"
         deallocate(x)
         
-    !end loop
     end do
 
   end subroutine householderQR
 
   subroutine ident(I, ma)
+    ! returns an ma x ma identity matrix. 
 
     implicit none
 
@@ -390,6 +378,8 @@ end function str
   end subroutine ident
 
   subroutine formQstar(A, Q, ma, na)
+    ! takes A such that on/below diagonal the vectors vi that compose qi are in the ith column of A. 
+    ! returns Q = Q1...QN
 
     implicit none
 
@@ -425,6 +415,8 @@ end function str
   end subroutine formQstar
     
   subroutine formR(A, R, rvec, na)
+    ! takes in A such that above the diagonal are the above diagonal entries of R, and the diagonal entries are in rvec. 
+    ! returns and na x na matrix R
 
     implicit none
 
@@ -447,7 +439,8 @@ end function str
   end subroutine formR
 
   !subroutine checksingular(A, ma)
-
+    ! this hasn't been implemented yet :)
+    ! See ya later Nate!
   !end subroutine checksingular
 
   subroutine frobnorm(A, norm)

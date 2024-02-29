@@ -1,0 +1,17 @@
+
+
+Hi Nate, 
+
+Here is a little rundown of my code. The makefile will run and compile both the Cholesky and Householder QR methods in one command. It will produce the .o, .exe. and .dat files are normal. The .dat files are for plotting the linear regressions with gnuplot. 
+
+In order to make changes to the code, such as changing the order of the polynomial regression, please adjust the parameter "na" at the top of the Driver fortran file. This is essentially the number of columns of A, so if na = 5 the polynomial created will be an n-1 degree polynomial regression. 
+
+If you would like to use gnuplot yourself the commands needed to reproduce the plot are as follows:
+(in terminal)
+-> gnuplot
+(once in gnuplot)
+-> plot "plot.dat" u 1:2, "regression.dat" u 1:2 w l
+
+This should work even for other data files which you might create and test the code on. 
+
+

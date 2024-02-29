@@ -128,6 +128,7 @@ Let $P \in \R^{m \times m}$ be a nonzero projector.
         \]
 
         ($\impliedby$) If $||P||_2 = 1$, then $P$ is an orthogonal projector (i.e. $P^T = P$)
+
         We begin by looking at the definition of the two norm for matrices. We have, 
         \[
             ||P||_2 = \sup_{x} \frac{||Px||_2}{||x||_2} = 1
@@ -149,11 +150,7 @@ Let $P \in \R^{m \times m}$ be a nonzero projector.
         \[
             P^TPx = PPx, \implies P^Ty = Py
         \]
-        This does not identically imply that $P^T = P$. This is because $y$ could simply be an eigenvector with the same eigenvalue for both $P^T$ and $P$. 
-        \[
-            P^TP = \I
-        \]
-        
+        This implies that for any vector in the span of $v$ (We take $P: \R^m \to \vecspan(v)$), that $P^T = P$. Moreover we have that for any vector $x$, $P^TP = P^2$. If we take $P$ to be invertible, we have that $P^T = P$. Therefore, we have that $P$ is idempotent and symmetric, making it an orthogonal projector. 
         
     \end{proof}
 

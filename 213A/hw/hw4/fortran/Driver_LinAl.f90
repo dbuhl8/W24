@@ -7,7 +7,7 @@ Program Driver_LinAl
   character(len=100) :: myFileName
   integer :: i,j
   real, parameter :: pi = 4.*atan(1.0), tol = 10.0**(-14)
-  integer, parameter :: ma = 20, mb = 20, na = 10, nb = 1, mata = 10, matb = 10
+  integer, parameter :: ma = 20, mb = 20, na = 10, nb = 1, mata = 10, matb = 10, nsteps = 1000
   logical :: isSingular
   real, allocatable :: A1(:, :), B1(:, :), X1(:, :), As(:, :), Bs(:, :), E1(:, :), ATA(:, :), ATB(:, :)
   real, allocatable :: R(:, :), Q(:, :)
@@ -15,7 +15,8 @@ Program Driver_LinAl
   real, dimension(ma) :: rvec
   real, dimension(20, 2) :: data, data2
   real, dimension(1, 2) :: datapivot
-  real :: norm
+  real, dimension(nsteps, 2) :: regression
+  real :: norm, xstart, xstop, dx
 
   isSingular = .false.
 
@@ -84,19 +85,19 @@ Program Driver_LinAl
   call printmat(ATA, mata, na)
   print *, " "
 
-  print *, " ATB before cholesky factorization"
-  call printmat(ATB, matb, nb)
-  print *, " "
+! print *, " ATB before cholesky factorization"
+! call printmat(ATB, matb, nb)
+! print *, " "
 
   call cholesky(ATA, mata, isSingular, tol)
 
-  print *, "LL* after cholesky factorization"
-  call printmat(matmul(ATA, transpose(ATA)), mata, na)
-  print *, " "
+! print *, "LL* after cholesky factorization"
+! call printmat(matmul(ATA, transpose(ATA)), mata, na)
+! print *, " "
 
-  print *, "ATA after cholesky factorization"
-  call printmat(ATA, mata, na)
-  print *, " "
+! print *, "ATA after cholesky factorization"
+! call printmat(ATA, mata, na)
+! print *, " "
 
   if (.not. isSingular) then  
       call LLsolve(ATA, ATB, X1, mata, matb)
@@ -106,11 +107,38 @@ Program Driver_LinAl
     
       E1 = matmul(As, X1) - Bs
     
-      print *, "Matrix E1"
-      call printmat(E1, mb, nb)
+!     print *, "Matrix E1"
+!     call printmat(E1, mb, nb)
 
       call frobnorm(E1, norm)
       print *, "Frobenious norm of the error is: ", norm
+
+    !generating regression
+    xstart = data(1, 1)
+    xstop = data(ma, 1)
+    dx = (xstop - xstart)/nsteps
+
+    regression = 0.0
+    
+    do i = 1, nsteps
+        regression(i, 1) = xstart + dx*(i-1)
+    end do
+    do i = 1, na
+        regression(:, 2) = regression(:, 2) + (regression(:, 1)**(i-1))*X1(i, 1)
+    end do
+    
+    !writing data and regression to a file for gnuplot
+    open(15, file="plot.dat")
+    do i = 1, ma
+        write(15, "(2F10.3)") data(i, :)
+    end do
+    close(15)
+    open(15, file="regression.dat")
+    do i = 1, nsteps
+        write(15, "(2F10.3)") regression(i, :)
+    end do
+    close(15)
+   
   else 
     print *, "The matrix is singular"
   end if
@@ -126,26 +154,35 @@ Program Driver_LinAl
   X1 = 0.0
   E1 = 0.0
 
-  print *, "Matrix A before QR"
-  call printmat(A1, ma, na)  
+!  print *, "Matrix A before QR"
+!  call printmat(A1, ma, na)  
 
   call householderQR(A1, rvec, ma, na, isSingular, tol)
   if (.not. isSingular) then
-    print *, "Matrix A1, after QR"
-    call printmat(A1, ma, na)
+!    print *, "Matrix A1, after QR"
+!    call printmat(A1, ma, na)
 
     call formR(A1, R, rvec, na)
     call formQstar(A1, Q, ma, na)
 
-    print *, "Matrix R, after QR"
-    call printmat(R, na, na)
-    print *, "Matrix Q, after QR"
-    call printmat(transpose(Q), ma, na)
-    print *, "Matrix QTQ, after QR"
-    call printmat(matmul(transpose(Q), Q), na, na)
+!    print *, "Matrix R, after QR"
+!    call printmat(R, na, na)
+!    print *, "Matrix Q, after QR"
+!    call printmat(transpose(Q), ma, na)
+!    print *, "Matrix QTQ, after QR"
+!    call printmat(matmul(transpose(Q), Q), na, na)
     call ident(eye, na)
-    call frobnorm(matmul(transpose(Q), Q) - eye, norm)
-    print *, "Frob Norm of QTQ - 1: ", norm
+    print *, "Matrix I - QTQ"
+    call printmat(eye - matmul(transpose(Q), Q), na, na)
+    call frobnorm(eye - matmul(transpose(Q), Q), norm)
+    print *, "Frob Norm of I - QTQ: ", norm
+    print *, "Matrix A - QR"
+    call printmat(As - matmul(Q, R), ma, na)
+    call frobnorm(As - matmul(Q, R), norm)
+    print *, "Frob Norm of A - QR: ", norm
+
+
+
 
 
     B1 = matmul(transpose(Q), B1)
@@ -155,8 +192,8 @@ Program Driver_LinAl
     E1 = matmul(As, X1) - Bs
     print *, "Matrix X"
     call printmat(X1, mb, nb)
-    print *, "Matrix E"
-    call printmat(E1, mb, nb)
+!    print *, "Matrix E"
+!    call printmat(E1, mb, nb)
     
     call frobnorm(E1, norm)
       print *, "Frobenious norm of the error is: ", norm
@@ -166,42 +203,7 @@ Program Driver_LinAl
 
  print *, " "
  print *, "--------------------------------------------------------------"
-! print *, " "
-! print *, "Question 5: Application Problem"
-! print *, " "
-! 
-! !Aa = reshape((/ -3., 2., 1., 1., 2., 1., pi, exp(1.0), 1. /), shape(Aa))
-! Aa = reshape((/ -3., 1., pi, 2., 2., exp(1.), 1., 1., 1. /), shape(Aa))
-! Ba = reshape((/ 5., 3., -sqrt(2.0) /), shape(Ba))
-! call printmat(Ba, 3, 1)
-! Xa = 0.0
-! print *, "In order to find the equation for the plane, we simply need to solve the Linear System, AX = B"
-! print *, "Here is matrix A"
-! call printmat(Aa, 3, 3)
 
-! call LU(Aa, 3, isSingular, Pa)
-! if (.not. isSingular) then
-!   call LUsolve(Aa, 3, Ba, Xa, 1, Pa)
-!   print *, "The solution is:"
-!   call printmat(Xa, 3, 1)
-
-!   Aa = reshape((/ -3., 1., pi, 2., 2., exp(1.), 1., 1., 1. /), shape(Aa))
-! Ba = reshape((/ 5., 3., -sqrt(2.0) /), shape(Ba))
-
-!   Xa = Ba - matmul(Aa, Xa)
-!   print *, "The error is:"
-!   call printmat(Xa, 3, 1)
-
-!   call twonorm(Xa(:, 1), 3, norm)
-!   print *, norm
-!   
-!   print *, "The permutation vector is"
-!   print *, Pa(:)
-! else
-!   print *, "The matrix A is singular!"
-! end if
-!   
-
-  deallocate(A1, As, B1, Bs, X1, E1)
+  deallocate(A1, B1, X1, E1, As, Bs, ATA, ATB, R, Q, eye)
 
 End Program Driver_LinAl

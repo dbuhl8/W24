@@ -7,9 +7,9 @@ Program Driver_LinAl
   character(len=100) :: myFileName
   integer :: i,j
   real, parameter :: pi = 4.*atan(1.0), tol = 10.0**(-14)
-  integer, parameter :: ma = 20, mb = 20, na = 20, nb = 1
+  integer, parameter :: ma = 20, mb = 20, na = 10, nb = 1, mata = 10, matb = 10
   logical :: isSingular
-  real, allocatable :: A1(:, :), B1(:, :), X1(:, :), As(:, :), Bs(:, :), E1(:, :)
+  real, allocatable :: A1(:, :), B1(:, :), X1(:, :), As(:, :), Bs(:, :), E1(:, :), ATA(:, :), ATB(:, :)
   real, allocatable :: R(:, :), Q(:, :)
   real, dimension(ma) :: rvec
   real, dimension(20, 2) :: data, data2
@@ -26,8 +26,9 @@ Program Driver_LinAl
 !  close(10)
 
 !  ma = msize
-  allocate(A1(ma, na), B1(mb, nb), X1(mb, nb), E1(mb, nb), As(ma, ma), Bs(mb, nb))
+  allocate(A1(ma, na), B1(mb, nb), X1(na, nb), E1(mb, nb), As(ma, na), Bs(mb, nb), ATA(na, na), ATB(na, nb))
   allocate(R(na, na), Q(ma, na))
+  !note that ma = mb, na = mata = matb
   A1 = 0.0
   As = 0.0
   B1 = 0.0
@@ -45,23 +46,18 @@ Program Driver_LinAl
         read(10, *)  data(i, :)
     end do
   close(10)
-  
-  !pivoting data to improve cholesky
-  !datapivot(1, :) = data(1, :)
-  do i = 1, 20
-    data2(i, :) = data(21 - i, :)
-  end do
- ! data(20, :) = datapivot(1, :)
-
 
   !constructing Vandermonde matrix A1
   do j = 1, na
     As(:, j) = data(:, 1)**(j-1)
-    Bs(j, 1) = data(j, 2)
+    !Bs(j, 1) = data(j, 2)
   end do
+  Bs(:, 1) = data(:, 2)
 
   A1 = As
+  ATA = matmul(transpose(As), As)
   B1 = Bs
+  ATB = matmul(transpose(As), Bs)
 
 
   print *, " "
@@ -73,14 +69,23 @@ Program Driver_LinAl
   print *, "Vandermonde Matrix for from Atkinson.dat"
   call printmat(As, ma, na)
   print *, " "
+    
+  print *, "Vandermonde Matrix (Normalized) for from Atkinson.dat"
+  call printmat(ATA, mata, na)
+  print *, " "
 
-  call cholesky(A1, ma, isSingular, tol)
+  call cholesky(ATA, mata, isSingular, tol)
 
-  call printmat(A1, ma, ma)
+  print *, "LL* after cholesky factorization"
+  call printmat(matmul(ATA, transpose(ATA)), mata, na)
+  print *, " "
+
+  print *, "ATA after cholesky factorization"
+  call printmat(ATA, mata, na)
   print *, " "
     
   if (.not. isSingular) then  
-      call LLsolve(A1, B1, X1, ma, nb)
+      call LLsolve(ATA, ATB, X1, mata, matb)
     
       print *, "Matrix X1"
       call printmat(X1, mb, nb)
@@ -102,46 +107,46 @@ Program Driver_LinAl
   print *, "Question 2: QR Solution of the Least-Squares Problem"
   print *, " "
 
-  A1 = As
-  B1 = Bs
-  X1 = 0.0
-  E1 = 0.0
+! A1 = As
+! B1 = Bs
+! X1 = 0.0
+! E1 = 0.0
 
-  print *, "Matrix A before QR"
-  call printmat(A1, ma, na)  
-  print *, "does this even get printed?"
+! print *, "Matrix A before QR"
+! call printmat(A1, ma, na)  
+! print *, "does this even get printed?"
 
-  call householderQR(A1, rvec, ma, na, isSingular, tol)
-  if (.not. isSingular) then
-    print *, "Matrix A1, after QR"
-    call printmat(A1, ma, na)
+! call householderQR(A1, rvec, ma, na, isSingular, tol)
+! if (.not. isSingular) then
+!   print *, "Matrix A1, after QR"
+!   call printmat(A1, ma, na)
 
-    call formR(A1, R, rvec, na)
-    call formQstar(A1, Q, ma, na)
+!   call formR(A1, R, rvec, na)
+!   call formQstar(A1, Q, ma, na)
 
-    print *, "Matrix R, after QR"
-    call printmat(R, na, na)
-    print *, "Matrix Q, after QR"
-    call printmat(transpose(Q), ma, na)
+!   print *, "Matrix R, after QR"
+!   call printmat(R, na, na)
+!   print *, "Matrix Q, after QR"
+!   call printmat(transpose(Q), ma, na)
 
-    B1 = matmul(Q, B1)
+!   B1 = matmul(Q, B1)
 
-    call backsub(R, B1, X1, ma, mb) 
+!   call backsub(R, B1, X1, ma, mb) 
 
-    E1 = matmul(As, X1) - Bs
-    print *, "Matrix X"
-    call printmat(X1, mb, nb)
-    print *, "Matrix E"
-    call printmat(E1, mb, nb)
-    
-    call frobnorm(E1, norm)
-      print *, "Frobenious norm of the error is: ", norm
- else 
-   print *, "The Matrix is Singular"
- end if
+!   E1 = matmul(As, X1) - Bs
+!   print *, "Matrix X"
+!   call printmat(X1, mb, nb)
+!   print *, "Matrix E"
+!   call printmat(E1, mb, nb)
+!   
+!   call frobnorm(E1, norm)
+!     print *, "Frobenious norm of the error is: ", norm
+!else 
+!  print *, "The Matrix is Singular"
+!end if
 
- print *, " "
- print *, "--------------------------------------------------------------"
+!print *, " "
+!print *, "--------------------------------------------------------------"
 ! print *, " "
 ! print *, "Question 5: Application Problem"
 ! print *, " "

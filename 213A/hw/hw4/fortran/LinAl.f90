@@ -36,7 +36,7 @@ subroutine readMat(filename)
     ! Read matrix
     do i=1,msize
        read(10,*) ( mat(i,j), j=1,nsize )
-    enddo
+    end do
 
     close(10)
     
@@ -293,37 +293,37 @@ end function str
     ! check if diagonal entries are zero
     
     ! books algorithm (creates R*R)
-     do i = 1, ma
-         do j = i+1, ma
-             A(j, j:ma) = A(j, j:ma) - A(i, j:ma)*(A(i, j)/A(i, i))
-         end do
-         A(i, i:ma) = A(i, i:ma)/sqrt(A(i, i))
-     end do
+    ! do i = 1, ma
+    !     do j = i+1, ma
+    !         A(j, j:ma) = A(j, j:ma) - A(i, j:ma)*(A(i, j)/A(i, i))
+    !     end do
+    !     A(i, i:ma) = A(i, i:ma)/sqrt(A(i, i))
+    ! end do
+    
+    !clears upper triangular region of A
+    do j = 2, ma
+        do i = 1, j-1
+            A(i, j) = 0.0
+        end do  
+    end do
+    !call printmat(A, ma, ma)
+
  
     !do loop over the lower triangle of A (plus diagonal)
-!    do i = 2, ma
-!            A(i, 1) = A(i, 1)/A(1, 1)
-!    end do
-!    A(1, 1) = sqrt(A(1, 1))
-!    do j = 2, ma
-!        !Ljj = sqrt(a_jj - sum_k=1^j-1 ljk(ljk)*)
-!        do i = j+1, ma
-!            !Lij = aij - sum_k=1^j-1 lik(ljk)^*
-!            A(i, j) = (A(i, j) - sum(A(i, 1:j-1)*A(j, 1:j-1)))/A(j, j)
-!        end do
-!        A(j, j) = sqrt(A(j, j) - sum(A(j, 1:j-1)**2))
-!    end do
-
-    !`A = transpose(A)
-    
-
-!    clears upper triangular region of A
-!    do j = 2, ma
-!        do i = 1, j-1
-!            A(i, j) = 0.0
-!        end do  
-!    end do
-        
+    A(:, 1) = A(:, 1)/sqrt(A(1, 1))
+    do j = 2, ma
+        A(j, j) = sqrt(A(j, j) - sum(A(j, 1:j-1)**2))
+        !print *, "Factors of the cholesky factorization"
+        !call printmat(transpose(A(j:j, 1:j-1)), j-1, 1)
+        !call printmat(A(j+1:ma, 1:j-1), ma-j, j-1)
+        !call printmat(matmul(A(j+1:ma, 1:j-1), transpose(A(j:j, 1:j-1))), j-1, 1)
+        A(j+1:ma, j:j) = (A(j+1:ma, j:j) - matmul(A(j+1:ma, 1:j-1), transpose(A(j:j, 1:j-1))))/A(j, j)
+        !call printmat(A, ma, ma)
+        !do i = j+1, ma
+            !A(i, j) = (A(i, j) - sum(A(i, 1:j-1)*A(j, 1:j-1)))/A(j, j)
+        !end do
+    end do
+            
   end subroutine cholesky
 
   subroutine LLsolve(L, B, X, ml, mb)

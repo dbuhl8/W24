@@ -98,7 +98,7 @@ Program Driver_LinAl
       call LLsolve(ATA, ATB, X1, mata, matb)
     
       print *, "Matrix X1"
-      call printmat(X1, mb, nb)
+      call printmat(X1, matb, nb)
     
       E1 = matmul(As, X1) - Bs
     
@@ -128,7 +128,7 @@ Program Driver_LinAl
         write(15, "(2F10.3)") data1(i, :)
     end do
     close(15)
-    open(15, file="regression.dat")
+    open(15, file="chol.dat")
     do i = 1, nsteps
         write(15, "(2F10.3)") regression(i, :)
     end do
@@ -176,22 +176,31 @@ Program Driver_LinAl
     call frobnorm(As - matmul(Q, R), norm)
     print *, "Frob Norm of A - QR: ", norm
 
-
-
-
-
     B1 = matmul(transpose(Q), B1)
 
     call backsub(R, B1, X1, na, mb) 
 
     E1 = matmul(As, X1) - Bs
     print *, "Matrix X"
-    call printmat(X1, mb, nb)
+    call printmat(X1, matb, nb)
 !    print *, "Matrix E"
 !    call printmat(E1, mb, nb)
     
     call frobnorm(E1, norm)
-      print *, "Frobenious norm of the error is: ", norm
+    print *, "Frobenious norm of the error is: ", norm
+
+    regression(:, 2) = 0.0
+    do i = 1, na
+        regression(:, 2) = regression(:, 2) + (regression(:, 1)**(i-1))*X1(i, 1)
+    end do
+
+    open(15, file="qr.dat")
+    do i = 1, nsteps
+        write(15, "(2F10.3)") regression(i, :)
+    end do
+    close(15)
+
+
  else 
    print *, "The Matrix is Singular"
  end if

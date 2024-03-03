@@ -438,10 +438,18 @@ end function str
 
   end subroutine formR
 
-  !subroutine checksingular(A, ma)
+  subroutine checksingular(A, ma, isSingular, tol)
     ! this hasn't been implemented yet :)
     ! See ya later Nate!
-  !end subroutine checksingular
+    real :: A(:, :)
+    integer, intent(in) :: ma
+    logical :: isSingular
+    real, intent(in) :: tol
+
+    !checks the diagonal elements to see if they are zero (this would influence the backsub/forward sub
+    !a better way would be to 
+    
+  end subroutine checksingular
 
   subroutine frobnorm(A, norm)
     !computes ||A|| = sqrt(trace(A^TA))

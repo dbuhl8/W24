@@ -47,13 +47,81 @@ The cholesky decomposition is merely a special case of the LU factorization meth
     \[
         f(x) = 0.578 + 4.666x - 10.935 x^2 + 7.514x^3
     \]
+    Here is the corresponding plot with that polynomial. 
+    
+    \bmp{.95}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../fortran/cholesky3plot.png}
+    \emp
 
+\item The results of fitting a fifth degree polynomial are a frobenius norm of error at $||E||_F = 0.1418$. The coefficients build the following polynomial, 
+    \[
+        f(x) = 0.517 + 6.868x - 25.861x^2 + 44.908x^3 - 39.406x^4 + 14.816x^5
+    \]
+    Here is the corresponding plot with that polynomial. 
+    
+    \bmp{.95}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../fortran/cholesky5plot.png}
+    \emp
+
+\item Analytically, the maximum degree of this polynomial should be a ninteenth degree polynomial. Note that if we are solving with a 19th degree polynomial, that we have 20 equations with 20 unknowns. There should be one exact solution. As soon as there are more than 20 unknowns (i.e. 20+ degree polynomial), we now have an underdetermined system. Thus we cannot solve for all of the coefficients. Numerically, it is even less due to the nature of this domain of data and machine precision accuracy.
+
+\item 
+    The algorithm fails in single precision when one of the columns is filled with machine precision zero. The reason why is that at higher degree polynomials, we are taking an x value between 0 and 1, and raising it to a very high power. Take for example $x = 0.65$. We have, 
+    \[
+        x= 0.65, \quad x^{n} = 6.5^{n} \cdot 10^{-n}
+    \]
+    It becomes evident fairly quickly, that since $10 > 6.5$ that as n becomes large that $x^n$ will decay to zero, more specifically machine precision zero. For a data set $S$ with $x \in [0, 1)$ we will have that there is a value of $n$ large enough such that $x^n \le \epsilon_{\text{mach}}, \forall x \in S$. Once an entire column of the vandermonde matrix is machine precision zero, we will have that the matrix becomes singular and we can no longer perform a regression.  
 
 \end{enumerate}
 
 \section{QR Solution of the least-squares problem}
 \begin{enumerate}
-\item 
+\item  Explain how the Householder QR method works. 
+    
+    The householder QR method works by considering an orthogonalization of $A$. The method works by constructing $Q_i$ a block matrix containing an identity matrix and a householder reflector. We have that at each iteration, the columns of $A$ become orthogonalized in the following way.  $A_{i-1}$ is a matrix with zeros under the diagonal for columns $1, i-1$. When multplying by $Q_i$ we obtain a matrix now with zeros underneath the diagonal for columns $1, i$ and the column vectors of the block matrix $A_{i:m, i+1:n}$ are all orthogonal to $A_{i:m, i}$. By repeating this for all columns of $A$ we obtain the unitary matrix $Q = Q_1\cdots Q_n$ and the resulting matrix $Q^*A$ is an upper triangular matrix (with exception for the fact that it is rectangular). That is, $Q^*A = R = \left[\begin{array}{c} \hat{R} \\ 0\end{array}\right]$. 
+    \[
+        Q_i = \left[\begin{array}{c c} \I & 0 \\ 0 & H_i \end{array}\right], \quad 
+        Q_iA_{1:m, i} = \left[\begin{array}{c}a_{1} \\ \vdots\\ a_{i}' \\ 0 \\ \vdots\\ 0 \end{array}\right]
+    \]
+
+\item 3rd degree
+
+The results of fitting a fifth degree polynomial are a frobenius norm of error at $||E||_F = 0.1912$. The coefficients build the following polynomial, 
+    \[
+        f(x) = 0.578 + 4.666x - 10.936x^2 + 7.514x^3
+    \]
+    Here is the corresponding plot with that polynomial. 
+    
+    \bmp{.95}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../fortran/qr3plot.png}
+    \emp
+
+\item 5th degree
+
+The results of fitting a fifth degree polynomial are a frobenius norm of error at $||E||_F = 0.1403$. The coefficients build the following polynomial, 
+    \[
+        f(x) = 0.509 + 7.248x - 28.818x^2 + 53.261x^3 - 49.206x^4 + 18.878x^5
+    \]
+    Here is the corresponding plot with that polynomial. 
+    
+    \bmp{.95}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../fortran/qr5plot.png}
+    \emp
+
+\item When does it fail?
+    
+The QR method seems to hold up very long in single precision. It makes a reasonable regression all the way up to a 13th degree polynomial. Note that the plot looks very bad at this degree of polynomial as the numerical precision of calculating any term of degree 10 or more is very choppy. This is similar to the plotting issue seen in the first or second homework (plotting $(x-9)^8$ was much better than the expanded form). Also note that Cholesky Method begins to fail in single precision starting at 7th degree polynomials. It lasts much longer in double precision. In fact, one could even claim that the $QR$ method will continue to work all the way out to a ninteeth degree polynomial. Notice that at this degree, the regression is not smooth due to the same plotting errors and is also generally inaccurate, but it returns all real, finite coefficients. It can be argued whether QR fails, but compared to the cholesky method at this degree of polynomial (which returns all NAN for the coefficients) it is much better.
+
+\item For 5th order discuss, $A - QR$, $Q^TQ - I$. 
+    
+The error is as expected for single precision code. We get errors at orders of $10^{-6}$-$10^{-7}$. This is expected since sinple precision machine zero is $10^{-7}$. For double precision the error is at order $10^{-15}$. 
+    \[
+        ||A-QR||_F \approx 1.042\cdot10^{-6}, \quad ||Q^TQ - \I||_F \approx 6.398\cdot10^{-7}
+    \]
 
 \end{enumerate}
 

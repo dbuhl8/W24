@@ -2,19 +2,21 @@ OBJECTS = LinAl.o Driver_LinAl.o
 
 MODULES = LinAl.mod
 
+FFLAGS = #-fdefault-real-8 -fdefault-double-8 -fbounds-check 
+
 .PHONY: clean
 
 output.txt: LinAl.exe
-	./LinAl.exe > output.txt
+	./LinAl.exe > output.txt && gnuplot -c gplot.plt
 
 LinAl.exe: $(MODULES) $(OBJECTS)
 	gfortran $(OBJECTS) -o LinAl.exe
 
 %.o: %.f90
-	gfortran -c -fdefault-real-8 -fdefault-double-8 -fbounds-check $<
+	gfortran -c $(FFLAGS) $<
 
 %.mod: %.f90
-	gfortran -c -fdefault-real-8 -fdefault-double-8 -fbounds-check $<
+	gfortran -c $(FFLAGS) $<
 
 clean:
 	rm -f $(OBJECTS) $(MODULES) LinAl.exe

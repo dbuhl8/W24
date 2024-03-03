@@ -39,7 +39,15 @@
 
 \section{Cholesky Solution of the least-squares problem}
 \begin{enumerate}
-\item 
+\item How does the Cholesky Decomposition Work?
+
+The cholesky decomposition is merely a special case of the LU factorization method. It is designed to create a matrix $L$ such that $LL* = A$. That is, we find that $L$ is (with abuse of notation) a "square-root" of $A$ in matrix form. The algorithm is very simple, we start with the $l_{11}$ component of $L$. We have that $l_{11} = \sqrt{a_{11}}$. We proceed just like LU factorization except that the symmetry of $A$ allows us to perform half of the computations necessary (this is due to the symmetry of the problem). You can throw away half of the matrix $A$ (above the diagonal) upon entry and L wouldn't change. 
+
+\item The results of fitting a third degree polynomial are a frobenius norm of error at $||E||_F = 0.19127$. The coefficients build the following polynomial, 
+    \[
+        f(x) = 0.578 + 4.666x - 10.935 x^2 + 7.514x^3
+    \]
+
 
 \end{enumerate}
 

@@ -7,14 +7,14 @@ Program Driver_LinAl
   character(len=100) :: myFileName
   integer :: i,j
   real, parameter :: pi = 4.*atan(1.0), tol = 10.0**(-14)
-  integer, parameter :: ma = 20, mb = 20, na = 10, nb = 1, mata = 10, matb = 10, nsteps = 1000
+  integer, parameter :: ma = 20, mb = 20, na = 6, nb = 1, nsteps = 1000
+  integer, parameter :: mata = na, matb = na
   logical :: isSingular
   real, allocatable :: A1(:, :), B1(:, :), X1(:, :), As(:, :), Bs(:, :), E1(:, :), ATA(:, :), ATB(:, :)
   real, allocatable :: R(:, :), Q(:, :)
   real, allocatable :: eye(:, :)
   real, dimension(ma) :: rvec
-  real, dimension(20, 2) :: data, data2
-  real, dimension(1, 2) :: datapivot
+  real, dimension(20, 2) :: data1
   real, dimension(nsteps, 2) :: regression
   real :: norm, xstart, xstop, dx
 
@@ -23,11 +23,6 @@ Program Driver_LinAl
   
   myFileName = 'atkinson.dat'
 
-!  open(10,file=myFileName)
-!  read(10,*) msize,nsize
-!  close(10)
-
-!  ma = msize
   allocate(A1(ma, na), B1(mb, nb), X1(na, nb), E1(mb, nb), As(ma, na), Bs(mb, nb), ATA(na, na), ATB(na, nb))
   allocate(R(na, na), Q(ma, na), eye(na, na))
   !note that ma = mb, na = mata = matb
@@ -40,21 +35,21 @@ Program Driver_LinAl
   R = 0.0
   Q = 0.0
   rvec = 0.0
-  data = 0.0
-  datapivot = 0.0
+  data1 = 0.0
 
   open(10, file=myFileName)
     do i = 1, ma
-        read(10, *)  data(i, :)
+        read(10, *)  data1(i, :)
     end do
   close(10)
 
+!  call printmat(data1, 20, 2)
+
   !constructing Vandermonde matrix A1
   do j = 1, na
-    As(:, j) = data(:, 1)**(j-1)
-    !Bs(j, 1) = data(j, 2)
+    As(:, j) = data1(:, 1)**(j-1)
   end do
-  Bs(:, 1) = data(:, 2)
+  Bs(:, 1) = data1(:, 2)
 
   A1 = As
   ATA = matmul(transpose(As), As)
@@ -114,8 +109,8 @@ Program Driver_LinAl
       print *, "Frobenious norm of the error is: ", norm
 
     !generating regression
-    xstart = data(1, 1)
-    xstop = data(ma, 1)
+    xstart = data1(1, 1)
+    xstop = data1(ma, 1)
     dx = (xstop - xstart)/nsteps
 
     regression = 0.0
@@ -130,7 +125,7 @@ Program Driver_LinAl
     !writing data and regression to a file for gnuplot
     open(15, file="plot.dat")
     do i = 1, ma
-        write(15, "(2F10.3)") data(i, :)
+        write(15, "(2F10.3)") data1(i, :)
     end do
     close(15)
     open(15, file="regression.dat")

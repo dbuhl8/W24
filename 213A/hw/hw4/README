@@ -16,7 +16,7 @@ This should work even for other data files which you might create and test the c
 
 Note that the code currently reads data points from a file, and is hard coded to do a regression on 20 data points. Please change the parameters ma, mb, and so on if a different data set is used or if less or more data points are used. 
 
-Oh and it doesn't check if the matrix is singular at all. Thats my bad. 
+Oh and it doesn't check if the matrix is singular at all. Thats my bad. Next time I'm in office hours, can we talk about the best way to determine if a matrix is singular. Some thoughts are to take the determinant and see if it is below a threshold (which obviously has its own numerical stability issues), I could see if any one column or row is filled with machine precision zeros (but then there are cases where what if some zig-zagged arrange ment of zeros makes it singular) or the very very hardcoded and maybe well defined "check to see if the diagonal entries are zero after you finish LU or cholesky and if so the matrix was singular". None of them seem rationally sound or are very easy to do, so I've decidede to omit and perhaps resubmit with a well defined check singular function. 
 
 If you have any questions, you know where to find me.
 -Dante-

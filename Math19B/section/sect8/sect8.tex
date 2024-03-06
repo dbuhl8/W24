@@ -1,0 +1,131 @@
+\documentclass{beamer}
+
+\title{Section 8}
+\author{TA: Dante Buhl}
+\institute{UCSC Math-19B}
+\graphicspath{ {./images/} }
+\usepackage{verbatim}
+\usetheme{Antibes}
+\usecolortheme{beaver}
+\usefonttheme{serif}
+\usepackage{amsmath}
+\usepackage{pifont}
+
+
+\begin{document}
+
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+
+
+%Title
+\frame{\titlepage}
+
+\section{Agenda}
+\begin{frame}{Plan for Today}
+    Topics to Cover
+    \begin{itemize}
+        \item Infinite Sequences and Series
+        \item Convergence
+        \item Taylor Polynomials
+    \end{itemize}
+    Section Activity 8
+    \begin{itemize}
+        \item 5 question
+    \end{itemize}
+    Upcoming Assignments
+    \begin{itemize}
+        \item Homework 8 (Due Mon, Mar. $8^{th}$)
+        \item Project 2 (Due Fri, Mar. $15^{th}$)
+    \end{itemize}
+\end{frame}
+
+
+\section{Review}
+\begin{frame}{Learning Outcomes}
+    \begin{itemize}
+        \item Understanding the notion of sequences and series
+        \item Understanding what different convergence tests imply about a sequence or series
+        \item Applying the concept of Taylor Polynomials to complex functions. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sequences and Series}
+
+Sequences are collections of terms which are identified by an index. For example, the following sequence $S$ is a collection of terms $a_i$ identified by the index in the subscript, $i$.
+\[
+    S = \{ a_1, \cdots, a_n \}, a_i = f(n)
+\]
+
+An infinite series, is an infinite sum of terms. We can take for instance the sum of a sequence. 
+\[
+    \text{Infinite Series } = \sum_{i = 1}^\infty a_i 
+\]
+
+\end{frame}
+
+\begin{frame}{Convergence}
+
+For many sequences and series, the notion of convergence is often relevant or interesting. For example as we take $N$ to infinity, is $a_N$ finite? Does the sum $\sum_{i=1}^N a_n$ approach a value? To answer these questions we use some analytical tools:
+\begin{enumerate}
+    \item Integral Test
+    \item Comparison Test
+    \item Limit Comparison Test
+    \item Ratio Test
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Convergence Tests}
+
+Integral Test:
+\[
+    a_n = f(n), \quad \sum_{i=1}^{\infty} a_i \le \int_1^{\infty} f(x)dx
+\]
+Comparison Test:
+\[
+    0 \le a_n \le b_n, \forall n > 0, \quad \sum_{i=1}^{\infty} a_i \le \sum_{i=1}^{\infty} b_i
+\]
+\[
+    \text{if } \sum_{i=1}^{\infty} b_i < \infty \implies, \sum_{i=1}^{\infty} a_i < \infty
+\]
+\[
+    \text{if } \sum_{i=1}^{\infty} a_i \text{ diverges } \implies \sum_{i=1}^{\infty} b_i \text{ diverges }
+\]
+
+\end{frame}
+
+\begin{frame}{Convergence Tests}
+
+Ratio Test:
+\[
+    \rho = \lim_{n \to \infty} = \left| \frac{a_{n+1}}{a_n}\right|
+\]
+\[
+    \text{if } \rho < 1, \implies \sum a_n < \infty
+\]
+\[
+    \text{if } \rho > 1, \implies \sum a_n  \text{ diverges}
+\]
+\[
+    \text{if } \rho = 1, \text{ inconclusive }
+\]
+
+\end{frame}
+
+\begin{frame}{Taylor Polynomials}
+
+Taylor Polynomials (also known as Taylor Expansions) are very useful mathematical tools when you need to simplify a complex term in a local area. Say we want to fit a polynomial to $\sin(x)$ at $x = 1$. We use taylor expansion. 
+
+\[
+    T_n(x) = \sum_{i=0}^n \frac{(x - a)^i}{i!} f^{(i)}(a)
+\]
+\[
+    T_n(x) = f(a) + (x - a)f'(a) + \frac{f''(a)}{2!}(x - a)^2 + \frac{f'''(a)}{3!}(x - a)^3 + \cdots
+\]
+\[
+    T_3(x) = \sin(1) + (x - 1)\cos(1) - \frac{\sin(1)}{2}(x - 1)^2 - \frac{\cos(1)}{3!}(x - 1)^3
+\]
+\end{frame}
+
+
+\end{document}

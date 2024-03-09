@@ -6,10 +6,11 @@ nk = 30;  % number of kx increments
 kz = 1; % Assumes Lz = 2pi
 Pe = 1000;
 Re = 1000;
-Ri = 0.15;
+Ri = 0.3;
 
 
 f = 0;   % Floquet coefficients 
+hold on
 
 
 %Internal variables for code
@@ -94,8 +95,8 @@ for i=1:nk
 
 end
 
-plot(kx,lambda,'-o')
+plot(kx,lambda,'-o','DisplayName', strcat("Ri = ", string(Ri)))
 xlabel('k_x')
 ylabel('Re(\lambda)')
+legend()
 
-hold on

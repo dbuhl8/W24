@@ -1,5 +1,5 @@
 % Enter input variables here
-Nmax = 40;    %Number of Fourier modes to keep
+Nmax = 80;    %Number of Fourier modes to keep
 kxmin = 0.01; %Min value of kx
 kxmax = 1.5;   %Max value of kx
 kzmin = 0.01; %Min value of kx
@@ -8,7 +8,7 @@ nk = 30;  % number of kx/kz increments
 ky = 1; % Assumes Lz = 2pi
 Pe = 1000;
 Re = 1000;
-Ri = 10;
+Ri = 0.1;
 
 params = strcat("Re", string(Re), "Pe", string(Pe), "Ri", string(Ri))
 

@@ -1,10 +1,10 @@
 % Enter input variables here
-Nmax = 80;    %Number of Fourier modes to keep
+Nmax = 30;    %Number of Fourier modes to keep
 kxmin = 0.01; %Min value of kx
 kxmax = 1.5;   %Max value of kx
 kzmin = 0.01; %Min value of kx
 kzmax = 1.5;   %Max value of kx
-nk = 30;  % number of kx/kz increments
+nk = 70;  % number of kx/kz increments
 ky = 1; % Assumes Lz = 2pi
 Pe = 1000;
 Re = 1000;

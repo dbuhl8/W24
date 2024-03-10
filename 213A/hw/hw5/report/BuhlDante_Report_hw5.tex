@@ -1,0 +1,265 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{verbatim}
+\usepackage{xcolor}
+
+\title{Homework 5: Report}
+\author{Dante Buhl}
+\date{Feb. $26^{th}$ 2024}
+
+
+\DeclareMathOperator{\cond}{cond}
+\DeclareMathOperator{\vecspan}{span}
+\DeclareMathOperator{\sign}{sign}
+
+\begin{document}
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\I}{\mathrm{I}}
+\newcommand{\K}{\bs{\mathrm{K}}}
+\newcommand{\m}{\bs{\mu}_*}
+\newcommand{\s}{\bs{\Sigma}_*}
+\newcommand{\dt}{\Delta t}
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\Tr}[1]{\text{Tr}(#1)}
+
+\maketitle
+
+
+\setcounter{section}{1}
+
+\section{Numerical Problems}
+\begin{enumerate}
+    
+\item 
+   
+\end{enumerate}
+
+
+\section{Theory Problems}
+\begin{enumerate}
+
+\item %start of problem 1
+Consider the Householder matrix defined by
+\[
+    H = I - 2\frac{vv^T}{v^Tv}
+\] 
+\begin{enumerate}
+\item Show that for any nonzero vector v, the matrix is orthogonal
+and symmetric.
+
+\item  Let $a$ be any nonzero vector and let $v = a + \alpha e_1$ , where
+$\alpha = \sign(a_{11})||a||_2 $. Show that $Ha = -\alpha e_1$ by direct calculation.
+
+\item Determine $v$ and $\alpha$ that transforms,
+\[
+    H \left[\begin{array}{c} 1 \\1 \\1\\1\end{array}\right] = \left[\begin{array}{c} \alpha \\0\\0\\0\end{array}\right]
+\]
+\item Given the vector $a = (2, 3, 4)^T$ , specify a Householder trans-
+formation that annihilates the third component of $a$.
+
+\item What are the eigenvalues of $H$ for any nonzero vector $x$?
+\end{enumerate}
+
+\begin{enumerate}
+
+\item 
+\begin{proof}
+Begin by looking at the transpose of H. 
+\[
+    H^T = \left(\I - 2\frac{vv^T}{v^Tv}\right)^T
+\]
+\[
+    H^T = \I - \frac{2}{v^Tv} (vv^T)^T = \I - 2\frac{vv^T}{v^Tv} = H
+\]
+So we can immediately see that $H$ is symmetric. Next we look at $H^TH$.
+\[
+    H^TH = H^2 = \left(\I - 2\frac{vv^T}{v^Tv}\right)\left(\I - 2\frac{vv^T}{v^Tv}\right)
+\]
+\[
+    H^TH = \I - 2\frac{vv^T}{v^Tv} - 2\frac{vv^T}{v^Tv} + \frac{4}{(v^Tv)^2} vv^Tvv^T
+\]
+\[
+    H^TH = \I - 4\frac{vv^T}{v^Tv} + \frac{4 v^Tv}{(v^Tv)^2}vv^T = \I
+\]
+\[
+    H^TH = \I
+\]
+So we have that $H$ is orthogonal as well. 
+\end{proof}
+
+
+\item 
+\begin{proof}
+\[ 
+    v = a + \alpha e_1, \quad v^T = a^T + \alpha e_1^T
+\]
+\[
+    H = \I - 2\frac{vv^T}{v^Tv} 
+\]
+\[
+= \I - \frac{2}{a^Ta + 2\alpha a_1 + \alpha^2}\left(aa^T + \left[\begin{array}{c}\alpha a^T\\ \hline 0 \\ \hline \vdots \\ 0\end{array}\right] + \left[\begin{array}{c | c | c | c} \alpha a & 0 & \cdots & 0\end{array}\right] + \left[\begin{array}{c c c} \alpha^2 & 0 & \cdots \\ 0  & 0 & \cdots\\ \vdots & \vdots & \ddots\end{array}\right]\right) 
+\]
+We now multiply by $a$. 
+\[
+    Ha = a - \frac{2}{a^Ta + 2\alpha a_1 + \alpha^2}\left(aa^Ta + \left[\begin{array}{c}\alpha a^T\\ \hline 0 \\ \hline \vdots \\ 0\end{array}\right]a + \left[\begin{array}{c | c | c | c} \alpha a & 0 & \cdots & 0\end{array}\right]a + \left[\begin{array}{c c c} \alpha^2 & 0 & \cdots \\ 0  & 0 & \cdots\\ \vdots & \vdots & \ddots\end{array}\right]a\right) 
+\]
+Recall that $a^Ta = \alpha^2$. 
+\[
+    Ha = a - \frac{2}{\alpha^2 + 2\alpha a_1 + \alpha^2}\left(\alpha^2a + \alpha^3 e_1 + \alpha a_1 a + \alpha^2 a_1 e_1\right) 
+\]
+\[
+    Ha = a - \frac{\alpha}{\alpha(\alpha + a_1)}\left((\alpha + a_1)a + \alpha(\alpha + a_1) e_1\right)
+\]
+\[
+    Ha = a - a - \alpha e_1 = -\alpha e_1
+\]
+\[
+    Ha = -\alpha e_1
+\]
+\end{proof}
+
+\item
+\begin{proof}
+    We have evidently that $a = \left[\begin{array}{c} 1 \\ 1\\ 1\\1\end{array}\right]$. Therefore we have that $\alpha = -\sqrt{4}$ and $v = a + \sqrt{4}e_1$. (Note that in this specific case, I am not using $\alpha$ as the exact modifier in the $v$ vector but rather $-\alpha$. 
+\[
+    v = \left[\begin{array}{c} 1 + \sqrt{4}\\1\\1\\1\end{array}\right]
+\]
+\end{proof}
+
+
+\item 
+\begin{proof}
+    hey
+\end{proof}
+
+
+\end{enumerate}
+
+\item % start of problem 2
+The Schur decomposition theorem states that every square matrix $A\in \C^{m\times m}$ has a Schur Decomposition, $A = QUQ^*$, where $Q$ is a unitary and $U$ is upper triangular. Use this theorem to prove that, for an arbitrary norm $|| \dot ||$, 
+\[
+    \lim_{n\to \infty} ||A^n|| = 0 \Longleftrightarrow \rho(1) < 1
+\]
+(Note: Show the claim first with the 2-norm or the Frobenius norm and use the fact that all norms are equivalent in a finite vector space.)
+
+\item   % start of problem 3
+Let $A \in \C/\R^{m\times n}$ and $B \in \C/\R^{n \times m}$. Show that the matrices $\left[\begin{array}{c c} AB & 0 \\ B & 0\end{array}\right]$ and $\left[\begin{array}{c c} 0 & 0 \\ B & BA \end{array}\right]$ have the same eigenvalues. 
+
+\begin{proof}
+   
+    We start by looking at the determinant of block matrices. Take for example the matrix $\Gamma = \left[\begin{array}{c c} A & B \\ 0 & D\end{array}\right]$.
+    \[
+        \Gamma = \left[\begin{array}{c c} \I & 0 \\ 0 & D \end{array}\right]\left[\begin{array}{c c} \I & B \\ 0 & \I \end{array}\right] \left[\begin{array}{c c} A & 0 \\ 0 & \I\end{array}\right]
+    \]
+    We look at the determinant of $\Gamma$. 
+    \[
+        \det(\Gamma) = \det\left(\left[\begin{array}{c c} \I & 0 \\ 0 & D \end{array}\right]\right)\det\left(\left[\begin{array}{c c} \I & B \\ 0 & \I \end{array}\right]\right)\det\left(\left[\begin{array}{c c} A & 0 \\ 0 & \I \end{array}\right]\right)
+    \] 
+    \[
+        \det(\Gamma) = \det(D)\det(A)
+    \]
+    The same is obviously true for a matrix $\Gamma$ of the form, $\Gamma = \left[\begin{array}{c c} A & 0 \\ B & D\end{array}\right]$ with $A$ invertible ($\Gamma = \left[\begin{array}{c c} \I & 0 \\ BA^{-1} & \I \end{array}\right]\left[\begin{array}{c c} \I & 0 \\ 0 & D \end{array}\right] \left[\begin{array}{c c} A & 0 \\ 0 & \I\end{array}\right]$
+. We now look at the eigenvalues of $M_1 = \left[\begin{array}{c c} AB & 0 \\ B & 0\end{array}\right]$ and $M_2 = \left[\begin{array}{c c} 0 & 0 \\ B & BA \end{array}\right]$. We look at the determinants, 
+    \[
+        \det(M_1 - \lambda \I) = \det(AB - \lambda \I)\det(-\lambda \I)
+    \]
+    \[
+        \det(M_2 - \lambda \I) = \det(-\lambda \I)\det(BA - \lambda \I)
+    \]
+    Notice that if $\lambda$ is an eigenvalue of its respective matrix then this determinant product must be equal to zero. We then take the case of each determinant can be zero. For $M_1$ we have that its eigenvalues are either zero, or the eigenvalues of $AB$ by definition. 
+    \[
+        \det(M_1 - \lambda \I) = 0, \quad \det(AB - \lambda \I) = 0,\quad  \det(-\lambda \I) = -\lambda = 0
+    \]
+    Similarly we have that the eigenvalues for $M_2$ are either zero or the eigenvalues of $BA$. Notice from a different homework problem (hw2), we have that the matrix products $AB$ and $BA$ have the same eigenvalues. This is because, 
+    \[
+        ABv = \lambda v, \quad Bv = y, \implies \quad BAy = \lambda y
+    \]
+    Finally both $M_1$ and $M_2$ have eigenvalues of zero and the eigenvalues of $AB/BA$. 
+    
+\end{proof}
+
+
+\item % start of problem 4
+Show that for a real-valued square matrix the Gerschgorin theorem also holds with the bounds $r_i$ which are given by the partial column sums (instead of the partial row sums):
+\[
+    r_i = \sum_{i=1, i\neq j}^m |a_{i,j}|, \quad i = 1, \dots, m
+\]
+
+
+\item  % start of problem 5
+Use the Gerschgorin theorem to show that the following matrix has exactly one eigenvalue in each of the four circles: $|z - k| \le 0.1, \quad k = 1, 2, 3, 4$. 
+\[
+    A = \left[\begin{array}{c c c c} 1.0 & 0.3 & 0.1 & 0.4 \\
+                                    0.0 & 2.0 & 0.0 & 0.1 \\
+                                    0.0 & 0.4 & 3.0 & 0.0 \\
+                                    0.1 & 0.0 & 0.0 & 4.0 \end{array}\right]
+\]
+
+
+\item %start of problem 6
+Let $A \in \R^{m \times m}$ be real and symmetric that is positive definite. Let $y \in \R^m$ be nonzero. Prove that the limit exists and is an eigenvalue of $A$.
+\[
+    \lim_{k \to \infty} \frac{y^TA^{k+1}y}{y^TA^ky}
+\]
+
+\begin{proof}
+    First, since $A$ is real and symmetric, we can decompose $A$ into an eigenvector matrix, full with orthonormal eigenvectors which form a basis for $\R^m$ and a diagonal matrix with eigenvalues of $A$ on the diagonal. Since its columns form a basis for $\R^m$ we have that we can express y as a linear combination of the eigenvectors of v: $y = c_1 v_1 + \cdots + c_m v_m$. We now define $\lambda_*$ such that, $|\lambda_*| \ge |\lambda_i|, \forall \lambda_i \in \Lambda(A), c_* \neq 0$.  
+\[
+    A = VDV^{-1}, \quad y = c_* v_* + c_1 v_1 + \cdots + c_m v_m
+\]
+\[
+    A^n = VD^nV^{-1},\quad A^ny = c_*\lambda_*^n v_* + c_1\lambda_1^nv_1 + \cdots + c_m\lambda_m^nv_m
+\]
+\[
+   A^ny = \lambda_*^n\left(c_* v_* + c_1\frac{\lambda_1^n}{\lambda_*^n} v_1 + \cdots + c_m\frac{\lambda_m^n}{\lambda_*^n}v_m\right)
+\]
+Note from our definition of $\lambda_*$ we either have that $|\lambda_*| \ge |\lambda_i| \bigvee \left(|\lambda_* < |\lambda_i| \bigwedge c_i = 0\right)$. Thereby, we have that 
+\[
+    \lim_{n\to \infty} A^ny = \lambda_*^nc_*v_*
+\]
+Therefore we have, 
+\[
+    \lim_{k \to \infty} \frac{y^TA^{k+1}y}{y^TA^ky} = \frac{\lambda_*^{k+1} c_* y^Tv_*}{\lambda_*^k c_* y^Tv_*} = \lambda_*
+\]
+Where $\lambda_*$ is the largest eigenvalue of $A$ which has an eigenvector as part of the expansion of $y$ into the basis of the eigenvectors of $A$. 
+\end{proof}
+
+
+\item % start of problem 7
+Let $A \in \R^{m\times m}$ be real with nonnegative entries such that 
+\[
+    \sum_{j=1}^m a_{ij} = 1 \quad (1\le i \le m)
+\]
+Prove that no eigenvalue of $A$ has an absolute value greater than 1.
+
+\item %start of problem 8
+Let $A \in \R^{m\times m}$ be a non-defective matric with its eigenvalues $\{\lambda_i\}_{i=1}^m$ and its singular values $\{\sigma_i\}_{i=1}^m$, satisfying
+\[
+    |\lambda_1| \ge |\lambda_2| \ge \cdots \ge |\lambda_m|
+\]
+\[
+    \sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_m
+\]
+Let $\rho(a)$ be the spectral radius of $A$ and $\cond(A) = ||A||_2||A^{-1}||_2$ be the condition number of $A$. Let $A$ be normal, i.e., $A^TA = AA^T$. Show that: 
+\begin{enumerate}
+\item $\sigma_i = |\lambda_i|, 1 \le i \le m$.
+
+\item $||A||_2 = |\lambda_1| = \rho(A)$. 
+\end{enumerate}
+
+
+
+\end{enumerate}
+
+\end{document}

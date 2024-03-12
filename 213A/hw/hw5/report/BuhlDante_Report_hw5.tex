@@ -147,11 +147,57 @@ Recall that $a^Ta = \alpha^2$.
 \end{enumerate}
 
 \item % start of problem 2
-The Schur decomposition theorem states that every square matrix $A\in \C^{m\times m}$ has a Schur Decomposition, $A = QUQ^*$, where $Q$ is a unitary and $U$ is upper triangular. Use this theorem to prove that, for an arbitrary norm $|| \dot ||$, 
+The Schur decomposition theorem states that every square matrix $A\in \C^{m\times m}$ has a Schur Decomposition, $A = QUQ^*$, where $Q$ is a unitary and $U$ is upper triangular. Use this theorem to prove that, for an arbitrary norm $|| \cdot ||$, 
 \[
-    \lim_{n\to \infty} ||A^n|| = 0 \Longleftrightarrow \rho(1) < 1
+    \lim_{n\to \infty} ||A^n|| = 0 \Longleftrightarrow \rho(A) < 1
 \]
 (Note: Show the claim first with the 2-norm or the Frobenius norm and use the fact that all norms are equivalent in a finite vector space.)
+
+\begin{proof}
+
+    ($\implies$)
+
+    Let us look at the two-norm of $A^n$. Next we investigate an arbitrary eigenvalue, eigenvector pair of $A$, ($\lambda, v$). We have that, 
+    \[
+        ||A^n||_2 \ge \frac{||A^nv||_2}{||v||_2} = \frac{|\lambda|^n||v||_2}{||v||_2} = |\lambda|^n 
+    \]
+    We go back to the limit as $n \to \infty$. 
+    \[
+        \lim_{n \to \infty} ||A^n||_2 = 0 > |\lambda|^n
+    \]
+    Therefore we have that $|\lambda| < 1$. Since this observation is independent of which p-norm is chosen and which eigenvalue of $A$ we chose, we must have that all eigenvalues of $A$ are such that $|\lambda| < 1$ and therefore we must have that $\rho(A) < 1$. 
+    
+
+    ($\impliedby$) 
+
+    Given that for a matrix $A = QUQ^*$ and $\rho(A) < 1$. We have that the eigenvalues of $A$ are along the diagonal of $U$ (Mini proof: $A$ is similar to $U$, and $\det(U - \lambda I) = \Pi_{i=1}^m (u_{ii} - \lambda)$ since $U$ is upper triangular. Therefore the eigenvalues of $U$ are found along its diagonal.)  Next since $\rho(A) < 1$ we have that all of the eigenvalues of $A$ are of absolute value less than 1. So we have that,
+\[
+    \lim_{n\to \infty} ||A^n|| = \lim_{n\to \infty} ||QU^nQ^*|| = \lim_{n\to \infty} ||U^n||
+\] 
+Now to show that the norm is equal to zero irrespective of which norm is taken, we need to show that $U^n \to 0$. This requires induction. We start with the base case: that the diagonal goes to zero. We have that the diagonal is constructed of the eigenvalues of $A$ which are all less than 1 in absolute value. We look at the matrix product $U^2$. 
+\[
+    U^2 = UU = \left[\begin{array}{ c c c} \lambda_1^2 & u_{12}(\lambda_1 + \lambda_2) & \cdots \\ 
+                                            0 & \lambda_2^2  & \cdots \\ \vdots & \vdots & \ddots \end{array}\right]
+\]
+Notice that the diagonal entries of $U^n$ will be $u_{ii} = \lambda_i^n$. Since all $|\lambda_i| < 1$ we have that $\lambda^n \to 0$ as $n \to \infty$ or rather $\lambda^n \approx 0$ as $n$ becomes large but still finite. So we have the the diagonal will tend towards zero as $n$ increases. Our inductive step is then to look at $U$ described as the following. $U_k = \left[\begin{array}{c c} \bs{0} & R_k \\ \bs{0} & \bs{0} \end{array}\right]$. Here $R_k$ is an upper triangular matrix, $R_k \in \R^{m-k\times m-k}$. Our goal is to show that by multiplying by $U$ some discrete amount of times, that we will find $U_{k+1}$ where, $U^{k+1} = \left[\begin{array}{c c} \bs{0} & R_{k+1} \\ \bs{0} & \bs{0} \end{array}\right]$ and $R_{k+1} \in \R^{m-k-1\times m - k -1}$. That is, the diagonal of $R_k$ will go to zero, producing $R_{k+1}$ inside of it. We begin, 
+\[
+    U_kU = \left[\begin{array}{ c c c c} 
+                \bs{0} & r_{11}\lambda_k & \cdots & \cdots\\ 
+                \bs{0} & 0  & r_{22}\lambda_{k+1} & \cdots  \\
+                \vdots & \vdots & \vdots  & \ddots \end{array}\right]
+\]
+We can see that if we multiply by $U$ by a finite amount of times, we will eventually obtain similarly that $U_kU^n$ which has zeros on what used to be the diagonal of $R_k$ (the diagonal of $R_k$ will be multiplied by its respective $\lambda$ some amount of times such that, $r_{jj}\lambda_{k+j}^n \to 0$ as $n \to \infty$. Notice that for some smaller, finite $n$ we will have $r_{jj}\lambda_{k+j}^n \approx 0$. Therefore after multiplying by some finite number of $U$ we will effectively obtain $U_{k+1}$ which has the following form $U_{k+1} = \left[\begin{array}{c c} \bs{0} & R_{k+1} \\ \bs{0} & \bs{0} \end{array}\right]$ and $R_{k+1} \in \R^{m-k-1\times m - k -1}$. Notice that this is effectively done with finite multiples of $U$. That is, $U_{k+1} = U^n$ such that $n < \infty$. 
+
+The inductive step is complete! If we have $U_k$ from finite multiples of $U$, through additional finite multiples of $U$ we obtain $U_{k+1}$. Therefore, we return to the limit and obtain the matrix $U_m$ which with all intents and purposes is an $m\times m$ zero matrix to machine precision. 
+    \[
+        \lim_{n\to \infty} ||A^n|| = \lim_{n\to\infty} ||U^n|| = ||U_m||
+    \]
+    Finally we have that a zero matrix has norm of zero. 
+    \[
+        \lim_{n\to\infty} ||A^n|| = ||U_m|| = ||\bs{0}|| = 0
+    \]
+    
+\end{proof}
 
 \item   % start of problem 3
 Let $A \in \C/\R^{m\times n}$ and $B \in \C/\R^{n \times m}$. Show that the matrices $\left[\begin{array}{c c} AB & 0 \\ B & 0\end{array}\right]$ and $\left[\begin{array}{c c} 0 & 0 \\ B & BA \end{array}\right]$ have the same eigenvalues. 
@@ -243,6 +289,29 @@ Let $A \in \R^{m\times m}$ be real with nonnegative entries such that
 \]
 Prove that no eigenvalue of $A$ has an absolute value greater than 1.
 
+\begin{proof}
+    
+    We start by looking at an arbitrary p-norm of the matrix product of $A$ and one of its eigenvectors. 
+    \[
+        Av = \lambda v, \quad ||Av|| = ||\lambda v||
+    \]       
+    \[
+        ||Av|| \le ||A||||v||, \quad |\lambda|||v|| \le ||A||||v||
+    \]
+    \[
+        |\lambda| \le ||A||
+    \]
+    We obtain the following inequality which is satisfied by any p-norm we would like to take. We simply chose $p=1$, the one norm. By definition of the one norm for matrices (lecture 5 notes) we have, 
+    \[
+        |\lambda| \le ||A||_1 = \max_{i} \sum_{j=1}^m a_{ij} 
+    \]
+    We also have that $A$ is given such that its row sum along any row will sum to 1. Therefore we have,
+    \[
+        |\lambda| \le ||A||_1 = 1, \implies |\lambda| \le 1
+    \]
+
+\end{proof}
+
 \item %start of problem 8
 Let $A \in \R^{m\times m}$ be a non-defective matric with its eigenvalues $\{\lambda_i\}_{i=1}^m$ and its singular values $\{\sigma_i\}_{i=1}^m$, satisfying
 \[
@@ -256,6 +325,43 @@ Let $\rho(a)$ be the spectral radius of $A$ and $\cond(A) = ||A||_2||A^{-1}||_2$
 \item $\sigma_i = |\lambda_i|, 1 \le i \le m$.
 
 \item $||A||_2 = |\lambda_1| = \rho(A)$. 
+\end{enumerate}
+
+\begin{enumerate}
+
+\item 
+\begin{proof}
+    We begin with the fact that $A$ is non-defective, is normal, and then has a Singular Value Decomposition. First we look at a diagonalization of $A$ by fact that $A$ is non-defective. 
+    \[
+        V^{-1}AV = D_{\lambda} \implies A = V_{\lambda}D_{\lambda}V_{\lambda}^{-1}
+    \]
+    Notice that since, $A$ is non-defective, $A$ the eigenvalues of $A$ form a basis for $\R^m$ (i.e. $V_{\lambda}$ is orthogonal). More importantly, as a given in the diagonalization $V_{\lambda}$ is invertible. 
+    \[ 
+        V^TV = \I, \implies  V^TVV^{-1} = V^{-1}, \implies  V^T = V^{-1}
+    \]
+    \[
+        A^TA = V^{-T}DV^TVDV^{-1} = VD^2V^{-1} = A^2
+    \]
+    We also have that $A$ is invertible since it is nondefective. So we find that $A$ is symmetric. 
+    \[
+        A^TAA^{-1} = A^2A^{-1} \implies A^T = A
+    \]
+    At this point we can reference Theorem 5.5 of the textbook (on page 45 or 44 of the pdf). The rest of the proof follows. The logic cited there states is to take $A = VDV^{-1}$ where $V^T = V^{-1}$ and then to create a matrix $S_{\lambda}$ which is a diagonal matrix with only the signs of each eigenvalue on $D$ in the diagonal. That is we can decompose $D = S_{\lambda}|D|$. We then write
+    \[
+        A = VS_{\lambda}|D|V^{-1}
+    \]
+    Notice that since $V$ is orthogonal, so is $VS_{\lambda}$, and alternatively $V^T$ was already orthogonal. Then notice that $|D|$ is a positive definite diagonal matrix. Hence we have that $U = VS_{\lambda}$ , $\Sigma = |D|$, and $V^T = V^{-1}$ is a valid SVD of $A$. Therefore we have that the singular values of $A$ are $\sigma_i = |\lambda_i|$ with the implicit scaling (ordering of $\lambda_i$) $|\lambda_1| \ge |\lambda_2| \ge \dotsc \ge |\lambda_m|$.
+
+\end{proof}
+
+\item
+\begin{proof}
+    If it is given that for a matrix $A$ that is a square, normal, and non-defective matrix, we have that $\sigma_i = |\lambda_i|, \forall i, 1 \le i \le m$. Note that both $\sigma_i$ and $|\lambda_i|$ monotonically decrease as $i$ increases in this particular problem.  Therefore we then look at the two-norm of $A$. We have from some lecture note (probably lecture 5) the following property of the two-norm. $||A||_2 = \sigma_1$. Then we also have that as a given and by definition of the spectral radius of $A$, $\rho(A) = |\lambda_1|$, the largest eigenvalue of $A$.
+    \[
+        ||A||_2 =  \sigma_1 = |\lambda_1| = \rho(A)
+    \]
+\end{proof}
+
 \end{enumerate}
 
 

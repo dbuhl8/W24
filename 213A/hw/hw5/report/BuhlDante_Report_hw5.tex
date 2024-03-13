@@ -140,8 +140,13 @@ Recall that $a^Ta = \alpha^2$.
 
 \item 
 \begin{proof}
-    hey
+    In order to eliminate the third component of $a$ we simply chose the vector $v = a + ||a||_2e_3$ for the Householder transformation and then the following changes. We will have that, 
+    \[
+        \left(\I + \frac{4}{||a||_2}H\right) a = \left[\begin{array}{c} 2 \\ 3\\ 0\end{array}\right]
+    \]
 \end{proof}
+
+\item
 
 
 \end{enumerate}
@@ -242,6 +247,25 @@ Show that for a real-valued square matrix the Gerschgorin theorem also holds wit
     r_i = \sum_{i=1, i\neq j}^m |a_{i,j}|, \quad i = 1, \dots, m
 \]
 
+\begin{proof}
+    We begin by reviewing Gershgorin's Theorem. We have for a square matrix $A$. It's eigenvalues are bound by the row sums along $A$. That is,
+    \[
+        |\lambda - a_{ii}| \le \sum_{j = 1, j \neq i}^m |a_{ij}|
+    \]
+    We now look at some properties of $A$. We have that since $\det(A) = \det(A^T)$ for real matrices $A$ that, $\det(A - \lambda\I) = \det(A^T + \lambda\I^T) = \det(A^T - \lambda\I)$. We notice that $A$ and $A^T$ have the same eigenvalues. We next apply Gershgorin's theorem for $A^T$. We find, 
+    \[
+        |\lambda - a_{ii}| \le \sum_{j=1, j\neq i}^m |a_{ji}|
+    \]
+    Notice that we have, 
+    \[
+        |\lambda - a_{ii}| \le \sum_{j = 1, j \neq i}^m |a_{ij}|, \quad |\lambda - a_{ii}| \le \sum_{j=1, j\neq i}^m |a_{ji}|
+    \]
+    \[
+        |\lambda - a_{ii}| \le \min\left\{\sum_{j=1, j\neq i}^m |a_{ij}|, \sum_{j=1, j\neq i}^m |a_{ji}|\right\}
+    \]
+    That is, Gershgorin's Theorem applyies for the column sums as well in addition to the row sums and often you can minimize the radius by picking the lower of the column or row sum. 
+\end{proof}
+
 
 \item  % start of problem 5
 Use the Gerschgorin theorem to show that the following matrix has exactly one eigenvalue in each of the four circles: $|z - k| \le 0.1, \quad k = 1, 2, 3, 4$. 
@@ -251,6 +275,39 @@ Use the Gerschgorin theorem to show that the following matrix has exactly one ei
                                     0.0 & 0.4 & 3.0 & 0.0 \\
                                     0.1 & 0.0 & 0.0 & 4.0 \end{array}\right]
 \]
+
+\begin{proof}
+    
+    We simply apply Gershgorin's Theorem. 
+    \[
+        |\lambda_1 - 1.0| \le \min\left\{\sum_{j=1, j\neq 1}^m |a_{1j}|, \sum_{j=1, j\neq 1}^m |a_{j1}|\right\}
+    \]
+    \[
+        |\lambda_2 - 2.0| \le \min\left\{\sum_{j=1, j\neq 2}^m |a_{2j}|, \sum_{j=1, j\neq 2}^m |a_{j2}|\right\}
+    \]
+    \[
+        |\lambda_3 - 3.0| \le \min\left\{\sum_{j=1, j\neq 3}^m |a_{3j}|, \sum_{j=1, j\neq 3}^m |a_{j3}|\right\}
+    \]
+    \[
+        |\lambda_4 - 4.0| \le \min\left\{\sum_{j=1, j\neq 4}^m |a_{4j}|, \sum_{j=1, j\neq 4}^m |a_{j4}|\right\}
+    \]
+
+    \[
+        |\lambda_1 - 1.0| \le 0.1
+    \]
+    \[
+        |\lambda_2 - 2.0| \le 0.1
+    \]
+    \[
+        |\lambda_3 - 3.0| \le 0.1
+    \]
+    \[
+        |\lambda_4 - 4.0| \le 0.1
+    \]
+    Since the circles don't overlap, we have that $A$ has for non-zero eigenvalues each within the circles described above. 
+
+
+\end{proof}
 
 
 \item %start of problem 6

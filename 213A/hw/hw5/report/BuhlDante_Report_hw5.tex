@@ -140,14 +140,42 @@ Recall that $a^Ta = \alpha^2$.
 
 \item 
 \begin{proof}
-    In order to eliminate the third component of $a$ we simply chose the vector $v = a + ||a||_2e_3$ for the Householder transformation and then the following changes. We will have that, 
+    In order to eliminate the third component of $a$ we look to find a vector who is equidistant from the $x,y$ plane and the vector $a$. That is we look for a vector $x$ between $a$ and the $xy$. Notice that there are an infinite number of choices to be made by taking the most obvious choice, $x = \frac{1}{\sqrt{17}}\left[\begin{array}{c} 2 \\ 3\\ 2\end{array}\right]$ and rotating it around the $z$-axis. Using this vector $x$ to build a Householder Reflector will project $a$ onto the x y plane, otherwise eliminating its third component. To prove this we look at $H$.
     \[
-        \left(\I + \frac{4}{||a||_2}H\right) a = \left[\begin{array}{c} 2 \\ 3\\ 0\end{array}\right]
+        H = \I - 2\frac{xx^T}{x^Tx} = \I - \frac{2}{17}xx^T
     \]
+    \[
+        Ha = a - \frac{2x^Ta}x = a - x
+    \]
+
 \end{proof}
 
 \item
+\begin{proof}
 
+To look at the eigenvalues of $H$ we simply look at the definition of an eigenvalue. 
+\[
+    Hv = \lambda v
+\]
+\[
+   v  - \frac{2x^Tv}{x^Tx}x = \lambda v
+\]
+\[
+    \alpha x = (\lambda - 1) v
+\]
+Again we have two vectors, not necessarily colinear so we look at the two cases, they are colinear, or they are orthogonal. If they are colinear, $v = cx$ for a constant $c$. 
+\[
+    -2\frac{x^Tv}{x^Tx}x = c(\lambda - 1)x
+\]
+\[
+    -2c = c(\lambda - 1), \quad \lambda = -1
+\]
+The other case is that x and v are orthogonal. Notice that then $x^Tv = 0$. 
+\[
+    0 = (\lambda - 1), \quad \lambda = 1
+\]
+Thus we have that the eigenvalues of $H$ are $\lambda = -1, 1$.
+\end{proof}
 
 \end{enumerate}
 

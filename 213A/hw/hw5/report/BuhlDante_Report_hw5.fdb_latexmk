@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1710214067 "BuhlDante_Report_hw5.tex" "BuhlDante_Report_hw5.pdf" "BuhlDante_Report_hw5" 1710214067 0
+["pdflatex"] 1710303815 "BuhlDante_Report_hw5.tex" "BuhlDante_Report_hw5.pdf" "BuhlDante_Report_hw5" 1710303816 0
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1704400182 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1704400182 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1704400182 1004 54797486969f23fa377b128694d548df ""
@@ -76,8 +76,8 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1704400182 40684 9b9ec0b4288972636ff6a3b9c4238efc ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1706144474 325518 3dff2bac5bde75cd7e600320ce8a00d6 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1706144460 6768051 5b9294373e9b921b5b937f540d9f9a54 ""
-  "BuhlDante_Report_hw5.aux" 1710214067 241 37b4484d70cbdbae2dc1bee859aa00ae "pdflatex"
-  "BuhlDante_Report_hw5.tex" 1710214066 20166 2fb36a172a139b7ab20164fad558ffd0 ""
+  "BuhlDante_Report_hw5.aux" 1710303816 241 2391f80f5ae26eaa8702824902123560 "pdflatex"
+  "BuhlDante_Report_hw5.tex" 1710303814 21249 b8ddaf45015ccd218dd9403aaebacd29 ""
   (generated)
   "BuhlDante_Report_hw5.aux"
   "BuhlDante_Report_hw5.log"

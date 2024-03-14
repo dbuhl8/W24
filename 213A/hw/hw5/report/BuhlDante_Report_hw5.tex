@@ -6,6 +6,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{verbatim}
+\usepackage{tikz}
 \usepackage{xcolor}
 
 \title{Homework 5: Report}
@@ -36,12 +37,11 @@
 \maketitle
 
 
-\setcounter{section}{1}
 
 \section{Numerical Problems}
 \begin{enumerate}
     
-\item 
+\item Talk to me in finals week, sorry Nate! I'm going to submit the code late. 
    
 \end{enumerate}
 
@@ -140,13 +140,88 @@ Recall that $a^Ta = \alpha^2$.
 
 \item 
 \begin{proof}
-    In order to eliminate the third component of $a$ we look to find a vector who is equidistant from the $x,y$ plane and the vector $a$. That is we look for a vector $x$ between $a$ and the $xy$. Notice that there are an infinite number of choices to be made by taking the most obvious choice, $x = \frac{1}{\sqrt{17}}\left[\begin{array}{c} 2 \\ 3\\ 2\end{array}\right]$ and rotating it around the $z$-axis. Using this vector $x$ to build a Householder Reflector will project $a$ onto the x y plane, otherwise eliminating its third component. To prove this we look at $H$.
+    In order to eliminate the third component of $a$ we look for a vector which is equidistant to $a$ and the $x-y$ plane. That way the Householder transformation will project $a$ onto the $x-y$ plane. We will look at a geometrical setup which demonstrates this nicely. Notice for this problem we can cast the vector $a$ into a 2D space in order to simplify this problem. 
     \[
-        H = \I - 2\frac{xx^T}{x^Tx} = \I - \frac{2}{17}xx^T
+        a = (a_{\zeta}, a_z)^T = (\sqrt{13}, 4)^T, \quad 2^2 + 3^2 = 13 = a_{\zeta}^2
+    \]
+    Here we have the magnitude of its $\zeta$ component is $\sqrt{13}$ where $\zeta$ is increasing in the direction of $(x, y) = (2, 3)$. We now look to find a vector $x$ such that $d(x, a) = d(x', x)$, where $x'$ is the projection of $x$ onto the $x-y$ plane, and $d(\bs{x_1}, \bs{x_2})$ is the distance function between two points. The congruence of the two triangles created allows us to suppose the magnitude of $x'$ is equal to the norm of $a$ ($||a||_2 = \sqrt{29}$).
+
+    \begin{center}
+    \begin{tikzpicture}
+
+        \coordinate(O) at (0, 0);
+        \coordinate(A) at (3.6, 4);
+        \coordinate(r1) at (4.5, 3.2);
+        \coordinate(r2) at (5.4, 1.2);
+        \coordinate(P) at (5.4, 0);
+        \coordinate(X) at (5.4, 2.4);
+        \draw (O) -- (A);
+        \draw (O) -- (X);
+        \draw (O) -- (P);
+        \draw (A) -- (X);
+        \draw (X) -- (P);
+        \draw (A) -- (P);
+    
+        \node[above left] at (A) {a};
+        \node[right] at (X) {x};
+        \node[above right] at (r1) {R = $d(x, a)$};
+        \node[right] at (r2) {R = $d(x', x)$};
+        \node[below ] at (P) {x'};
+        
+    \end{tikzpicture}
+    \end{center}
+
+    \[
+        R = d(x, a) = \sqrt{(\sqrt{13} - \sqrt{29})^2 + (4 - x_z)^2} = \sqrt{(\sqrt{29} - \sqrt{29})^2 + x_z^2} = d(x', x)
     \]
     \[
-        Ha = a - \frac{2x^Ta}x = a - x
+        (\sqrt{13} - \sqrt{29})^2 + (4 - x_z)^2 = x_z^2
     \]
+    \[
+        (\sqrt{13} - \sqrt{29})^2 + 16 = 8x_z
+    \]
+    \[
+        x_z = 2 + \frac{(\sqrt{13} - \sqrt{29})^2}{8} 
+    \]
+    So we have $x = (x_{\zeta}, x_z)^T = \left(\sqrt{29}, 2 + \frac{(\sqrt{13} - \sqrt{29})^2}{8}\right)$. We go back to a three coordinate system. $x_{\zeta}^2 = x_x^2 + x_y^2$. 
+    \[
+        x_x = \frac{2}{3}x_y, \quad 29 = x_y^2\left(\frac{4}{9} + 1\right)
+    \]
+    \[
+        x_y = 3\sqrt{\frac{29}{13}}, \quad x_x = 2\sqrt{\frac{29}{13}}
+    \]
+    So we have, $x = \left(2\sqrt{\frac{29}{13}}, 3\sqrt{\frac{29}{13}}, 2 + \frac{(\sqrt{13} - \sqrt{29})^2}{8}\right)^T$. Finally we look to construct the householder transformation.
+    \[
+        H = \I - 2\frac{xx^T}{x^Tx}
+    \]
+    \[
+        Ha = a - \frac{2x^Ta}{x^Tx}x
+    \]
+    \[
+        x^Ta = 4\sqrt{\frac{29}{13}} + 9\sqrt{\frac{29}{13}} + 8 + \frac{(\sqrt{13} - \sqrt{29})^2}{2}
+    \]
+    \[
+        x^Ta = \sqrt{13\cdot29} + 8 + \frac{13 + 29}{2} - \sqrt{13\cdot29} = 29 
+    \]
+    \[
+        x^Tx = \frac{4\cdot29}{13} + \frac{9\cdot29}{13} + 4 + \frac{(\sqrt{13} - \sqrt{29})^4}{64} + \frac{(\sqrt{13} - \sqrt{29})^2}{2}
+    \]
+    \[
+        x^Tx = 33 + 21 - \sqrt{13\cdot29} + \frac{(42 - 2\sqrt{13\cdot29})^2}{64}
+    \]
+    \[
+        x^Tx = 54 - \sqrt{13\cdot29} + \frac{7^2\cdot3^2 + 13\cdot19 - 42\sqrt{13\cdot29}}{16}
+    \]
+    \begin{center}
+        \[\mathfrak{One \text{ } ``Trust-me-Bro''\text{ } later...}\]
+    \end{center}
+    \[
+        x^Tx = \alpha, \quad \text{(put the above thing in a calculator to check its right).}
+    \]
+    \[
+        Ha = a - \frac{58}{\alpha}x = \left[\begin{array}{c}-2.987\dotsc \\ -4.480\dotsc \\ 0 \end{array}\right]
+    \]
+    Actually here is a link to a desmos graph where I have all of the calculations done for me (https://www.desmos.com/calculator/pdxvbhi57x). If you would like to contest it please do. However the proof concludes. This reasoning was based in geometrical argument and used properties of reflection. And through careful calculation, the third component of $a$ is eliminated in one householder transformation. 
 
 \end{proof}
 
@@ -248,7 +323,7 @@ Let $A \in \C/\R^{m\times n}$ and $B \in \C/\R^{n \times m}$. Show that the matr
     \[
         \det(\Gamma) = \det(D)\det(A)
     \]
-    The same is obviously true for a matrix $\Gamma$ of the form, $\Gamma = \left[\begin{array}{c c} A & 0 \\ B & D\end{array}\right]$ with $A$ invertible ($\Gamma = \left[\begin{array}{c c} \I & 0 \\ BA^{-1} & \I \end{array}\right]\left[\begin{array}{c c} \I & 0 \\ 0 & D \end{array}\right] \left[\begin{array}{c c} A & 0 \\ 0 & \I\end{array}\right]$
+    The same is obviously true for a matrix $\Gamma$ of the form, $\Gamma = \left[\begin{array}{c c} A & 0 \\ B & D\end{array}\right]$ with $A$ invertible \[\Gamma = \left[\begin{array}{c c} \I & 0 \\ BA^{-1} & \I \end{array}\right]\left[\begin{array}{c c} \I & 0 \\ 0 & D \end{array}\right] \left[\begin{array}{c c} A & 0 \\ 0 & \I\end{array}\right]\]
 . We now look at the eigenvalues of $M_1 = \left[\begin{array}{c c} AB & 0 \\ B & 0\end{array}\right]$ and $M_2 = \left[\begin{array}{c c} 0 & 0 \\ B & BA \end{array}\right]$. We look at the determinants, 
     \[
         \det(M_1 - \lambda \I) = \det(AB - \lambda \I)\det(-\lambda \I)
@@ -332,7 +407,7 @@ Use the Gerschgorin theorem to show that the following matrix has exactly one ei
     \[
         |\lambda_4 - 4.0| \le 0.1
     \]
-    Since the circles don't overlap, we have that $A$ has for non-zero eigenvalues each within the circles described above. 
+    Since the circles don't overlap, we have that $A$ has four non-zero eigenvalues one within each of the circles described above. 
 
 
 \end{proof}
@@ -431,7 +506,7 @@ Let $\rho(a)$ be the spectral radius of $A$ and $\cond(A) = ||A||_2||A^{-1}||_2$
     \[
         A^TAA^{-1} = A^2A^{-1} \implies A^T = A
     \]
-    At this point we can reference Theorem 5.5 of the textbook (on page 45 or 44 of the pdf). The rest of the proof follows. The logic cited there states is to take $A = VDV^{-1}$ where $V^T = V^{-1}$ and then to create a matrix $S_{\lambda}$ which is a diagonal matrix with only the signs of each eigenvalue on $D$ in the diagonal. That is we can decompose $D = S_{\lambda}|D|$. We then write
+    At this point we can reference Theorem 5.5 of the textbook (on page 45 or 44 of the pdf). The rest of the proof follows. The logic cited there states is to take $A = VDV^{-1}$ where $V^T = V^{-1}$ and then to create a matrix $S_{\lambda}$ which is a diagonal  ``sign'' matrix with only the signs of each eigenvalue on $D$ in the diagonal. That is we can decompose $D = S_{\lambda}|D|$. We then write
     \[
         A = VS_{\lambda}|D|V^{-1}
     \]

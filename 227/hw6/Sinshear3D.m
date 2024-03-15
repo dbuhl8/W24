@@ -1,10 +1,10 @@
 % Enter input variables here
-Nmax = 30;    %Number of Fourier modes to keep
+Nmax = 20;    %Number of Fourier modes to keep
 kxmin = 0.01; %Min value of kx
 kxmax = 1.5;   %Max value of kx
 kzmin = 0.01; %Min value of kx
 kzmax = 1.5;   %Max value of kx
-nk = 70;  % number of kx/kz increments
+nk = 20;  % number of kx/kz increments
 ky = 1; % Assumes Lz = 2pi
 Pe = 1000;
 Re = 1000;
@@ -44,7 +44,7 @@ for i=1:nk
                 Amat(indu,indv-1) = -ky/2;
                 Amat(indw,indw-1) = -kx(i)/2;
                 Amat(indt,indt-1) = -kx(i)/2;
-                Amat(indv, indv-1) = -kx(i)/2;
+                Amat(indv,indv-1) = -kx(i)/2;
             end
             if(n<Nmax) 
                 Amat(indu,indu+1) = kx(i)/2;
@@ -78,8 +78,8 @@ for i=1:nk
 
             % Continuity Equation
             Amat(indp,indu) = kx(i);
-            Amat(indp,indw) = kz(j);
             Amat(indp,indv) = ky*(f+n);
+            Amat(indp,indw) = kz(j);
 
 
         end

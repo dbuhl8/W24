@@ -1,0 +1,89 @@
+  
+ --------------------------------------------------------------
+  
+ Question 1: Hessenburg Form (Tridiagonalization)
+  
+ A before tridiagonalization
+This is   4 by   4
+ matrix.
+     5.000     4.000     1.000     1.000
+     4.000     5.000     1.000     1.000
+     1.000     1.000     4.000     2.000
+     1.000     1.000     2.000     4.000
+  
+ A after Tridiagonalization
+This is   4 by   4
+ matrix.
+     5.000    -4.243     0.000     0.000
+    -4.243     6.000     1.414     0.000
+    -0.000     1.414     5.000    -0.000
+    -0.000    -0.000    -0.000     2.000
+  
+ Two norm of column 1:   6.5574385243020004     
+ Two norm of column 2:   7.4833147735478853     
+ Two norm of column 3:   5.1961524227066276     
+ Two norm of column 4:   1.9999999999999996     
+  
+ --------------------------------------------------------------
+  
+ Question 2: QR Algorithm with and without Shifts
+  
+ Matrix A before QR w/o shift
+This is   3 by   3
+ matrix.
+     3.000     1.000     0.000
+     1.000     2.000     1.000
+     0.000     1.000     1.000
+  
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ performed a loop of QR w/o shift
+ Matrix D after QR w/o shift
+This is   3 by   3
+ matrix.
+     2.794     0.000     0.000
+     0.000     1.276     0.000
+     0.000     0.000     0.561
+  
+ Matrix A before QR w shift
+This is   3 by   3
+ matrix.
+     3.000     1.000     0.000
+     1.000     2.000     1.000
+     0.000     1.000     1.000
+  
+ performed a loop of QR w shift
+ performed a loop of QR w shift
+ performed a loop of QR w shift
+ Matrix D after QR w shift
+This is   3 by   3
+ matrix.
+**********     0.000     0.000
+     0.000**********     0.000
+     0.000     0.000470311.463
+  

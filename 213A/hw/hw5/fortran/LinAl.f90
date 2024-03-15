@@ -459,4 +459,154 @@ end function str
     norm = sqrt(sum(A**2))
   end subroutine frobnorm
 
+  subroutine tridiagonal(A, ma)
+
+    implicit none
+
+    integer, intent(in) :: ma
+    real :: A(:, :)
+    real, allocatable :: x(:, :)
+    real :: norm
+    integer :: i, j
+
+
+    do i = 1, ma-2
+        allocate(x(ma-i, 1))
+        x = 0
+        x(:, 1) = A(i+1:ma, i)
+        call twonorm(x(:, 1), norm)
+        x(1, 1) = x(1, 1) + (x(1, 1)/abs(x(1, 1)))*norm
+        call twonorm(x(:, 1), norm)
+        x = x/norm
+        A(i+1:ma, i:ma) = A(i+1:ma, i:ma) - 2*matmul(x, matmul(transpose(x), A(i+1:ma, i:ma)))
+        A(1:ma, i+1:ma) = A(1:ma, i+1:ma) - 2*(matmul(A(1:ma, i+1:ma), matmul(x, transpose(x))))
+        deallocate(x)
+        
+    end do
+
+  end subroutine tridiagonal
+
+  subroutine diag(A, ma, D)
+
+    implicit none
+
+    integer :: i
+    integer, intent(in) :: ma
+    real :: A(:, :)
+    real, dimension(ma, ma) :: D
+
+    D = 0.0
+
+    do i = 1, ma
+        D(i, i) = A(i, i)
+    end do
+
+  end subroutine diag
+  
+  subroutine eigQR(A, ma, shift, tol)
+
+    implicit none
+
+    integer, intent(in) :: ma
+    real, intent(in) :: tol
+    logical, intent(in) :: shift
+    real :: A(:, :)
+    real, dimension(ma, ma) :: Q, R, eye
+    real, dimension(ma) :: rvec
+    real :: mu, error, norm
+    logical :: isSingular = .false.
+    integer :: i, j, k
+        
+    eye = 0.0
+    norm = 10000
+
+    if (shift) then
+        !to be implemented
+        call ident(eye, ma)
+
+        call tridiagonal(A, ma)    
+    
+        k = ma
+
+        do while (norm > tol)
+
+            if (A(k, k) .le. tol) then
+                k = k - 1
+            end if
+            if (k .eq. 1) then
+
+                exit
+            end if
+            mu = A(k, k)
+
+            call shiftQR(A, Q, R, eye, rvec, ma, isSingular, tol, mu, norm, k)
+
+            print *, "performed a loop of QR w shift"
+
+        end do
+   
+
+    else 
+        
+        do while (norm > tol)
+            R = 0.0
+            Q = 0.0
+            call householderQR(A, rvec, ma, ma, isSingular, tol)
+            call formR(A, R, rvec, ma)
+            call formQstar(A, Q, ma, ma)
+
+            A = matmul(R, transpose(Q))
+
+            !compare eigenvals of Ak+1 to Ak
+            !note that eye is equal to Dk
+            !We use Q's memory for D_k+1
+            call diag(A, ma, Q)
+            call frobnorm(Q-eye, norm)
+            eye = Q
+
+            print *, "performed a loop of QR w/o shift"
+
+        end do
+    end if
+
+  end subroutine eigQR
+
+  subroutine shiftQR(A, Q, R, eye, rvec, ma, isSingular, tol, mu, norm, k)
+
+    implicit none
+
+    real :: A(:, :), Q(:, :), R(:, :), eye(:, :), rvec(:), tol, mu, norm
+    integer, intent(in) :: ma, k
+    integer :: i, j
+    logical :: isSingular
+
+    R = 0.0
+    Q = 0.0
+
+    call householderQR(A-mu*eye, rvec, ma, ma, isSingular, tol)
+    call formR(A, R, rvec, ma)
+    call formQstar(A, Q, ma, ma)
+
+    A = matmul(R, transpose(Q)) + mu*eye
+
+    do j = 1, k
+        do i = 1, j-1
+            if(A(i, j) .le. tol) then
+                A(i, j) = 0
+                A(j, i) = 0
+            end if
+        end do
+    end do
+
+    call diag(A, ma, Q)
+    call frobnorm(Q-eye, norm)
+    eye = Q
+
+  end subroutine shiftQR
+ 
+!  subroutine invIter(A, ma)
+!
+!
+!  end subroutine invIter
+
 end module LinAl

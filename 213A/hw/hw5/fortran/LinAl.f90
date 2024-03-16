@@ -511,102 +511,119 @@ end function str
     real, intent(in) :: tol
     logical, intent(in) :: shift
     real :: A(:, :)
-    real, dimension(ma, ma) :: Q, R, eye
     real, dimension(ma) :: rvec
+    real, dimension(ma, ma) :: D, D2
+    real, dimension(ma, ma) :: Q, R, eye
     real :: mu, error, norm
     logical :: isSingular = .false.
     integer :: i, j, k
         
     eye = 0.0
+    call ident(eye, ma)
     norm = 10000
 
     if (shift) then
-        !to be implemented
-        call ident(eye, ma)
 
         call tridiagonal(A, ma)    
-    
-        k = ma
-
+        i = 0
         do while (norm > tol)
-
-            if (A(k, k) .le. tol) then
-                k = k - 1
-            end if
-            if (k .eq. 1) then
-
-                exit
-            end if
-            mu = A(k, k)
-
-            call shiftQR(A, Q, R, eye, rvec, ma, isSingular, tol, mu, norm, k)
-
-            print *, "performed a loop of QR w shift"
-
-        end do
-   
-
-    else 
         
+            mu = A(ma, ma)
+
+            R = 0.0
+            Q = 0.0
+            A = A-mu*eye
+
+            call householderQR(A, rvec, ma, ma, isSingular, tol)
+            call formR(A, R, rvec, ma)
+            call formQstar(A, Q, ma, ma)
+
+            A = matmul(R, Q) + mu*eye
+
+            call diag(A, ma, D2)
+            call frobnorm(D2-D, norm)
+            D = D2
+            i = i + 1
+        end do
+        print *, "Algorithm converged within "//trim(str(i))//" iterations"
+
+    else
+
+        i = 0
         do while (norm > tol)
+
             R = 0.0
             Q = 0.0
             call householderQR(A, rvec, ma, ma, isSingular, tol)
             call formR(A, R, rvec, ma)
             call formQstar(A, Q, ma, ma)
 
-            A = matmul(R, transpose(Q))
+            A = matmul(R, Q)
 
             !compare eigenvals of Ak+1 to Ak
             !note that eye is equal to Dk
             !We use Q's memory for D_k+1
-            call diag(A, ma, Q)
-            call frobnorm(Q-eye, norm)
-            eye = Q
-
-            print *, "performed a loop of QR w/o shift"
-
+            call diag(A, ma, D)
+            call frobnorm(D-D2, norm)
+            D2 = D
+            i = i + 1
         end do
+        print *, "Algorithm converged within "//trim(str(i))//" iterations"
     end if
 
   end subroutine eigQR
 
-  subroutine shiftQR(A, Q, R, eye, rvec, ma, isSingular, tol, mu, norm, k)
-
+ 
+  subroutine inviter(A, eig, v, ma, tol)
+        
     implicit none
 
-    real :: A(:, :), Q(:, :), R(:, :), eye(:, :), rvec(:), tol, mu, norm
-    integer, intent(in) :: ma, k
-    integer :: i, j
-    logical :: isSingular
+    integer, intent(in) :: ma
+    real :: A(:, :), eig, v(:, :), error, tol, mu
+    real, dimension(ma, ma) :: As, eye, Q, R
+    real, dimension(ma, 1) :: w
+    real, dimension(ma) :: rvec
+    integer, dimension(ma) :: p
+    logical :: dummy
+    integer :: i
 
-    R = 0.0
-    Q = 0.0
+    v = 0.0
 
-    call householderQR(A-mu*eye, rvec, ma, ma, isSingular, tol)
-    call formR(A, R, rvec, ma)
-    call formQstar(A, Q, ma, ma)
 
-    A = matmul(R, transpose(Q)) + mu*eye
-
-    do j = 1, k
-        do i = 1, j-1
-            if(A(i, j) .le. tol) then
-                A(i, j) = 0
-                A(j, i) = 0
-            end if
-        end do
+    !This initializes v0 to be a vector of norm 1
+    do i = 1, ma
+        v(i, 1) = 1.0/sqrt(real(ma))
     end do
+        
+    call ident(eye, ma)
+    error = 10.0
+    As = A
 
-    call diag(A, ma, Q)
-    call frobnorm(Q-eye, norm)
-    eye = Q
+    do while (error > tol)
 
-  end subroutine shiftQR
+        w = 0.0
+   
+        mu = eig - tol
+        A = As - mu*eye
+        
+        !Solving the linear system
+        call householderQR(A, rvec, ma, ma, dummy, tol)
+        call formR(A, R, rvec, ma)
+        call formQstar(A, Q, ma, ma)
+        v = matmul(transpose(Q), v)
+        call backsub(R, v, w, ma, ma)
+   
+        !using the error memory as a norm funciton for now 
+        call twonorm(w(:, 1), error)
+        v = w/error
+
+        w = matmul(As, v) - eig*v
+
+        call twonorm(w(:, 1), error)
+        !NOTE: this error never gets below 110^-5 or 10^-6. Why might this be?
+
+    end do
  
-!  subroutine invIter(A, ma)
-!
-!
-!  end subroutine invIter
+  end subroutine inviter
 
 end module LinAl

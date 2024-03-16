@@ -4,7 +4,7 @@
  Question 1: Hessenburg Form (Tridiagonalization)
   
  A before tridiagonalization
-This is   4 by   4
+This is a   4 by   4
  matrix.
      5.000     4.000     1.000     1.000
      4.000     5.000     1.000     1.000
@@ -12,7 +12,7 @@ This is   4 by   4
      1.000     1.000     2.000     4.000
   
  A after Tridiagonalization
-This is   4 by   4
+This is a   4 by   4
  matrix.
      5.000    -4.243     0.000     0.000
     -4.243     6.000     1.414     0.000
@@ -29,7 +29,7 @@ This is   4 by   4
  Question 2: QR Algorithm with and without Shifts
   
  Matrix A before QR w/o shift
-This is   3 by   3
+This is a   3 by   3
  matrix.
      3.000     1.000     0.000
      1.000     2.000     1.000
@@ -37,14 +37,14 @@ This is   3 by   3
   
  Algorithm converged within 22 iterations
  Matrix D after QR w/o shift
-This is   3 by   3
+This is a   3 by   3
  matrix.
      3.732     0.000     0.000
      0.000     2.000     0.000
      0.000     0.000     0.268
   
  Matrix A before QR w shift
-This is   3 by   3
+This is a   3 by   3
  matrix.
      3.000     1.000     0.000
      1.000     2.000     1.000
@@ -52,7 +52,7 @@ This is   3 by   3
   
  Algorithm converged within 6 iterations
  Matrix D after QR w shift
-This is   3 by   3
+This is a   3 by   3
  matrix.
      3.732     0.000     0.000
      0.000     2.000     0.000
@@ -64,15 +64,23 @@ This is   3 by   3
  Question 3: Inverse Iteration Method
   
  Matrix A before Inverse Iteration
-This is   4 by   4
+This is a   4 by   4
  matrix.
      2.000     1.000     3.000     4.000
      1.000    -3.000     1.000     5.000
      3.000     1.000     6.000    -2.000
      4.000     5.000    -2.000    -1.000
   
+ Calculating Eigenvalues of A with QR w shift with high accuracy
+ Algorithm converged within 1287 iterations
+This is a   4 by   4
+ matrix.
+    -8.029     0.000     0.000     0.000
+     0.000     7.933     0.000     0.000
+     0.000     0.000     5.669     0.000
+     0.000     0.000     0.000    -1.573
  Eigenvalues of A
-This is   4 by   1
+This is a   4 by   1
  matrix.
     -8.029
      7.933
@@ -81,15 +89,15 @@ This is   4 by   1
   
   
  Eigenvectors (in columns)
-This is   4 by   4
+This is a   4 by   4
  matrix.
      0.263     0.560     0.379    -0.688
      0.659     0.212     0.362     0.624
     -0.200     0.777    -0.538     0.260
     -0.676     0.195     0.660     0.264
   
- Error in eigenvector 1 calculation norm:    2.1882242598238351E-005
- Error in eigenvector 2 calculation norm:    5.6441433437421328E-004
- Error in eigenvector 3 calculation norm:    3.5636878632148201E-005
- Error in eigenvector 4 calculation norm:    9.2743876367471958E-006
+ Error in eigenvector 1 calculation norm:    2.8863581952171581E-012
+ Error in eigenvector 2 calculation norm:    7.6918460438890505E-012
+ Error in eigenvector 3 calculation norm:    4.8849813083506888E-015
+ Error in eigenvector 4 calculation norm:    1.1710090180710446E-015
  --------------------------------------------------------------

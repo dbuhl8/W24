@@ -11,7 +11,6 @@
 
 \title{Homework 5: Report}
 \author{Dante Buhl}
-\date{Feb. $26^{th}$ 2024}
 
 
 \DeclareMathOperator{\cond}{cond}
@@ -41,7 +40,11 @@
 \section{Numerical Problems}
 \begin{enumerate}
     
-\item Talk to me in finals week, sorry Nate! I'm going to submit the code late. 
+\item My Tridiagonalization routine successfully makes a square matrix tridiagonal. It really only took a slight modificaiton to my QR decomposition routine and it performs well. Some notes is that machine precision errors will cause the zero's elements to occasionally show a sign. But when I looked at the twonorms of each column in the resulting Tridiagonal form, you find that these values are near machine precision zero (this is investigated by computing the two norms with and without the elements that should be zero and seeing if there is a nontrivial error).
+
+\item My QR algorithms work well and compute the eigenvalues to a high degree of accuracy. The QR with shifts algorithm seems to fail the iteration after the matrix becomes diagonal. I also wrote a print statement tht shows after how many iterations the algorithm converged in. As expected, the algorithm with shifts converges faster. 
+
+\item My inverse iteration method works well. I soon discovered that the order of accuracy of the eigenvectors is limited by the order of accuracy of the eigenvalues. That is, if you give the algorithm an eigenvalue with accuracy out to $10^{-4}$ you can expect your eigenvalues to have an order of accuracy of $10^{-4}$. Because of this, I have my driver routine using QR to compute the eigenvalues out to $10^{-14}$ and my eigenvectors have a great deal of accuracy. 
    
 \end{enumerate}
 

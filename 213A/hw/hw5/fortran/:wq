@@ -11,7 +11,7 @@ FFLAGS = -fdefault-real-8 -fdefault-double-8 -fbounds-check
 output.txt: LinAl.exe
 	./LinAl.exe > output.txt
 
-debug: debug.exe
+debug.txt: debug.exe
 	./debug.exe > debug.txt
 
 LinAl.exe: $(MODULES) $(OBJECTS)
@@ -27,4 +27,4 @@ debug.exe: $(MODULES) $(DOBJECTS)
 	gfortran -c $(FFLAGS) $<
 
 clean:
-	rm -f $(OBJECTS) $(DOBJECTS) $(MODULES) LinAl.exe
+	rm -f $(OBJECTS) $(MODULES) LinAl.exe

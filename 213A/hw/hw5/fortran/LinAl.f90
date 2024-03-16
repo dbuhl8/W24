@@ -14,20 +14,6 @@ subroutine readMat(filename)
 
     integer :: i,j
 
-    ! Reads a file containing the matrix A 
-    ! Sample file:
-    !
-    ! 4 4 
-    ! 2.0 1.0 1.0 0.0
-    ! 4.0 3.0 3.0 1.0
-    ! 8.0 7.0 9.0 5.0
-    ! 6.0 7.0 9.0 8.0
-    !
-    ! Note that the first 2 numbers in the first line are the matrix dimensions, i.e., 4x4,
-    ! then the next msize lines are the matrix entries. This matrix is found in Eq. 2.18 of the lecture note.
-    ! Note that entries must be separated by a tab.
-
-
     open(10,file=filename)
 
     ! Read the matrix dimensions
@@ -51,6 +37,7 @@ subroutine readMat(filename)
     real, intent(out) :: tr 
     integer :: i
 
+    ! sums along the diagonal
     do i = 1, m
         tr = tr + A(i, i)
     end do
@@ -64,6 +51,7 @@ subroutine readMat(filename)
     real, intent(in) :: v(:)
     real, intent(out) :: nrm 
 
+    !square roots the sum of each vector element squared
     nrm = sqrt(sum(v**2))
 
   end subroutine twonorm
@@ -74,19 +62,19 @@ subroutine readMat(filename)
     integer, intent(in) :: m, n
     integer :: i, j
 
-    print "(A, I3, A, I3)", "This is ", m," by ", n," matrix."
+    print "(A, I3, A, I3)", "This is a ", m," by ", n," matrix."
     do i = 1, m
         print "("//trim(str(n))//"F10.3)", A(i, :)
     end do
 
   end subroutine printmat
 
-character(len=20) function str(k)
-!   "Convert an integer to string."
+  character(len=20) function str(k)
+  ! "Convert an integer to string."
     integer, intent(in) :: k
     write (str, *) k
     str = adjustl(str)
-end function str
+  end function str
 
   subroutine GE(A, B, ma, nb, bool)
         
@@ -131,11 +119,6 @@ end function str
         L(i+1:ma, i) = A(i+1:ma,i)/A(i, i)
     
         A(i+1:ma, i:ma) = A(i+1:ma, i:ma) - matmul(L(i+1:ma, i:i), A(i:i, i:ma))
-        !do  j = i+1, ma
-            ! this can be optimized to not require a loop 
-            ! A(i+1:ma, i:ma) = A(i+1:ma, i:ma) - matmul(L(i+1:ma, i), A(i, i:ma))
-        !    A(j, i:ma) = A(j, i:ma) - L(j, i)*A(i, i:ma)
-        !end do
         do j = i+1, ma
             B(j, :) = B(j, :) - L(j, i)*B(i, :)
         end do
@@ -346,9 +329,13 @@ end function str
         x(:, 1) = A(i:ma, i)
         !make vector x = sign(x1)twonorm(x)ihat + x
         call twonorm(x(:, 1), norm)
-        x(1, 1) = x(1, 1) + (x(1, 1)/abs(x(1, 1)))*norm
+        x(1, 1) = x(1, 1) + (sign(x(1, 1), x(1, 1)))*norm
         !normalize x
         call twonorm(x(:, 1), norm)
+
+        if((norm .eq. 0) .and. (i .eq. na)) then
+            exit
+        end if
         x = x/norm
         ! Multiply A by the householder reflector
         A(i:ma, i:na) = A(i:ma, i:na) - 2*matmul(x, matmul(transpose(x), A(i:ma, i:na)))
@@ -492,8 +479,7 @@ end function str
 
     integer :: i
     integer, intent(in) :: ma
-    real :: A(:, :)
-    real, dimension(ma, ma) :: D
+    real :: A(:, :), D(:, :)
 
     D = 0.0
 
@@ -558,6 +544,8 @@ end function str
             call formR(A, R, rvec, ma)
             call formQstar(A, Q, ma, ma)
 
+            !This routine fails after the matrix becomes diagonal 
+
             A = matmul(R, Q)
 
             !compare eigenvals of Ak+1 to Ak
@@ -620,7 +608,6 @@ end function str
         w = matmul(As, v) - eig*v
 
         call twonorm(w(:, 1), error)
-        !NOTE: this error never gets below 110^-5 or 10^-6. Why might this be?
 
     end do
  

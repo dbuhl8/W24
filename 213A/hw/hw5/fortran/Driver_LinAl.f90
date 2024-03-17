@@ -63,7 +63,7 @@ Program Driver_LinAl
   call printmat(A2, ma2, ma2)  
   print *, " "
 
-  call eigQR(A2, ma2, .false., 10.d-12)
+  call eigQR(A2, ma2, .false., 10.d-14)
 
   call diag(A2, ma2, D)
 
@@ -75,7 +75,7 @@ Program Driver_LinAl
   call printmat(A3, ma2, ma2)  
   print *, " "
 
-  call eigQR(A3, ma2, .true., 10.d-4)
+  call eigQR(A3, ma2, .true., 10.d-14)
 
   call diag(A3, ma2, D)
 
@@ -111,7 +111,7 @@ Program Driver_LinAl
 
     A4 = As
 
-    call inviter(A4, D4(i, i), eigvec, ma1, 10.d-12)
+    call inviter(A4, D4(i, i), eigvec, ma1, 10.d-14)
 
     Eigmat(:, i) = eigvec(:, 1)
     

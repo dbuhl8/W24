@@ -1,0 +1,6 @@
+Just wanted to follow up with this issue. It seems using imshow in Python produces image artifacts, whereas using MATLAB results in the expected image. 
+I've discussed this with another classmate who encountered this image artifact issue in Python, and they have also resolved it with MATLAB.
+
+This could have just been an issue with how we invoked Python's imshow. That being said, I'll be just doing my data analysis with MATLAB this time around.
+
+Hopefully this can be of use to you all!

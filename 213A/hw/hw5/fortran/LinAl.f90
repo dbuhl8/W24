@@ -317,7 +317,7 @@ subroutine readMat(filename)
     logical :: isSingular
     real :: A(:, :), Rvec(:)
     real, allocatable :: x(:, :)
-    real :: norm
+    real :: norm = 0.0
     integer :: i, j
 
     Rvec = 0.0
@@ -329,14 +329,17 @@ subroutine readMat(filename)
         x(:, 1) = A(i:ma, i)
         !make vector x = sign(x1)twonorm(x)ihat + x
         call twonorm(x(:, 1), norm)
-        x(1, 1) = x(1, 1) + (sign(x(1, 1), x(1, 1)))*norm
-        !normalize x
-        call twonorm(x(:, 1), norm)
 
-        if((norm .eq. 0) .and. (i .eq. na)) then
-            exit
+!        print *, "Norm: ", norm
+!        call printmat(x, ma-i+1, 1)
+
+        if(norm > 10.d-15) then
+!            print *, "entered if statement"
+            x(1, 1) = x(1, 1) + sign(norm, x(1, 1))
+            !normalize x
+            call twonorm(x(:, 1), norm)
+            x = x/norm
         end if
-        x = x/norm
         ! Multiply A by the householder reflector
         A(i:ma, i:na) = A(i:ma, i:na) - 2*matmul(x, matmul(transpose(x), A(i:ma, i:na)))
         Rvec(i) = A(i, i)

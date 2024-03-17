@@ -27,4 +27,4 @@ debug.exe: $(MODULES) $(DOBJECTS)
 	gfortran -c $(FFLAGS) $<
 
 clean:
-	rm -f $(OBJECTS) $(DOBJECTS) $(MODULES) LinAl.exe
+	rm -f $(OBJECTS) $(DOBJECTS) $(MODULES) LinAl.exe debug.exe

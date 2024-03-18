@@ -4,129 +4,179 @@ Program Driver_LinAl
 
   implicit none
   
-  integer :: i,j
+  integer :: i,j,k
   real, parameter :: pi = 4.*atan(1.0), tol = 10.0**(-14)
-  integer, parameter :: ma1 = 4, ma2 = 3
-  real, dimension(4, 4) :: A1, A4, As, Eigmat, D4
-  real, dimension(3, 3) :: A2, A3, D
-  real, dimension(4, 1) :: EA4, eigvec
+  integer, parameter :: ma = 1920, na = 1279
+  integer, parameter :: LDA=ma, LDU=ma, LDV=na
+  real, dimension(ma, na) :: A, As, At
+  character :: jobu='A', jobvt='A'
+  integer :: lwork, info
+  real, dimension(min(ma, na)) :: S
+  real, dimension(ma, na) :: Sigma, Sigma10, Sigma20, Sigma40, Sigma80, Sigma160
+  real, dimension(ma, na) :: Sigma320, Sigma640
+  real, dimension(LDU, ma) :: U
+  real, dimension(LDV, na) :: VT
+  real, allocatable :: work(:)
   real :: norm
 
+!  info = ilaenv(1, 'dsytrf', 'L', 50, 50, -1, -1)
 
-  A1(1, :) = (/5.0, 4.0, 1.0, 1.0/)
-  A1(2, :) = (/4.0, 5.0, 1.0, 1.0/)
-  A1(3, :) = (/1.0, 1.0, 4.0, 2.0/)
-  A1(4, :) = (/1.0, 1.0, 2.0, 4.0/)
 
-  A2(1, :) = (/3.0, 1.0, 0.0/)
-  A2(2, :) = (/1.0, 2.0, 1.0/)
-  A2(3, :) = (/0.0, 1.0, 1.0/)
-
-  A3 = A2
-
-  A4(1, :) = (/2.0, 1.0, 3.0, 4.0/)
-  A4(2, :) = (/1.0, -3.0, 1.0, 5.0/)
-  A4(3, :) = (/3.0, 1.0, 6.0, -2.0/)
-  A4(4, :) = (/4.0, 5.0, -2.0, -1.0/)
-
-  EA4(:, 1) = (/-8.0286, 7.9329, 5.6689, -1.5732/)
-
+  open(10, file="dog_bw_data.dat")
+  do i = 1, na
+    read (10, *) A(:, i)
+  end do
+  close(10) 
 
   print *, " "
   print *, "--------------------------------------------------------------"
   print *, " "
-  print *, "Question 1: Hessenburg Form (Tridiagonalization)"
+  print *, "Question 1: Reading in dog_bw_data.dat into A"
   print *, " "
 
-  print *, "A before tridiagonalization"
-  call printmat(A1, ma1, ma1)
+!  print *, "A before SVD"
+!  call printmat(A, ma, na)
+!  print *, " "
+
+  print *, " "
+  print *, "--------------------------------------------------------------"
+  print *, " "
+  print *, "Question 2: Performing SVD on A"
   print *, " "
 
-  call tridiagonal(A1, ma1)
+  As = A
 
-  print *, "A after Tridiagonalization"
-  call printmat(A1, ma1, ma1)
-  print *, " "
+  ! Finding the optimal sizae for work
+  info = 0
+  lwork = -1
+  allocate(work(1))
+  call dgesvd(jobu, jobvt, ma, na, A, LDA, S, U, LDU, VT, LDV, work, lwork, info)
+  lwork = work(1)
+  deallocate(work)
+  allocate(work(lwork))
 
-  do i = 1, ma1
-    call twonorm(A1(:, i), norm)
-    print *, "Two norm of column "//trim(str(i))//":", norm
+  call dgesvd(jobu, jobvt, ma, na, A, LDA, S, U, LDU, VT, LDV, work, lwork, info)
+
+  !constructing sigma
+  Sigma = 0.0
+  do i = 1, min(ma, na)
+    Sigma(i, i) = S(i)
   end do
 
-  print *, " "
-  print *, "--------------------------------------------------------------"
-  print *, " "
-  print *, "Question 2: QR Algorithm with and without Shifts"
-  print *, " "
-
-  print *, "Matrix A before QR w/o shift"
-  call printmat(A2, ma2, ma2)  
-  print *, " "
-
-  call eigQR(A2, ma2, .false., 10.d-14)
-
-  call diag(A2, ma2, D)
-
-  print *, "Matrix D after QR w/o shift"
-  call printmat(D, ma2, ma2)  
-  print *, " "
-
-  print *, "Matrix A before QR w shift"
-  call printmat(A3, ma2, ma2)  
-  print *, " "
-
-  call eigQR(A3, ma2, .true., 10.d-14)
-
-  call diag(A3, ma2, D)
-
-  print *, "Matrix D after QR w shift"
-  call printmat(D, ma2, ma2)  
-  print *, " "
 
   print *, " "
   print *, "--------------------------------------------------------------"
   print *, " "
-  print *, "Question 3: Inverse Iteration Method"
+  print *, "Question 3-4: Reduced Rank Reconstructions"
   print *, " "
 
-  print *, "Matrix A before Inverse Iteration"
-  call printmat(A4, ma1, ma1)  
+  call reducedrank(Sigma, Sigma10, 10, ma, na)
+  call reducedrank(Sigma, Sigma20, 20, ma, na)
+  call reducedrank(Sigma, Sigma40, 40, ma, na)
+  call reducedrank(Sigma, Sigma80, 80, ma, na)
+  call reducedrank(Sigma, Sigma160, 160, ma, na)
+  call reducedrank(Sigma, Sigma320, 320, ma, na)
+  call reducedrank(Sigma, Sigma640, 640, ma, na)
+
+  Sigma10 = matmul(U, matmul(Sigma10, VT))
+  Sigma20 = matmul(U, matmul(Sigma20, VT))
+  Sigma40 = matmul(U, matmul(Sigma40, VT))
+  Sigma80 = matmul(U, matmul(Sigma80, VT))
+  Sigma160 = matmul(U, matmul(Sigma160, VT))
+  Sigma320 = matmul(U, matmul(Sigma320, VT))
+  Sigma640 = matmul(U, matmul(Sigma640, VT))
+  Sigma = matmul(U, matmul(Sigma, VT))
+
+  open(11, file="Image_appn_100010.dat")
+    do i = 1, na
+        write(11, *) Sigma10(:, i)
+    end do
+  close(11)
+  open(12, file="Image_appn_100020.dat")
+    do i = 1, na
+        write(12, *) Sigma20(:, i)
+    end do
+  close(12)
+  open(13, file="Image_appn_100040.dat")
+    do i = 1, na
+        write(13, *) Sigma40(:, i)
+    end do
+  close(13)
+  open(14, file="Image_appn_100080.dat")
+    do i = 1, na
+        write(14, *) Sigma80(:, i)
+    end do
+  close(14)
+  open(15, file="Image_appn_100160.dat")
+    do i = 1, na
+        write(15, *) Sigma160(:, i)
+    end do
+  close(15)
+  open(16, file="Image_appn_100320.dat")
+    do i = 1, na
+        write(16, *) Sigma320(:, i)
+    end do
+  close(16)
+  open(17, file="Image_appn_100640.dat")
+    do i = 1, na
+        write(17, *) Sigma640(:, i)
+    end do
+  close(17)
+  open(18, file="Image_appn_101279.dat")
+    do i = 1, na
+        write(18, *) Sigma(:, i)
+    end do
+  close(18)
+
   print *, " "
-
-  As = A4
-  print *, "Calculating Eigenvalues of A with QR w shift with high accuracy"
-
-  call eigQR(A4, ma1, .false., 10.d-14)
-  call diag(A4, ma1, D4)
-    
-  call printmat(D4, ma1, ma1)
-
-  A4 = As
-
-  print *, "Eigenvalues of A" 
-  call printmat(EA4, ma1, 1)  
-  print *, " "
-
-  do i = 1, ma1
-
-    A4 = As
-
-    call inviter(A4, D4(i, i), eigvec, ma1, 10.d-14)
-
-    Eigmat(:, i) = eigvec(:, 1)
-    
-  end do
-  
-  print *, " "
-  print *, "Eigenvectors (in columns)"
-  call printmat(eigmat, ma1, ma1)
-  print *, " "
-  do i = 1, ma1
-    call twonorm(matmul(As, eigmat(:, i)) - D4(i, i)*eigmat(:, i), norm)
-    print *, "Error in eigenvector "//trim(str(i))//" calculation norm: ", norm
-  end do
-
   print *, "--------------------------------------------------------------"
+  print *, " "
+  print *, "Question 6: Comparing Reduced Rank Approximation Errors"
+  print *, " "
 
+  At = As - Sigma10
+  call frobnorm(At, norm)
+  norm = norm/(ma*na)
+  print *, "Here is the Frob Norm of A - U(Sigma10)VT. ERROR: ", norm
+  print *, " "
+  At = As - Sigma20
+  call frobnorm(At, norm)
+  norm = norm/(ma*na)
+  print *, "Here is the Frob Norm of A - U(Sigma20)VT. ERROR: ", norm
+  print *, " "
+  At = As - Sigma40
+  call frobnorm(At, norm)
+  norm = norm/(ma*na)
+  print *, "Here is the Frob Norm of A - U(Sigma40)VT. ERROR: ", norm
+  print *, " "
+  At = As - Sigma80
+  call frobnorm(At, norm)
+  norm = norm/(ma*na)
+  print *, "Here is the Frob Norm of A - U(Sigma80)VT. ERROR: ", norm
+  print *, " "
+  At = As - Sigma160
+  call frobnorm(At, norm)
+  norm = norm/(ma*na)
+  print *, "Here is the Frob Norm of A - U(Sigma160)VT. ERROR: ", norm
+  print *, " "
+  At = As - Sigma320
+  call frobnorm(At, norm)
+  norm = norm/(ma*na)
+  print *, "Here is the Frob Norm of A - U(Sigma320)VT. ERROR: ", norm
+  print *, " "
+  At = As - Sigma640
+  call frobnorm(At, norm)
+  norm = norm/(ma*na)
+  print *, "Here is the Frob Norm of A - U(Sigma640)VT. ERROR: ", norm
+  print *, " "
+  At = As - Sigma
+  call frobnorm(At, norm)
+  norm = norm/(ma*na)
+  print *, "Here is the Frob Norm of A - U(Sigma1279)VT. ERROR: ", norm
+  print *, " "
+
+  print *, " "
+  print *, "--------------------------------------------------------------"
+ 
 
 End Program Driver_LinAl

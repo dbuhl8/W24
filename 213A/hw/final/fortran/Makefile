@@ -1,24 +1,20 @@
 OBJECTS = LinAl.o Driver_LinAl.o
 	
-DOBJECTS = LinAl.o debug.o
+DOBJECTS = LinAl.o 
 
 MODULES = LinAl.mod
 
-FFLAGS = -fdefault-real-8 -fdefault-double-8 -fbounds-check -llapack -lblas
+
+FFLAGS = -fdefault-real-8 -fdefault-double-8 -llapack -lblas #-fbounds-check -g
 
 .PHONY: clean
 
 output.txt: LinAl.exe
 	./LinAl.exe > output.txt
-
-debug: debug.exe
-	./debug.exe > debug.txt
+	python3 plot.py
 
 LinAl.exe: $(MODULES) $(OBJECTS)
-	gfortran $(OBJECTS) -o LinAl.exe
-
-debug.exe: $(MODULES) $(DOBJECTS)
-	gfortran $(DOBJECTS) -o debug.exe
+	gfortran $(OBJECTS) $(FFLAGS) -o LinAl.exe
 
 %.o: %.f90
 	gfortran -c $(FFLAGS) $<
@@ -27,4 +23,4 @@ debug.exe: $(MODULES) $(DOBJECTS)
 	gfortran -c $(FFLAGS) $<
 
 clean:
-	rm -f $(OBJECTS) $(DOBJECTS) $(MODULES) LinAl.exe debug.exe
+	rm -f $(OBJECTS) $(DOBJECTS) $(MODULES) LinAl.exe Image_appn_10* output.txt

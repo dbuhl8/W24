@@ -1,0 +1,38 @@
+  
+ --------------------------------------------------------------
+  
+ Question 1: Reading in dog_bw_data.dat into A
+  
+  
+ --------------------------------------------------------------
+  
+ Question 2: Performing SVD on A
+  
+  
+ --------------------------------------------------------------
+  
+ Question 3-4: Reduced Rank Reconstructions
+  
+  
+ --------------------------------------------------------------
+  
+ Question 6: Comparing Reduced Rank Approximation Errors
+  
+ Here is the Frob Norm of A - U(Sigma10)VT. ERROR:    1.1253406810445458E-002
+  
+ Here is the Frob Norm of A - U(Sigma20)VT. ERROR:    8.2865400139898304E-003
+  
+ Here is the Frob Norm of A - U(Sigma40)VT. ERROR:    6.5274268424066473E-003
+  
+ Here is the Frob Norm of A - U(Sigma80)VT. ERROR:    5.2071477758380853E-003
+  
+ Here is the Frob Norm of A - U(Sigma160)VT. ERROR:    3.9099731760728982E-003
+  
+ Here is the Frob Norm of A - U(Sigma320)VT. ERROR:    2.4521568133535547E-003
+  
+ Here is the Frob Norm of A - U(Sigma640)VT. ERROR:    8.9387529374183937E-004
+  
+ Here is the Frob Norm of A - U(Sigma1279)VT. ERROR:    8.6601822508043348E-016
+  
+  
+ --------------------------------------------------------------

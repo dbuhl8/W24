@@ -616,4 +616,27 @@ subroutine readMat(filename)
  
   end subroutine inviter
 
+  subroutine reducedrank(Sigma, Sigmak, k, ma, na)
+
+    implicit none
+
+    integer :: k, i, ma, na
+    real :: Sigma(:, :), Sigmak(:, :)
+
+    Sigmak = 0.0
+
+    do i = 1, k
+        Sigmak(i, i) = Sigma(i, i)
+    end do
+
+  end subroutine reducedrank
+
+! subroutine GJ()
+
+! end subroutine GJ
+
+! subroutine GS()
+
+! end subroutine GS
+
 end module LinAl

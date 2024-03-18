@@ -723,7 +723,43 @@ subroutine readMat(filename)
     
     end do
 
-
   end subroutine GS
+
+  subroutine CG(A, B, X, ma, nb, tol)
+
+    implicit none
+
+    real :: A(:, :), B(:, :), X(:, :), tol, alpha, beta
+    integer, intent(in) :: ma, nb
+    real, dimension(1, nb) :: alpha, beta
+    real, dimension(ma, nb) :: r, p
+    real, dimension(nb) :: error = 100.0
+    integer :: i, j, k 
+
+    X = 0.0
+    R = B
+    P = R
+
+    do while (maxval(error) > tol)
+
+        do i = 1, nb
+            !calculate alpha
+        end do
+        x = x + matmul(alpha, p)
+        r = r - matmul(alpha, matmul(A, p))
+        do i = 1, nb
+            !calculate beta
+        end do
+        p = r + matmul(beta, p)
+    
+        !compute error
+
+    end do
+
+  end subroutine CG
+
+! subroutine precondition()
+
+! end subroutine precondition
 
 end module LinAl

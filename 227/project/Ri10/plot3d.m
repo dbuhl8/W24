@@ -1,10 +1,8 @@
-
-
 close all;
 clear;
 clc;
 
-Ri = 0.1
+Ri = 10;
 
 datfileID = fopen('nk.dat', 'r');
 nk = fscanf(datfileID, '%d');
@@ -40,6 +38,18 @@ contourf(KX, KZ, lambda)
 xlabel("kx")
 ylabel("kz")
 title("Contour plot of Re($\lambda$), Ri = " + string(Ri), 'Interpreter', 'latex')
-print("ContourPlotRi="+ string(Ri) + ".pdf", "-dpdf")
+%print("ContourPlotRi="+ string(Ri) + ".pdf", "-dpdf")
+
+fig = figure(3);
+hold on;
+for i = 1:nk
+        plot(kx, lambda(:, i), '-o', 'DisplayName', strcat("kz = ", string(kz(i))))
+end
+xlabel("kx")
+ylabel("Re($\lambda$)", 'Interpreter', 'latex')
+legend()
+orient('landscape')
+print(fig, "shearRi10", "-dpdf", '-fillpage')
+
 
 

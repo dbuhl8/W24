@@ -4,7 +4,7 @@ close all;
 clear;
 clc;
 
-Ri = 0.5;
+Ri = 0.0
 
 datfileID = fopen('nk.dat', 'r');
 nk = fscanf(datfileID, '%d');
@@ -50,8 +50,7 @@ end
 xlabel("kx")
 ylabel("Re($\lambda$)", 'Interpreter', 'latex')
 legend()
-orient('landscape')
-print(fig, "shearRi0,5", "-dpdf", '-fillpage')
+print("shearRi0", "-dpdf", '-fillpage')
 
 
 

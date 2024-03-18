@@ -2,6 +2,7 @@ module LinAl
 
 implicit none 
 integer, save :: msize, nsize 
+real, parameter :: pi = acos(-1.d0)
 real, dimension(:,:), allocatable, save :: mat
 contains
 
@@ -631,12 +632,98 @@ subroutine readMat(filename)
 
   end subroutine reducedrank
 
-! subroutine GJ()
+  subroutine GJ(A, B, x, ma, nb, tol)
 
-! end subroutine GJ
+    implicit none
 
-! subroutine GS()
+    integer :: ma, nb, i
+    real :: A(:, :), B(:, :), X(:, :), tol
+    real, dimension(ma, ma) :: D, R
+    real, dimension(ma, nb) :: check
+    real, dimension(nb) :: error
 
-! end subroutine GS
+    call diag(A, ma, D)
+
+    R = A - D
+    x = B
+
+    do i = 1, ma
+        if (D(i, i) > tol) then
+            D(i, i) = 1.0/D(i, i)
+        else
+            D(i, i) = 0
+        end if
+    end do
+
+    error = 100.0
+
+    do while (maxval(error) > tol) 
+
+        x = matmul(D, B - matmul(R, x)) 
+
+        check = matmul(A, x) - B
+
+        do i = 1, nb
+            call twonorm(check(:, i), error(i))
+        end do
+
+    end do
+
+  end subroutine GJ
+
+  subroutine GS(A, B, X, ma, nb, tol)
+
+    implicit none
+
+    integer :: ma, nb, i, j
+    real :: A(:, :), B(:, :), X(:, :), tol
+    real, dimension(ma, ma) :: D, R, L
+    real, dimension(ma, nb) :: check
+    real, dimension(nb) :: error
+
+    call diag(A, ma, D)
+
+    R = A - D
+
+    do j = 1, ma
+        do i = j+1, ma
+            L(i, j) = R(i, j)
+            R(i, j) = 0.0
+        end do
+    end do
+    x = B
+
+    do i = 1, ma
+        if (D(i, i) > tol) then
+            D(i, i) = 1.0/D(i, i)
+        else
+            D(i, i) = 0
+        end if
+    end do
+    
+    error = 100
+
+
+    j = 0
+    do while (maxval(error) > tol) 
+
+        check = 0
+        do i = 1, ma
+            check(i, :) = D(i, i)*(B(i, :) - matmul(L(i, :), check) - matmul(R(i, :), x))
+            x(i, :) = 0
+        end do
+
+        x = check
+        check = matmul(A, x) - B
+
+
+        do i = 1, nb
+            call twonorm(check(:, i), error(i))
+        end do
+    
+    end do
+
+
+  end subroutine GS
 
 end module LinAl

@@ -5,10 +5,12 @@ Program Driver_LinAl
   implicit none
   
   integer :: i,j,k
-  real, parameter :: pi = 4.*atan(1.0), tol = 10.0**(-14)
-  integer, parameter :: ma = 1920, na = 1279
+  real, parameter :: tol = 10.0**(-14)
+  integer, parameter :: ma = 1920, na = 1279, ml = 3, nb = 1
   integer, parameter :: LDA=ma, LDU=ma, LDV=na
   real, dimension(ma, na) :: A, As, At
+  real, dimension(ml, ml) :: L, eye, Ls
+  real, dimension(ml, nb) :: B, X
   character :: jobu='A', jobvt='A'
   integer :: lwork, info
   real, dimension(min(ma, na)) :: S
@@ -18,9 +20,7 @@ Program Driver_LinAl
   real, dimension(LDV, na) :: VT
   real, allocatable :: work(:)
   real :: norm
-
-!  info = ilaenv(1, 'dsytrf', 'L', 50, 50, -1, -1)
-
+  character :: jors
 
   open(10, file="dog_bw_data.dat")
   do i = 1, na
@@ -33,11 +33,7 @@ Program Driver_LinAl
   print *, " "
   print *, "Question 1: Reading in dog_bw_data.dat into A"
   print *, " "
-
-!  print *, "A before SVD"
-!  call printmat(A, ma, na)
-!  print *, " "
-
+  print *, " There was a print statement for A here before. It was ridiculously large so it is omitted"
   print *, " "
   print *, "--------------------------------------------------------------"
   print *, " "
@@ -177,6 +173,52 @@ Program Driver_LinAl
 
   print *, " "
   print *, "--------------------------------------------------------------"
- 
+! print *, " "
+! print *, "Question 7: Iterative Methods for solving systems of equations"
+! print *, " "
+
+! L = 1.0
+! call ident(eye, ml)
+! L = L - eye
+
+! do i = 1, ml
+!   print *, "Please enter a value for A("//trim(str(i))//trim(str(i))//"): "
+!   read *, L(i, i)
+!   B(i, 1) = i
+! end do
+! X = 0.0
+
+! Ls = L
+
+! print *, "Would you like the code to perform Gauss-Jordan (J) or Gauss-Seidel (S) ?"
+! read *, jors
+
+! if (jors .eq. "J" .or. jors .eq.  "j") then
+
+!   call GJ(L, B, X, ml, nb, 10.d-5) 
+
+!   print *, "This is the solution matrix X"
+!   call printmat(X, ml, nb)
+!   print *, " "
+
+!   call twonorm(B - matmul(Ls, X), norm)
+!   print *, "ERROR :", norm
+!   
+! else if (jors .eq. "S" .or. jors .eq. "s") then
+
+!   call GS(L, B, X, ml, nb, 10.d-5)
+
+!   print *, "This is the solution matrix X"
+!   call printmat(X, ml, nb)
+!   print *, " "
+
+!   call twonorm(B - matmul(Ls, X), norm)
+!   print *, "ERROR :", norm
+
+! else 
+!   print *, "That was not one of the listed options please restart the code and try again "
+!   print *, "(If you don't want to wait for the SVD algorithm to run just commment it out"
+! end if
+
 
 End Program Driver_LinAl

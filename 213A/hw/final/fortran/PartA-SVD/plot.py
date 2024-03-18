@@ -11,6 +11,7 @@ import math
 #file640 = open("Image_appn_100640.dat", "r")
 #file1279 = open("Image_appn_101279.dat", "r")
 
+orig = np.loadtxt("dog_bw_data.dat")
 A10 = np.loadtxt("Image_appn_100010.dat")
 A20 = np.loadtxt("Image_appn_100020.dat")
 A40 = np.loadtxt("Image_appn_100040.dat")
@@ -51,6 +52,10 @@ plt.title("Reduced Rank Reconstruction for K = 640")
 plt.figure()
 plt.imshow(A1279, cmap='gray', vmin=0, vmax=255)
 plt.title("Reduced Rank Reconstruction for K = 1279")
+
+plt.figure()
+plt.imshow(orig, cmap='gray', vmin=0, vmax=255)
+plt.title("Original Picture")
 
 plt.show()
 

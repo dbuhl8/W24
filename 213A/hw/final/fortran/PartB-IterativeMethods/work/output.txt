@@ -1,0 +1,332 @@
+ --------------------------------------------------------------
+  
+ Question 7: Iterative Methods for solving systems of equations
+  
+  
+ --------------------------------------------------------------
+  
+ Results for D:    2.0000000000000000     
+  
+ GJ Method Converged within 471 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+  
+ ERROR :                       NaN
+ GS Method Converged within 53 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -4.000
+    -3.000
+    -2.000
+    -1.000
+     0.000
+     1.000
+     2.000
+     3.000
+     4.000
+     5.000
+  
+ ERROR :   8.8524439076197772E-005
+ CG Method Converged within 2 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -4.000
+    -3.000
+    -2.000
+    -1.000
+    -0.000
+     1.000
+     2.000
+     3.000
+     4.000
+     5.000
+  
+ ERROR :   1.8055380613063331E-014
+  
+ --------------------------------------------------------------
+  
+ Results for D:    5.0000000000000000     
+  
+ GJ Method Converged within 1203 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+  
+ ERROR :                       NaN
+ GS Method Converged within 16 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -0.732
+    -0.482
+    -0.232
+     0.018
+     0.268
+     0.518
+     0.768
+     1.018
+     1.268
+     1.518
+  
+ ERROR :   7.6657445417888697E-005
+ CG Method Converged within 2 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -0.732
+    -0.482
+    -0.232
+     0.018
+     0.268
+     0.518
+     0.768
+     1.018
+     1.268
+     1.518
+  
+ ERROR :   1.9484335006297032E-015
+  
+ --------------------------------------------------------------
+  
+ Results for D:    10.000000000000000     
+  
+ GJ Method Converged within 142 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -0.211
+    -0.099
+     0.012
+     0.123
+     0.234
+     0.345
+     0.456
+     0.567
+     0.678
+     0.789
+  
+ ERROR :   9.9556938943257340E-005
+ GS Method Converged within 10 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -0.211
+    -0.099
+     0.012
+     0.123
+     0.234
+     0.345
+     0.456
+     0.567
+     0.678
+     0.789
+  
+ ERROR :   4.2304589199798313E-005
+ CG Method Converged within 2 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -0.211
+    -0.099
+     0.012
+     0.123
+     0.234
+     0.345
+     0.456
+     0.567
+     0.678
+     0.789
+  
+ ERROR :   0.0000000000000000     
+  
+ --------------------------------------------------------------
+  
+ Results for D:    100.00000000000000     
+  
+ GJ Method Converged within 7 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+     0.005
+     0.015
+     0.025
+     0.035
+     0.045
+     0.056
+     0.066
+     0.076
+     0.086
+     0.096
+  
+ ERROR :   8.9842951545539043E-005
+ GS Method Converged within 5 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+     0.005
+     0.015
+     0.025
+     0.035
+     0.045
+     0.056
+     0.066
+     0.076
+     0.086
+     0.096
+  
+ ERROR :   8.5990492784137523E-006
+ CG Method Converged within 2 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+     0.005
+     0.015
+     0.025
+     0.035
+     0.045
+     0.056
+     0.066
+     0.076
+     0.086
+     0.096
+  
+ ERROR :   2.1755839288168292E-015
+  
+ --------------------------------------------------------------
+  
+ Results for D:    1000.0000000000000     
+  
+ GJ Method Converged within 5 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+     0.001
+     0.002
+     0.003
+     0.004
+     0.005
+     0.006
+     0.007
+     0.008
+     0.009
+     0.010
+  
+ ERROR :   1.0352274248666051E-006
+ GS Method Converged within 4 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+     0.001
+     0.002
+     0.003
+     0.004
+     0.005
+     0.006
+     0.007
+     0.008
+     0.009
+     0.010
+  
+ ERROR :   1.2522831044740036E-006
+ CG Method Converged within 2 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+     0.001
+     0.002
+     0.003
+     0.004
+     0.005
+     0.006
+     0.007
+     0.008
+     0.009
+     0.010
+  
+ ERROR :   3.3528000088581810E-015
+  
+ --------------------------------------------------------------
+  
+ Results for 10 x 10 matrices with A(i, i) = i 
+  
+ GJ Method Converged within 792 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+       NaN
+  
+ ERROR :                       NaN
+ GS Method Converged within 18 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -8.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+  
+ ERROR :   6.4830716000406142E-005
+ CG Method Converged within 10 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -8.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+  
+ ERROR :   5.7277186381920810E-011
+  
+ --------------------------------------------------------------
+  
+ Results for 100 x 100 matrices with A(i, i) = i 
+  
+ GJ Method Converged within 443 iterations.
+ ERROR :                       NaN
+ GS Method Converged within 23 iterations.
+ ERROR :   6.9054074346157424E-005
+ CG Method Converged within 57 iterations.

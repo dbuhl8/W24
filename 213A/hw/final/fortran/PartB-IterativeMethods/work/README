@@ -1,0 +1,19 @@
+
+
+Hello Nate, 
+
+So to run this code, simply type make and it will run. Because this code requires user input (for some reason) it doesn't write to an output.txt file as the prompts would not be displayed to a terminal.
+
+As asked in the description, the arguments for Gauss Jordan (GJ) and Gauss-Seidel (GS) are the following:
+
+A - a real ma x ma array 
+
+B - a real ma x nb array
+
+X - a real ma x nb
+
+ma - the dimension/order of A
+
+nb - the number of columns in B/X
+
+tol - accepted tolerance for computation

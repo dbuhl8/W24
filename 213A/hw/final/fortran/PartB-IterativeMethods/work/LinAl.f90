@@ -2,8 +2,8 @@ module LinAl
 
 implicit none 
 integer, save :: msize, nsize 
-real, dimension(:,:), allocatable, save :: mat
 real, parameter :: pi = acos(-1.d0)
+real, dimension(:,:), allocatable, save :: mat
 contains
 
 !********************************************************
@@ -632,15 +632,16 @@ subroutine readMat(filename)
 
   end subroutine reducedrank
 
-  subroutine GJ(A, B, x, ma, nb, tol)
+  subroutine GJ(A, B, x, ma, nb, tol, w2f, l)
 
     implicit none
 
-    integer :: ma, nb, i, l
+    integer :: ma, nb, i, j, l
     real :: A(:, :), B(:, :), X(:, :), tol
     real, dimension(ma, ma) :: D, R
     real, dimension(ma, nb) :: check
     real, dimension(nb) :: error
+    logical :: w2f
 
     call diag(A, ma, D)
 
@@ -654,6 +655,14 @@ subroutine readMat(filename)
             D(i, i) = 0
         end if
     end do
+
+    error = 100.0
+    j = 0
+
+    if (w2f) then
+        open(10, file="GJ"//trim(str(l))//"error.dat")
+        open(11, file="GJ"//trim(str(l))//"iteration.dat")
+    end if
 
     do while (maxval(error) > tol) 
 
@@ -664,24 +673,41 @@ subroutine readMat(filename)
         do i = 1, nb
             call twonorm(check(:, i), error(i))
         end do
-
-    end do
+        j = j + 1
+        if (w2f) then 
+            write (10, *) maxval(error)
+            write (11, *) j
+        end if
+    end do 
+    print *, "GJ Method Converged within "//trim(str(j))//" iterations."
+    if (w2f) then
+        close(10)
+        close(11)
+    end if
 
   end subroutine GJ
 
-  subroutine GS(A, B, X, ma, nb, tol)
+  subroutine GS(A, B, X, ma, nb, tol, w2f, k)
 
     implicit none
 
-    integer :: ma, nb, i
+    integer :: ma, nb, i, j, k
     real :: A(:, :), B(:, :), X(:, :), tol
     real, dimension(ma, ma) :: D, R, L
     real, dimension(ma, nb) :: check
     real, dimension(nb) :: error
+    logical :: w2f
 
     call diag(A, ma, D)
 
     R = A - D
+
+    do j = 1, ma
+        do i = j+1, ma
+            L(i, j) = R(i, j)
+            R(i, j) = 0.0
+        end do
+    end do
     x = B
 
     do i = 1, ma
@@ -691,26 +717,172 @@ subroutine readMat(filename)
             D(i, i) = 0
         end if
     end do
+    
+    error = 100
 
+    if (w2f) then
+        open(10, file="GS"//trim(str(k))//"error.dat")
+        open(11, file="GS"//trim(str(k))//"iteration.dat")
+    end if
 
+    j = 0
     do while (maxval(error) > tol) 
 
-        check(1, :) = D(1, 1)*(B(i, :) - matmul(R(1, :), x))
-        do i = 2, ma
-            check(i, :) = D(i, i)*(b(i, :) - matmul(L(i, 1:i-1), check(1:i-1, :)) - &
-                        &  matmul(R(i, i+1:ma), x(i+1:ma, :)))
+        check = 0
+        do i = 1, ma
+            check(i, :) = D(i, i)*(B(i, :) - matmul(L(i, :), check) - matmul(R(i, :), x))
+            x(i, :) = 0
         end do
-        x = check
 
+        x = check
         check = matmul(A, x) - B
+
 
         do i = 1, nb
             call twonorm(check(:, i), error(i))
         end do
+        
+        j = j + 1
+
+        if (w2f) then 
+            write (10, *) maxval(error)
+            write (11, *) j
+        end if
+
+    end do
+    print *, "GS Method Converged within "//trim(str(j))//" iterations."
+    if (w2f) then
+        close(10)
+        close(11)
+    end if
+
+  end subroutine GS
+
+  subroutine CG(A, B, X, ma, nb, tol, precond)
+
+    implicit none
+
+    real :: A(:, :), B(:, :), X(:, :), tol
+    integer, intent(in) :: ma, nb
+    real, dimension(1, nb) :: alpha, beta
+    real, dimension(ma, nb) :: r, p, r2
+    real, dimension(nb) :: error
+    real :: ip1, ip2, norm, norm3
+    logical :: bool, precond
+    integer :: i, j
+
+
+    call isSym(A, ma, bool)
+
+    if (.not. bool) then    
+        print *, "Matrix A is not symmetric, CG fails"
+    else 
+
+    if (precond) then
+        call precondition(A, B, ma) 
+    end if
+
+    X = 0.0
+    error = 100.00
+    R = B
+    P = R
+
+    j = 0
+
+    do while (maxval(error) > tol)
+
+        !for all intents and purposes r2 is used as dummy vector which will be used for many different things
+        ! it is also used for r_n and r is usually r_n-1
+
+        r2 = matmul(A, p) ! this will reduce computation cost
+
+        do i = 1, nb
+            !calculate alpha
+            alpha(1, i) = sum(R(:, i)*R(:, i))/sum(P(:, i)*r2(:, i))
+        end do
+        x = x + matmul(p, transpose(alpha))
+        r2 = r - matmul(r2, transpose(alpha))
+        do i = 1, nb
+            !calculate beta
+            call twonorm(r2(:, i), ip1)
+            call twonorm(r(:, i), ip2)
+            beta(1, i) = (ip1/ip2)**2
+        end do
+        p = r2 + matmul(p, transpose(beta))
+        r = r2
+        r2 = b - matmul(A, x) 
+    
+        !compute error
+        do i = 1, nb
+            call twonorm(r2(:, i), error(i))
+        end do
+        j = j + 1
 
     end do
 
+    print *, "CG Method Converged within "//trim(str(j))//" iterations."
+    
+    end if
 
-  end subroutine GS
+  end subroutine CG
+
+  subroutine innerproduct(u, v, mu, f)
+
+    implicit none
+
+    real :: u(:), v(:), f
+    integer :: mu, i
+
+    f = 0.0
+    
+    do i = 1, mu
+        f = f + u(i)*v(i)
+    end do 
+
+  end subroutine innerproduct
+
+  subroutine isSym(A, ma, bool)
+
+    implicit none
+
+    real, intent(in) :: A(:, :)
+    integer, intent(in) :: ma
+    integer :: i, j
+    logical :: bool
+
+    bool = .true.
+    do i = 1, ma
+        do j = i+1, ma
+            if (A(j,i) .ne. A(i, j)) then
+                bool = .false.
+                exit
+            end if
+        end do
+        if (.not. bool) exit
+    end do 
+
+  end subroutine isSym
+
+  subroutine precondition(A, B, ma)
+
+    implicit none
+
+    real :: A(:, :), B(:, :)
+    integer, intent(in) :: ma
+    real, dimension(ma, ma) :: D
+    integer :: i
+
+    D = 0.0
+
+    call diag(A, ma, D)
+
+    do i = 1, ma
+        D(i, i) = 1.0/D(i, i)
+    end do  
+
+    A = matmul(D, A)
+    B = matmul(D, B)
+
+  end subroutine precondition
 
 end module LinAl

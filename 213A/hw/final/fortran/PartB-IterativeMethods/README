@@ -2,7 +2,8 @@
 
 Hello Nate, 
 
-So to run this code, simply type make and it will run. Because this code requires user input (for some reason) it doesn't write to an output.txt file as the prompts would not be displayed to a terminal.
+So to run this code, simply type make and it will run. Because this code requires user input (for some reason) it doesn't write to an output.txt file as the prompts would not be displayed to a terminal. You will be prompted to give input 2 times in order to perform the iterative method of your choice with the value of the diagonal elements of A of your choosing. 
+
 
 As asked in the description, the arguments for Gauss Jordan (GJ) and Gauss-Seidel (GS) are the following:
 
@@ -17,3 +18,10 @@ ma - the dimension/order of A
 nb - the number of columns in B/X
 
 tol - accepted tolerance for computation
+
+w2f - a boolean which tells the routine whether it should write the error for each iteration
+
+l - an integer value which contains the value on the diagonal (this is used to produce files with specific id)
+
+
+Note that all of the work to produce the data from the write up is in the directory labeled work inside of this directory. If you "make" in that directory, a series of computations will be run, as well as several data files and plots will be made. 

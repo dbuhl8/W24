@@ -130,6 +130,13 @@ Program Driver_LinAl
   print *, "Question 6: Comparing Reduced Rank Approximation Errors"
   print *, " "
 
+  print *, "Here are the first 10 singular values: "
+  print *, S(1:10)
+  print *, " "
+
+  print *, "Here are the 'rest singular values' for each k (in order of ascending k): "
+  print "(8F16.8)", S(10), S(20), S(40), S(80), S(160), S(320), S(640), S(1279)
+
   At = As - Sigma10
   call frobnorm(At, norm)
   norm = norm/(ma*na)
@@ -173,52 +180,5 @@ Program Driver_LinAl
 
   print *, " "
   print *, "--------------------------------------------------------------"
-! print *, " "
-! print *, "Question 7: Iterative Methods for solving systems of equations"
-! print *, " "
-
-! L = 1.0
-! call ident(eye, ml)
-! L = L - eye
-
-! do i = 1, ml
-!   print *, "Please enter a value for A("//trim(str(i))//trim(str(i))//"): "
-!   read *, L(i, i)
-!   B(i, 1) = i
-! end do
-! X = 0.0
-
-! Ls = L
-
-! print *, "Would you like the code to perform Gauss-Jordan (J) or Gauss-Seidel (S) ?"
-! read *, jors
-
-! if (jors .eq. "J" .or. jors .eq.  "j") then
-
-!   call GJ(L, B, X, ml, nb, 10.d-5) 
-
-!   print *, "This is the solution matrix X"
-!   call printmat(X, ml, nb)
-!   print *, " "
-
-!   call twonorm(B - matmul(Ls, X), norm)
-!   print *, "ERROR :", norm
-!   
-! else if (jors .eq. "S" .or. jors .eq. "s") then
-
-!   call GS(L, B, X, ml, nb, 10.d-5)
-
-!   print *, "This is the solution matrix X"
-!   call printmat(X, ml, nb)
-!   print *, " "
-
-!   call twonorm(B - matmul(Ls, X), norm)
-!   print *, "ERROR :", norm
-
-! else 
-!   print *, "That was not one of the listed options please restart the code and try again "
-!   print *, "(If you don't want to wait for the SVD algorithm to run just commment it out"
-! end if
-
 
 End Program Driver_LinAl

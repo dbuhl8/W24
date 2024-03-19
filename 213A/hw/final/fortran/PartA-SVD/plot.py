@@ -24,41 +24,47 @@ A1279 = np.loadtxt("Image_appn_101279.dat")
 plt.figure()
 plt.imshow(A10, cmap='gray', vmin=0, vmax=255)
 plt.title("Reduced Rank Reconstruction for K = 10")
+plt.savefig("Image_appn_100010.png")
 
 plt.figure()
 plt.imshow(A20, cmap='gray', vmin=0, vmax=255)
 plt.title("Reduced Rank Reconstruction for K = 20")
+plt.savefig("Image_appn_100020.png")
 
 plt.figure()
 plt.imshow(A40, cmap='gray', vmin=0, vmax=255)
 plt.title("Reduced Rank Reconstruction for K = 40")
+plt.savefig("Image_appn_100040.png")
 
 plt.figure()
 plt.imshow(A80, cmap='gray', vmin=0, vmax=255)
 plt.title("Reduced Rank Reconstruction for K = 80")
+plt.savefig("Image_appn_100080.png")
 
 plt.figure()
 plt.imshow(A160, cmap='gray', vmin=0, vmax=255)
 plt.title("Reduced Rank Reconstruction for K = 160")
+plt.savefig("Image_appn_100160.png")
 
 plt.figure()
 plt.imshow(A320, cmap='gray', vmin=0, vmax=255)
 plt.title("Reduced Rank Reconstruction for K = 320")
+plt.savefig("Image_appn_100320.png")
 
 plt.figure()
 plt.imshow(A640, cmap='gray', vmin=0, vmax=255)
 plt.title("Reduced Rank Reconstruction for K = 640")
+plt.savefig("Image_appn_100640.png")
 
 plt.figure()
 plt.imshow(A1279, cmap='gray', vmin=0, vmax=255)
 plt.title("Reduced Rank Reconstruction for K = 1279")
+plt.savefig("Image_appn_101279.png")
 
 plt.figure()
 plt.imshow(orig, cmap='gray', vmin=0, vmax=255)
 plt.title("Original Picture")
-
-plt.show()
-
+plt.savefig("original.png")
 
 
 

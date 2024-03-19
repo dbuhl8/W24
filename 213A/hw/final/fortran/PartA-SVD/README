@@ -2,6 +2,6 @@
 
 Hello Nate,
 
-Here is my code for the SVD image reconstruction. It's nothing crazy, but the way the code works is that Fortran does the beefy stuff with LAPACK and then writes 8 files. Once the fortran executable is finished runnning the makefile will automatically run a python script in this directory and produce the plots (your terminal won't accept more commands until you stop the python exec or close the matplotlib plots (I hate the way that matplotlib does this)). 
+Here is my code for the SVD image reconstruction. It's nothing crazy, but the way the code works is that Fortran does the beefy stuff with LAPACK and then writes 8 files. Once the fortran executable is finished runnning the makefile will automatically run a python script in this directory and produce the plots and immedaitely save them as png images in this directory. Some findings are written to the output.txt file. 
 
 Anyways, if you have any issues please let me know. 

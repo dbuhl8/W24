@@ -164,18 +164,18 @@ end do
     call twonorm(B(:, 1), norm)
     print *, "ERROR :", norm
 
-!   A = As
-!   B = Bs
-!   X = 0.0 
-!   call CG(A, B, X, ma, nb, tol, .true.)
+    A = As
+    B = Bs
+    X = 0.0 
+    call CG(A, B, X, ma, nb, tol, .true.)
 
-!   print *, "This is the solution matrix X"
-!   call printmat(X, ma, nb)
-!   print *, " "
+    print *, "This is the solution matrix X"
+    call printmat(X, ma, nb)
+    print *, " "
 
-!   B = B - matmul(As, X)
-!   call twonorm(B(:, 1), norm)
-!   print *, "ERROR :", norm
+    B = Bs - matmul(As, X)
+    call twonorm(B(:, 1), norm)
+    print *, "ERROR :", norm
 
     print *, " "
     print *, "--------------------------------------------------------------"
@@ -217,21 +217,21 @@ end do
 !   call printmat(X2, mc, nb)
 !   print *, " "
 
-!   B2 = B2 - matmul(Cs, X2)
-!   call twonorm(B2(:, 1), norm)
-!   print *, "ERROR :", norm
+    B2 = B2 - matmul(Cs, X2)
+    call twonorm(B2(:, 1), norm)
+    print *, "ERROR :", norm
 
-!   C = Cs
-!   B2 = B2s
-!   X = 0.0 
-!   call CG(C, B2, X2, mc, nb, tol, .true.)
+    C = Cs
+    B2 = B2s
+    X = 0.0 
+    call CG(C, B2, X2, mc, nb, tol, .true.)
 
 !   print *, "This is the solution matrix X"
 !   call printmat(X2, mc, nb)
 !   print *, " "
 
-!   B2 = B2 - matmul(Cs, X2)
-!   call twonorm(B2(:, 1), norm)
-!   print *, "ERROR :", norm
+    B2 = B2s - matmul(Cs, X2)
+    call twonorm(B2(:, 1), norm)
+    print *, "ERROR :", norm
 
 End Program Driver_LinAl

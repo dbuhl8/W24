@@ -764,6 +764,7 @@ subroutine readMat(filename)
 
     real :: A(:, :), B(:, :), X(:, :), tol
     integer, intent(in) :: ma, nb
+    real, dimension(ma, ma) :: D, D2
     real, dimension(1, nb) :: alpha, beta
     real, dimension(ma, nb) :: r, p, r2
     real, dimension(nb) :: error
@@ -779,7 +780,7 @@ subroutine readMat(filename)
     else 
 
     if (precond) then
-        call precondition(A, B, ma) 
+        call precondition(A, B, D, ma)
     end if
 
     X = 0.0
@@ -810,7 +811,10 @@ subroutine readMat(filename)
         end do
         p = r2 + matmul(p, transpose(beta))
         r = r2
-        r2 = b - matmul(A, x) 
+        if (precond) then
+            call invdiag(D, D2, ma)
+            r2 = matmul(D2,b - matmul(A, x))
+        end if        
     
         !compute error
         do i = 1, nb
@@ -819,6 +823,9 @@ subroutine readMat(filename)
         j = j + 1
 
     end do
+    if (precond) then
+        X = matmul(D, x)
+    end if
 
     print *, "CG Method Converged within "//trim(str(j))//" iterations."
     
@@ -863,7 +870,7 @@ subroutine readMat(filename)
 
   end subroutine isSym
 
-  subroutine precondition(A, B, ma)
+  subroutine precondition(A, B, D, ma)
 
     implicit none
 
@@ -877,12 +884,27 @@ subroutine readMat(filename)
     call diag(A, ma, D)
 
     do i = 1, ma
-        D(i, i) = 1.0/D(i, i)
+        D(i, i) = 1.0/sqrt(D(i, i))
     end do  
 
-    A = matmul(D, A)
+    A = matmul(D, matmul(A, transpose(D)))
     B = matmul(D, B)
 
   end subroutine precondition
+
+  subroutine invdiag(D, D2, ma)
+
+    implicit none
+    
+    real :: D(:,:), D2(:, :)
+    integer :: ma, i
+
+    D2 = 0.0
+
+    do i = 1, ma
+        D2(i, i) = 1.0/D(i, i)   
+    end do
+
+  end subroutine invdiag
 
 end module LinAl

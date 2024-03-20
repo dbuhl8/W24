@@ -15,8 +15,9 @@ for i in d:
     plt.semilogy(x2, y2, label='Gauss-Seidel')
     plt.xlabel("Number of Iterations")
     plt.ylabel("Computed Error")
+    plt.title("Convergence Plot for D = " + str(i))
     plt.legend()
-    plt.savefig("D="+str(i)+"plot.png")
+    plt.savefig("D"+str(i)+"plot.png")
 
 
 

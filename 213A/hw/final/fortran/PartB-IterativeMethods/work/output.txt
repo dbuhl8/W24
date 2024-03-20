@@ -38,7 +38,7 @@ This is a  10 by   1
      4.000
      5.000
   
- ERROR :   8.8524439076197772E-005
+ ERROR :   8.8524439079697414E-005
  CG Method Converged within 2 iterations.
  This is the solution matrix X
 This is a  10 by   1
@@ -54,7 +54,7 @@ This is a  10 by   1
      4.000
      5.000
   
- ERROR :   1.8055380613063331E-014
+ ERROR :   1.3113797212790068E-014
   
  --------------------------------------------------------------
   
@@ -91,7 +91,7 @@ This is a  10 by   1
      1.268
      1.518
   
- ERROR :   7.6657445417888697E-005
+ ERROR :   7.6657445417191542E-005
  CG Method Converged within 2 iterations.
  This is the solution matrix X
 This is a  10 by   1
@@ -107,7 +107,7 @@ This is a  10 by   1
      1.268
      1.518
   
- ERROR :   1.9484335006297032E-015
+ ERROR :   2.7375497437671541E-015
   
  --------------------------------------------------------------
   
@@ -128,7 +128,7 @@ This is a  10 by   1
      0.678
      0.789
   
- ERROR :   9.9556938943257340E-005
+ ERROR :   9.9556938944661680E-005
  GS Method Converged within 10 iterations.
  This is the solution matrix X
 This is a  10 by   1
@@ -144,7 +144,7 @@ This is a  10 by   1
      0.678
      0.789
   
- ERROR :   4.2304589199798313E-005
+ ERROR :   4.2304589199629617E-005
  CG Method Converged within 2 iterations.
  This is the solution matrix X
 This is a  10 by   1
@@ -160,7 +160,7 @@ This is a  10 by   1
      0.678
      0.789
   
- ERROR :   0.0000000000000000     
+ ERROR :   1.0175362097255202E-015
   
  --------------------------------------------------------------
   
@@ -181,7 +181,7 @@ This is a  10 by   1
      0.086
      0.096
   
- ERROR :   8.9842951545539043E-005
+ ERROR :   8.9842951545258167E-005
  GS Method Converged within 5 iterations.
  This is the solution matrix X
 This is a  10 by   1
@@ -197,7 +197,7 @@ This is a  10 by   1
      0.086
      0.096
   
- ERROR :   8.5990492784137523E-006
+ ERROR :   8.5990492785267363E-006
  CG Method Converged within 2 iterations.
  This is the solution matrix X
 This is a  10 by   1
@@ -213,7 +213,7 @@ This is a  10 by   1
      0.086
      0.096
   
- ERROR :   2.1755839288168292E-015
+ ERROR :   2.5243844794302801E-015
   
  --------------------------------------------------------------
   
@@ -234,7 +234,7 @@ This is a  10 by   1
      0.009
      0.010
   
- ERROR :   1.0352274248666051E-006
+ ERROR :   1.0352274247261713E-006
  GS Method Converged within 4 iterations.
  This is the solution matrix X
 This is a  10 by   1
@@ -250,7 +250,7 @@ This is a  10 by   1
      0.009
      0.010
   
- ERROR :   1.2522831044740036E-006
+ ERROR :   1.2522831046267637E-006
  CG Method Converged within 2 iterations.
  This is the solution matrix X
 This is a  10 by   1
@@ -266,7 +266,7 @@ This is a  10 by   1
      0.009
      0.010
   
- ERROR :   3.3528000088581810E-015
+ ERROR :   3.3601445959922219E-015
   
  --------------------------------------------------------------
   
@@ -303,7 +303,7 @@ This is a  10 by   1
      1.000
      1.000
   
- ERROR :   6.4830716000406142E-005
+ ERROR :   6.4830715999195440E-005
  CG Method Converged within 10 iterations.
  This is the solution matrix X
 This is a  10 by   1
@@ -319,7 +319,23 @@ This is a  10 by   1
      1.000
      1.000
   
- ERROR :   5.7277186381920810E-011
+ ERROR :   5.7042156849532036E-011
+ CG Method Converged within 8 iterations.
+ This is the solution matrix X
+This is a  10 by   1
+ matrix.
+    -8.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+     1.000
+  
+ ERROR :   3.5238127866946297E-006
   
  --------------------------------------------------------------
   
@@ -328,5 +344,8 @@ This is a  10 by   1
  GJ Method Converged within 443 iterations.
  ERROR :                       NaN
  GS Method Converged within 23 iterations.
- ERROR :   6.9054074346157424E-005
+ ERROR :   6.9054074494075520E-005
  CG Method Converged within 57 iterations.
+ ERROR :   9.8552438441711296E-005
+ CG Method Converged within 10 iterations.
+ ERROR :   1.1339705064709227E-005

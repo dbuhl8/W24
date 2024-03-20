@@ -1,4 +1,4 @@
-OBJECTS = LinAl.o shearSolve.o
+OBJECTS = LinAl.o shearSolve2.o
 	
 DOBJECTS = LinAl.o 
 
@@ -8,11 +8,11 @@ FFLAGS = -fdefault-real-8 -fdefault-double-8 -llapack -lblas #-g3 -fbacktrace -f
 
 .PHONY: clean
 
-output.txt: shearSolve.exe
-	./shearSolve.exe > output.txt
+output.txt: shearSolve2.exe
+	./shearSolve2.exe > output.txt
 
-shearSolve.exe: $(MODULES) $(OBJECTS)
-	gfortran $(OBJECTS) $(FFLAGS) -o shearSolve.exe
+shearSolve2.exe: $(MODULES) $(OBJECTS)
+	gfortran $(OBJECTS) $(FFLAGS) -o shearSolve2.exe
 
 %.o: %.f90
 	gfortran -c $(FFLAGS) $<
@@ -21,4 +21,4 @@ shearSolve.exe: $(MODULES) $(OBJECTS)
 	gfortran -c $(FFLAGS) $<
 
 clean:
-	rm -f $(OBJECTS) $(DOBJECTS) $(MODULES) shearSolve.exe *.dat
+	rm -f $(OBJECTS) $(DOBJECTS) $(MODULES) shearSolve2.exe *.dat

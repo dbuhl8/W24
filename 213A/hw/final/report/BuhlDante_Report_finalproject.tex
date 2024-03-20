@@ -144,7 +144,7 @@
 
     \begin{enumerate}
 
-        \item The Conjugate Gradient Method is a method similar to gradient descent where each iteration, there is a direction chosen and a step length along that direction such that each iteration the ``function'' will approach a local minimum. This ``function'' is chosen such that is contains the information of the system of equations that we are trying to solve. The reason we can pick such a method is because of the properties of martrices which this method applies to, specifically symmetric positive definite matrices. \colorbox{yellow}{Why is it uaranteed to converge}
+        \item The Conjugate Gradient Method is a method similar to gradient descent where each iteration, there is a direction chosen and a step length along that direction such that each iteration the ``function'' will approach a local minimum. This ``function'' is chosen such that is contains the information of the system of equations that we are trying to solve. The reason we can pick such a method is because of the properties of martrices which this method applies to, specifically symmetric positive definite matrices. Finally, the reason why we are guaranteed to converge within $m$ iterations is because on each iteration we pick a distance along a vector which brings us as close as possible to the minimum. At the next iteration we choses a vector orthogonal to all previous vectors and get as close to the minimum once again. Since these vectors are orthogonal, we are guaranteed to never move in a direction parallel to a previous vector. Furthermore, we know orthogonal vectors (a cconjugate set") can be taken from $A$ which span $\R^{m}$ since its eigenvectors form an a basis for $\R^m$. Since there are at most $m$ vectors in the basis, we have that after $m$ iterations we will be out of vectors to chose from, and thus (if we did out work properly) we will have reached the minimum of the function, and thus the most accurate approximate solution to $Ax = b$. 
     
         \item 
 
@@ -216,9 +216,15 @@
         \]
         Next we notice a recursive definition for $p^{(n-1)}$. 
         \[
-            = p^{(n-1)} = r^{(n-1)} + \beta^{(n-1)}p^{(n-2)}
+            p^{(n-1)} = r^{(n-1)} + \beta^{(n-1)}p^{(n-2)}
         \]
-        If this is investigated thoroughly enough we can show that,
+        \[
+            p^{(N)} = r^{(N)} + \frac{||r^{(N)}||_2^2}{||r^{(N-1)}||_2^2}p^{(N-1)}
+        \]
+        \[
+            p^{(N)} = r^{(N)} + \sum_{i=0}^{N-1}\left(\frac{||r^{(N)}||_2^2}{||r^{(i)}||_2^2}\right)r^{(i)}
+        \]
+        Applying this definition for $p^{(n)}$ we obtain.
         \[
             E^{(N)} = r^{(n)T}r^{(n)} + \sum_{i=0}^{n-1}\frac{r^{(n)T}r^{(n)}}{r^{(i)T}r^{(i)}} r^{(i)T}r^{(n)}
         \]
@@ -228,9 +234,19 @@
         \]
         Next we look at $\frac{E^{(n+1)}}{E^{(n)}} = -\frac{r^{(n+1)T}y^{(n+1)}}{p^{(n)T}y^{(n+1)}}$. Let us look at the value of $y^{(n+1)}$ more closely. 
         \[
-
+            r^{(n+1)} = r^{(n)} + \alpha^{(n+1)}y^{(n+1)}
         \]
-        
+        \[
+            y^{(n+1)} = \frac{r^{(n+1)} - r^{(n)}}{\alpha^{(n+1)}}
+        \]
+        \[
+            -\frac{r^{(n+1)T}y^{(n+1)}}{p^{(n)T}y^{(n+1)}} = -\frac{r^{(n+1)T}(r^{(n+1)} - r^{(n)})}{p^{(n)T}(r^{(n+1)} - r^{(n)})}
+        \]
+        Then we have by the same logic as before, where inner products between different iterations of $p$ and $r$ will be zero we have, 
+        \[
+            = -\frac{r^{(n+1)T}r^{(n+1)}}{-p^{(n)T}r^{(n)}} = \frac{r^{(n+1)T}r^{(n+1)}}{r^{(n)T}r^{(n)}} = \frac{E^{(n+1)}}{E^{(n)}}
+        \]
+        We have shown that all references to $E$ which have replaced components of the basic conjugate gradient algorithm are identical to the terms they replace through the use of the clever construction of orthogonal vectors $r^{(i)}$. As a conclusion, the basic and smart versions of the conjugate gradient algorithm are the same. 
 
         \end{proof}
 

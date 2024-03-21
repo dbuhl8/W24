@@ -25,7 +25,7 @@ program shearSolve
 
     Pe = 1000.0
     Re = 1000.0
-    Ri = 0.0
+    Ri = 100.0
 
     ky = 1.0
     f = 0.0

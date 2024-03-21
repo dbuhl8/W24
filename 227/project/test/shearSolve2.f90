@@ -2,13 +2,14 @@
 
 program shearSolve
 
+    include 'mpif.h'
+
     use LinAl
 
     implicit none
 
-    integer, parameter :: M = 15, N = 15, nk = 5
+    integer, parameter :: M = 10, N = 10
     integer, parameter :: LDA = 5*(2*N+1)*(2*M+1)
-    real, dimension(nk, 1) :: kz
     real :: ky = 1, kx = 0.5
     real :: kzmin = 0.01, kzmax = 1.5
     integer :: i, j, k, indu, indv, indw, indt, indp, indm, l
@@ -19,44 +20,72 @@ program shearSolve
     complex, allocatable :: A(:, :), B(:, :), V(:, :), VL(:, :) !dimension(LDA, LDA) :: A, B, V, VL
     real, allocatable :: D(:, :) !dimension(LDA, LDA) :: D !Note that we only take the real part of the eigenvalue when we find the max
     complex, allocatable :: VR(:, :) !dimension(LDA, LDA) :: VR
-    real, dimension(nk, 1) :: lambda
+    real, allocatable :: lambda(:), veckz(:)
+    real :: kz
     real, dimension(8*LDA) :: RWORK
     real :: start, finish
     complex, allocatable :: work(:)
-    integer :: lwork, info
+    integer :: lwork, info, nk
 
+    integer :: myid, ie, np
+    integer :: msgid, src, dest, count
+    integer :: buffer
+    integer :: stat(MPI_STATUS_SIZE)
+    character(9) :: signal
+
+    !the problem needs to receive nk as an input i.e. number of cpus running
+
+    ! starting MPI
+    call MPI_INIT(ie)
+    call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ie)
+    call MPI_COMM_SIZE(MPI_COMM_WORLD, np, ie)
+
+    nk = np
+    msgid = 10
+    src = 0
+    dest = 1
+    count = 9
+
+    allocate(lambda(nk, 1), veckz(nk, 1))
+
+!    if (id ==  src) then
+        !distribute kz's to different processors
+        !call MPI_SEND(signal, count, MPI_CHARACTER, dest, msgid, &
+        !    &  MPI_COMM_WORLD, ie)
+        !print *, 'Processor: ', id, ' sent ', signal
+!    else if (id ==  dest) then
+        !call MPI_RECV(signal, count, MPI_CHARACTER, src, msgid, &
+        !&  MPI_COMM_WORLD, stat, ie)
+        !print *, 'Processor: ', id, ' received ', signal
+!    end if
+
+    kz = kzmin + (myid-1)*(kzmax - kzmin)/(nk-1)
     Pe = 1000.0
     Re = 1000.0
     Ri = 100.0
-
     f = 0.0
 
     allocate(A(LDA, LDA), B(LDA, LDA), D(LDA, LDA), V(LDA, LDA), VL(LDA, LDA), VR(LDA, LDA))
 
-    do j = 1, nk
-              
-        kz(j, 1) = kzmin + (j-1)*(kzmax - kzmin)/(nk-1)
         A = 0.0
         B = 0.0
         call cpu_time(start)
     
         do k = -M, M
-            
             do i = -N, N
-                
                 indu = (i + N + 1) + (2*N+1)*(M+k)
                 indv = (2*N + 1)*(2*M + 1) + indu
                 indw = (2*N + 1)*(2*M + 1) + indv
                 indt = (2*N + 1)*(2*M + 1) + indw
                 indp = (2*N + 1)*(2*M + 1) + indt
 
-                dispterm = ((f+i)**2)*kx**2 + ((f+k)**2)*ky**2 + kz(j, 1)**2
+                dispterm = ((f+i)**2)*kx**2 + ((f+k)**2)*ky**2 + kz**2
                 ! check if i > -N
                 if (i > -N) then
                     !w equation
                     A(indw, indw-1) = -(f+k)*ky*alpha*v0*0.5*(0.0, 1.0)
                     !t equation
-                    A(indt, indt-1) = -(f+k)*ky*alpha*v0*0.5*(0.0, 1.0) !A(indt, indt-1) = -(f+k)*ky*alpha*v0*(0.0, 1.0)
+                    A(indt, indt-1) = -(f+k)*ky*alpha*v0*0.5*(0.0, 1.0)
                     !v equation
                     A(indv, indu-1) = -kx*alpha*v0*0.5*(0.0, 1.0)
                     A(indv, indv-1) = -(f+k)*ky*alpha*v0*0.5*(0.0, 1.0)
@@ -81,7 +110,6 @@ program shearSolve
                         A(indu, indu+2*N) = -(kx*alpha*0.5)*(0.0, 1.0) + (f+k+1)*ky*alpha*v_1*0.5*(0.0, 1.0) - (f+i-1)*kx*alpha*0.5*(0.0, 1.0)
                         A(indu, indv+2*N) =  ky*alpha*0.5*(0.0, 1.0)
                     end if
-
                 end if
 
                 ! this logic section is not needed yet for this problem
@@ -114,9 +142,7 @@ program shearSolve
                         A(indv, indu+2*N+2) = kx*alpha*v_1*0.5*(0.0, 1.0) 
                         A(indv, indv+2*N+2) = -ky*alpha*v_1*0.5*(0.0, 1.0) - (f+i+1)*kx*alpha*0.5*(0.0, 1.0) & 
                                                                         & + (f+k+1)*ky*alpha*v_1*0.5*(0.0, 1.0)
-    
                     end if
-    
                 end if 
  
                 if (k > -M) then
@@ -125,7 +151,6 @@ program shearSolve
                     A(indv, indv-(2*N+1)) = -((f+i)*kx/2.0)*(1.0, 0.0)
                     A(indu, indu-(2*N+1)) = -((f+i)*kx/2.0)*(1.0, 0.0)
                     A(indu, indv-(2*N+1)) = -(ky/2.0)*(1.0, 0.0)
-    
                 end if
                 ! check if k < M
                 if (k < M) then
@@ -134,10 +159,8 @@ program shearSolve
                     A(indv, indv+(2*N+1)) = ((f+i)*kx/2.0)*(1.0, 0.0)
                     A(indu, indu+(2*N+1)) = ((f+i)*kx/2.0)*(1.0, 0.0)
                     A(indu, indv+(2*N+1)) = -(ky/2.0)*(1.0, 0.0)
-    
                 end if
                
-
                 ! Dissipitive Terms
                 A(indu,indu)= -dispterm/Re;
                 A(indw,indw)= -dispterm/Re;
@@ -151,7 +174,7 @@ program shearSolve
                 ! Pressure Terms
                 A(indu,indp)=-kx*(f+i);  ! avoid complex matrix by defining variable ip
                 A(indv,indp)=-ky*(f+k);
-                A(indw,indp)=-kz(j, 1);
+                A(indw,indp)=-kz;
 
                 ! Eigenvalue Matrix B, 1 on diagonal
                 B(indu,indu)=1.0;
@@ -163,8 +186,7 @@ program shearSolve
                 ! Continuity Equation
                 A(indp,indu) = kx*(f+i);
                 A(indp,indv) = ky*(f+k);
-                A(indp,indw) = kz(j, 1);
-
+                A(indp,indw) = kz;
             end do
         end do
 
@@ -184,8 +206,7 @@ program shearSolve
         deallocate(work)
 
         if (info .ne. 0) then
-            print *, "Go kill yourself"
-            stop
+            print *, "Error in LAPACK Routine"
         end if
         do l = 1, LDA
             if(abs(BETA(l)) > 10.d-6) then
@@ -204,31 +225,37 @@ program shearSolve
                 indm = l
             end if
         end do
-        lambda(j, 1) = D(indm, indm)
+        lambda(myid, 1) = D(indm, indm)
         call cpu_time(finish)
-        print "(A, F8.3, A)", "Done with loop "//trim(str(j))//". Time elapsed: ", finish-start, " seconds"
+        print "(A, F8.3, A)", "Done with eigenproblem "//trim(str(j))//". Time elapsed: ", finish-start, " seconds"
     end do
 
-    call printmat(lambda, nk, 1)
-    call printmat(kz, nk, 1)
+    !bring all of the lambda's together
 
-    open(10, file="kz.dat")
-        do i = 1, nk
-           write (10, *) kz(i, 1) 
-        end do
-    close(10)
-    open(12, file="lambda.dat")
-        do i = 1, nk
-           write (12, *) lambda(i, 1)
-        end do
-    close(12)
-    open(13, file="nk.dat")
-        write (13, *) nk
-    close(13)
+    !if on cpu 0
+    if (myid .eq. 0) then
+        call printmat(lambda, nk, 1)
+        call printmat(veckz, nk, 1)
+
+        open(10, file="kz.dat")
+            do i = 1, nk
+            write (10, *) veckz(i, 1) 
+            end do
+        close(10)
+        open(12, file="lambda.dat")
+            do i = 1, nk
+                write (12, *) lambda(i, 1)
+            end do
+        close(12)
+        open(13, file="nk.dat")
+            write (13, *) nk
+        close(13)
+    end if
 
     deallocate(A, B, V, VL, D, VR)
 
-  
+    call MPI_FINALIZE(ie)
+
 end program shearSolve
 
 

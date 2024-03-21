@@ -1,0 +1,12 @@
+
+#!/bin/bash
+#SBATCH --job-name="SinShearEigen" # Job name
+#SBATCH --partition=128x24 # Switch to compute if you need 128 cores
+#SBATCH --output="SinShear.o%j" # Name of stdout output file
+#SBATCH --error="SinShear.e%j" # Name of stderr error file
+#SBATCH --nodes=1 # Total number of nodes
+#SBATCH --ntasks-per-node=24 # Total number of mpi tasks per node
+#SBATCH --mem=128G
+#SBATCH -t 01:00:00 # Run time (hh:mm:ss)
+
+mpirun -np 24 shearSolve2

@@ -4,7 +4,7 @@ DOBJECTS = LinAl.o
 
 MODULES = LinAl.mod
 
-FFLAGS = -fdefault-real-8 -fdefault-double-8 -llapack -lblas #-g3 -fbacktrace -fbounds-check
+FFLAGS = -fdefault-real-8 -fdefault-double-8 -llapack -lblas -ffree-line-length-0 #-g3 -fbacktrace -fbounds-check
 
 .PHONY: clean
 

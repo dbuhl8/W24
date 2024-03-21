@@ -1,6 +1,3 @@
-
-COMPILER = mpif90
-
 OBJECTS = LinAl.o shearSolve2.o
 	
 DOBJECTS = LinAl.o 
@@ -11,17 +8,17 @@ FFLAGS = -fdefault-real-8 -fdefault-double-8 -llapack -lblas -ffree-line-length-
 
 .PHONY: clean
 
-output.txt: shearSolve2
-	./shearSolve2
+output.txt: shearSolve2.exe
+	./shearSolve2.exe > output.txt
 
-shearSolve2: $(MODULES) $(OBJECTS)
-	$(COMPILER) $(OBJECTS) $(FFLAGS) -o shearSolve2
+shearSolve2.exe: $(MODULES) $(OBJECTS)
+	gfortran $(OBJECTS) $(FFLAGS) -o shearSolve2.exe
 
 %.o: %.f90
-	$(COMPILER) -c $(FFLAGS) $<
+	gfortran -c $(FFLAGS) $<
 
 %.mod: %.f90
-	$(COMPILER) -c $(FFLAGS) $<
+	gfortran -c $(FFLAGS) $<
 
 clean:
-	rm -f $(OBJECTS) $(DOBJECTS) $(MODULES) shearSolve2 *.dat
+	rm -f $(OBJECTS) $(DOBJECTS) $(MODULES) shearSolve2.exe *.dat

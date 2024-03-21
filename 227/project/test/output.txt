@@ -1,0 +1,19 @@
+Done with loop 1. Time elapsed:    4.502 seconds
+Done with loop 2. Time elapsed:    4.459 seconds
+Done with loop 3. Time elapsed:    4.531 seconds
+Done with loop 4. Time elapsed:    4.405 seconds
+Done with loop 5. Time elapsed:    4.364 seconds
+This is a   5 by   1
+ matrix.
+     0.266
+     0.266
+     0.265
+     0.264
+     0.263
+This is a   5 by   1
+ matrix.
+     0.010
+     0.383
+     0.755
+     1.127
+     1.500

@@ -44,6 +44,7 @@ title("Contour plot of Re($\lambda$), Ri = " + string(Ri), 'Interpreter', 'latex
 
 fig = figure(3);
 hold on;
+lambda = transpose(lambda);
 for i = 1:nk
         plot(kx, lambda(:, i), '-o', 'DisplayName', strcat("kz = ", string(kz(i))))
 end

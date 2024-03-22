@@ -6,7 +6,7 @@ program shearSolve
 
     implicit none
 
-    integer, parameter :: M = 50, Nmax = 50, nk = 50
+    integer, parameter :: M = 50, Nmax = 20, nk = 2
     integer, parameter :: LDA = 5*(2*Nmax+1)
     real, dimension(nk, 1) :: kz, kx
     real :: ky
@@ -34,6 +34,7 @@ program shearSolve
    
     do i = 1, nk
         kx(i, 1) = kxmin + (i-1)*(kxmax-kxmin)/(nk-1) 
+        kx(i, 1) = 0.5
         do j = 1, nk
             kz(j, 1) = kzmin + (j-1)*(kzmax - kzmin)/(nk-1)
 

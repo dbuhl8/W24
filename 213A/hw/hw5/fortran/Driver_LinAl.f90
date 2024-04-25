@@ -43,112 +43,112 @@ Program Driver_LinAl
 
   EA4(:, 1) = (/-8.0286, 7.9329, 5.6689, -1.5732/)
 
+  !print *, " "
+  !print *, "--------------------------------------------------------------"
+  !print *, " "
+  !print *, " Random quesiton from 213B"
+  !print *, " "
+!
+    !call LU(A8, 3, bool, P)
+    !call LUsolve(A8, 3, B8, X8, 1, P)
+!
+    !call printmat(X8, 3, 1)
+!
+  !print *, " "
+  print *, "--------------------------------------------------------------"
+  print *, " "
+  print *, "Question 1: Hessenburg Form (Tridiagonalization)"
+  print *, " "
+
+  print *, "A before tridiagonalization"
+  call printmat(A1, ma1, ma1)
+  print *, " "
+
+  call tridiagonal(A1, ma1)
+
+  print *, "A after Tridiagonalization"
+  call printmat(A1, ma1, ma1)
+  print *, " "
+
+  do i = 1, ma1
+    call twonorm(A1(:, i), norm)
+    print *, "Two norm of column "//trim(str(i))//":", norm
+  end do
+
   print *, " "
   print *, "--------------------------------------------------------------"
   print *, " "
-  print *, " Random quesiton from 213B"
+  print *, "Question 2: QR Algorithm with and without Shifts"
   print *, " "
 
-    call LU(A8, 3, bool, P)
-    call LUsolve(A8, 3, B8, X8, 1, P)
+  print *, "Matrix A before QR w/o shift"
+  call printmat(A2, ma2, ma2)  
+  print *, " "
 
-    call printmat(X8, 3, 1)
+  call eigQR(A2, ma2, .false., 10.d-14)
+
+  call diag(A2, ma2, D)
+
+  print *, "Matrix D after QR w/o shift"
+  call printmat(D, ma2, ma2)  
+  print *, " "
+
+  print *, "Matrix A before QR w shift"
+  call printmat(A3, ma2, ma2)  
+  print *, " "
+
+  call eigQR(A3, ma2, .true., 10.d-14)
+
+  call diag(A3, ma2, D)
+
+  print *, "Matrix D after QR w shift"
+  call printmat(D, ma2, ma2)  
+  print *, " "
 
   print *, " "
   print *, "--------------------------------------------------------------"
-! print *, " "
-! print *, "Question 1: Hessenburg Form (Tridiagonalization)"
-! print *, " "
+  print *, " "
+  print *, "Question 3: Inverse Iteration Method"
+  print *, " "
 
-! print *, "A before tridiagonalization"
-! call printmat(A1, ma1, ma1)
-! print *, " "
+  print *, "Matrix A before Inverse Iteration"
+  call printmat(A4, ma1, ma1)  
+  print *, " "
 
-! call tridiagonal(A1, ma1)
+  As = A4
+  print *, "Calculating Eigenvalues of A with QR w shift with high accuracy"
 
-! print *, "A after Tridiagonalization"
-! call printmat(A1, ma1, ma1)
-! print *, " "
+  call eigQR(A4, ma1, .false., 10.d-14)
+  call diag(A4, ma1, D4)
+    
+  call printmat(D4, ma1, ma1)
 
-! do i = 1, ma1
-!   call twonorm(A1(:, i), norm)
-!   print *, "Two norm of column "//trim(str(i))//":", norm
-! end do
+  A4 = As
 
-! print *, " "
-! print *, "--------------------------------------------------------------"
-! print *, " "
-! print *, "Question 2: QR Algorithm with and without Shifts"
-! print *, " "
+  print *, "Eigenvalues of A" 
+  call printmat(EA4, ma1, 1)  
+  print *, " "
 
-! print *, "Matrix A before QR w/o shift"
-! call printmat(A2, ma2, ma2)  
-! print *, " "
+  do i = 1, ma1
 
-! call eigQR(A2, ma2, .false., 10.d-14)
+    A4 = As
 
-! call diag(A2, ma2, D)
+    call inviter(A4, D4(i, i), eigvec, ma1, 10.d-14)
 
-! print *, "Matrix D after QR w/o shift"
-! call printmat(D, ma2, ma2)  
-! print *, " "
+    Eigmat(:, i) = eigvec(:, 1)
+    
+  end do
+  
+  print *, " "
+  print *, "Eigenvectors (in columns)"
+  call printmat(eigmat, ma1, ma1)
+  print *, " "
+  do i = 1, ma1
+    call twonorm(matmul(As, eigmat(:, i)) - D4(i, i)*eigmat(:, i), norm)
+    print *, "Error in eigenvector "//trim(str(i))//" calculation norm: ", norm
+  end do
 
-! print *, "Matrix A before QR w shift"
-! call printmat(A3, ma2, ma2)  
-! print *, " "
-
-! call eigQR(A3, ma2, .true., 10.d-14)
-
-! call diag(A3, ma2, D)
-
-! print *, "Matrix D after QR w shift"
-! call printmat(D, ma2, ma2)  
-! print *, " "
-
-! print *, " "
-! print *, "--------------------------------------------------------------"
-! print *, " "
-! print *, "Question 3: Inverse Iteration Method"
-! print *, " "
-
-! print *, "Matrix A before Inverse Iteration"
-! call printmat(A4, ma1, ma1)  
-! print *, " "
-
-! As = A4
-! print *, "Calculating Eigenvalues of A with QR w shift with high accuracy"
-
-! call eigQR(A4, ma1, .false., 10.d-14)
-! call diag(A4, ma1, D4)
-!   
-! call printmat(D4, ma1, ma1)
-
-! A4 = As
-
-! print *, "Eigenvalues of A" 
-! call printmat(EA4, ma1, 1)  
-! print *, " "
-
-! do i = 1, ma1
-
-!   A4 = As
-
-!   call inviter(A4, D4(i, i), eigvec, ma1, 10.d-14)
-
-!   Eigmat(:, i) = eigvec(:, 1)
-!   
-! end do
-! 
-! print *, " "
-! print *, "Eigenvectors (in columns)"
-! call printmat(eigmat, ma1, ma1)
-! print *, " "
-! do i = 1, ma1
-!   call twonorm(matmul(As, eigmat(:, i)) - D4(i, i)*eigmat(:, i), norm)
-!   print *, "Error in eigenvector "//trim(str(i))//" calculation norm: ", norm
-! end do
-
-! print *, "--------------------------------------------------------------"
+  print *, "--------------------------------------------------------------"
 
 
 End Program Driver_LinAl
